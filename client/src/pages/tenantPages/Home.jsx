@@ -5,7 +5,7 @@ import ClientHomeMain from '../../components/client-app-home-main/ClientBody';
 
 const Home = () => {
   return (
-    <div>
+    <div className='homepage-container'>
       <ClientHeader />
       <ClientHomeMain />
       <ClientFooter />

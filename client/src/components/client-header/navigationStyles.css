@@ -1,0 +1,73 @@
+/*NAVIGATION BAR*/
+.navigation-container, 
+.navigation-container .right,
+.authentication-commands {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    color: white;
+}
+
+.navigation-container {
+    width: 100%;   
+    background-color: rgb(5, 45, 98);
+    padding: 20px 40px;
+    z-index: 1;
+}
+
+.logo-space {
+    width: 50%;
+
+}
+
+.navigation-container .right {
+    width: 50%;
+    justify-content: flex-end;
+    gap: 20px;
+}
+
+.logo-space h1 {
+
+}
+
+.authentication-commands {
+    justify-content: flex-end;
+    gap: 20px;
+}
+
+.authentication-link {
+
+}
+
+.authentication-link:hover {
+
+}
+
+.authentication-link .signin-icon,
+.authentication-link .signup-icon, 
+.post-house-icon {
+    display: inline-block;
+}
+
+.call-to-action {
+
+}
+
+.post-house-link {
+    padding: 8px 12px;
+    background-color: red;
+    border: 1px solid white;
+    border-radius: 5px;
+}
+
+.post-house-link:hover {
+    background-color: white;
+    border: 1px solid red;
+    color: red;
+}
+
+.post-house-icon {
+
+}
+
+
