@@ -10,9 +10,10 @@
 
 .navigation-container {
     width: 100%;   
-    background-color: rgb(5, 45, 98);
+    background-color: rgb(5, 45, 98, 0);
     padding: 20px 40px;
-    z-index: 1;
+    z-index: 3;
+    position: fixed;
 }
 
 .logo-space {
@@ -27,7 +28,8 @@
 }
 
 .logo-space h1 {
-
+    font-size: 25px;
+    font-weight: 900;
 }
 
 .authentication-commands {
@@ -69,5 +71,3 @@
 .post-house-icon {
 
 }
-
-

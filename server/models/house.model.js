@@ -8,6 +8,7 @@ const houseSchema = new mongoose.Schema({
     tenantTwo: {type: String, required: false},
     images: {type: String, required: false},
     phoneNumberOfFirstTenant: {type: String, required:false},
+    shortDescription: {type: String, required: true},
     description: {type: String, required: true},
     rent: {type: String, required: false},
     amountPerTenant: {type: String, required: false},

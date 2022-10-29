@@ -10,6 +10,7 @@ import SearchResults from './pages/tenantPages/SearchResults';
 import RequestToJoin from './pages/tenantPages/RequestToJoin';
 import PostHouse from './pages/tenantPages/PostDetails';
 import Signin from './components/signin-signup/SigninSignup';
+import PostDetails from './pages/tenantPages/PostDetails';
 
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
             <Route path='/' element={<Home />} >
               <Route path='housedetails?id' element={<HouseDetails />} />
               <Route path='posts' element={<Posts />} />
+              <Route path='posts/post/:id' element={<PostDetails />} />
               <Route path='results' element={<SearchResults />} />
             </Route>
             {tenantToken ? 
