@@ -1,4 +1,4 @@
-.homepage-container {
+.homepage-container, .authentication-container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;

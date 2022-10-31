@@ -1,0 +1,77 @@
+.signin-signup-forms-container {
+    width: 100%;
+    height: 800px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;   
+    padding: 120px 0 200px;
+}
+
+.error-message-container {
+    padding: 20px 0;
+    width: 45%;
+    margin: 0 auto;
+}
+
+.signin-form, .signup-form {
+    border: 1px solid rgb(220, 220, 220);
+    width: 45%;
+    margin: 0 auto;
+    border-radius: 5px;
+}
+
+.signin-form, .signup-form, .form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.form-container {
+    padding: 10px;
+    width: 100%;
+}
+
+.signin-signup-forms-container h3{
+    font-size: 25px;
+    font-weight: 500;
+    border-bottom: 1px solid rgb(220, 220, 220);
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+}
+
+.signin-signup-forms-container .form-container input[type="text"], 
+.signin-signup-forms-container .form-container input[type="password"] {
+    border: 1px solid rgb(220, 220, 220);
+}
+
+.signin-signup-forms-container .form-container input[type="text"], 
+.signin-signup-forms-container .form-container input[type="password"],
+.signin-signup-forms-container .form-container input[type="submit"] {
+    padding: 5px;
+    width: 100%;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+.signin-signup-forms-container .form-container input[type='submit'] {
+    padding: 5px;
+    background-color: rgb(5, 45, 98);
+    color: white;
+}
+
+.signin-signup-forms-container .form-container input[type='submit']:hover {
+    color: rgb(5, 45, 98);
+    background-color: white;
+    border: 1px solid rgb(5, 45, 98);
+}
+
+.form-additional-link {
+    text-align: left;
+    margin: 20px 0;
+}
+
+.form-additional-link a {
+    color: rgb(19, 106, 200);
+}

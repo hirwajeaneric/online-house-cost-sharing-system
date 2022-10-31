@@ -2,8 +2,9 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 
 const tenantSchema = new mongoose.Schema({
+    firstname: {type: String, required: true},
+    lastname: {type: String, required: true},
     username: {type: String, require: true},
-    name: {type: String, required: true},
     email: {type: String, required: true},
     password: {type: String, required: true},
     location: {type: String, required: false},

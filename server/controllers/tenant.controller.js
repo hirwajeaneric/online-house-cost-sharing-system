@@ -20,7 +20,7 @@ exports.signin = async (req, res, next) => {
         const token = tenant.generateAuthToken();
         res.status(200).send({
             token: token, 
-            user: admin
+            user: tenant
         })
     } catch (error) {
         res.status(500).send({ message: "Internal Server Error :"+error })
@@ -29,6 +29,9 @@ exports.signin = async (req, res, next) => {
 
 exports.signup = async (req, res, next) => {
     try {
+
+        console.log(req.body);
+
         const { error } = validateSignup(req.body);
         if (error) { return res.status(400).send({ message: error.details[0].message }) };
 
@@ -41,7 +44,9 @@ exports.signup = async (req, res, next) => {
         const salt = await bcrypt.genSalt(Number(process.env.SALT));
         const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
-        await new tenantModel({ ...req.body, password: hashedPassword })
+        console.log(req.body);
+
+        await new tenantModel({ ...req.body, password: hashedPassword }).save();
         res.status(201).send({ message: "Account created"});
     } catch (error) {
         res.status(500).send({ message: "Internal Server Error: "+error });

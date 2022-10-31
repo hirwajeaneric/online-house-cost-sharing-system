@@ -3,7 +3,6 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const connection = require('./db');
-
 const adminRoutes = require('./routes/admin.routes');
 const tenantRoutes = require('./routes/tenant.routes');
 const houseRoues = require('./routes/house.routes');

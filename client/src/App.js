@@ -9,18 +9,17 @@ import HouseDetails from './pages/tenantPages/HouseDetails';
 import SearchResults from './pages/tenantPages/SearchResults';
 import RequestToJoin from './pages/tenantPages/RequestToJoin';
 import PostHouse from './pages/tenantPages/PostDetails';
-import Signin from './components/signin-signup/SigninSignup';
 import PostDetails from './pages/tenantPages/PostDetails';
+import SigninSignup from './components/signin-signup/SigninSignup';
+
+export const UserResponseMessageContext = createContext();
+export const UserResponseMessageSetterContext = createContext();
 
 function App() {
-
-  const UserResponseMessageContext = createContext();
-  const UserResponseMessageSetterContext = createContext();
-
   const tenantToken = localStorage.getItem('tenantToken');
   const adminToken = localStorage.getItem('ohcss-adminToken');
 
-  const [userResponse, setUserResponse] = useState({visible: false, message: ''});
+  const [userResponse, setUserResponse] = useState({visible: true, message: ''});
 
   return (
     <UserResponseMessageContext.Provider value={userResponse}>
@@ -36,7 +35,9 @@ function App() {
             {tenantToken ? 
               <Route path='join' element={<RequestToJoin />} /> : 
               <Route path='auth' element={<Authentication />} >
-                <Route path='' element={<Signin />} />
+                <Route path='' element={<SigninSignup formType='signin'/>} />
+                <Route path='signin' element={<SigninSignup formType='signin'/>} />
+                <Route path='signup' element={<SigninSignup formType='signup'/>} />
               </Route>  
             }
             {tenantToken ? 

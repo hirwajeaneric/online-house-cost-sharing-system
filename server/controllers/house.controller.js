@@ -6,11 +6,11 @@ exports.testing = (req, res, next) => {
 
 exports.list = (req, res, next) => {
     houseModel.find()
-    .then(response=> {
+    .then((response) => {
         if (response) {
-        res.status(200).send(response)
+            res.status(200).send(response);
         } else {
-        res.status(404).send("No houses available")
+            res.status(404).send("No houses available")
         }
     })
     .catch(err=>{
@@ -34,6 +34,20 @@ exports.findByVerified = (req, res, next) => {
 
 exports.findByStatus = (req, res, next) => {
     houseModel.find({ status: req.query.status })
+    .then(response=> {
+        if (response) {
+            res.status(200).send(response)
+        } else {
+            res.status(404).send("No houses available")
+        }
+    })
+    .catch(err=>{
+        res.status(500).send("Server error: "+err)
+    })
+}
+
+exports.findByStatus = (req, res, next) => {
+    houseModel.findById(req.query.id)
     .then(response=> {
         if (response) {
             res.status(200).send(response)
@@ -97,7 +111,7 @@ exports.broadSearch = (req, res, next) => {
 }
 
 exports.save = (req, res, next) => {
-    houseModel.save()
+    houseModel.create(req.body)
     .then(response=> {
         res.status(200).send({ message: 'House saved!', house: response })
     })

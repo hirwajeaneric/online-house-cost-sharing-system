@@ -10,8 +10,7 @@
 
 .navigation-container {
     width: 100%;   
-    background-color: rgb(5, 45, 98, 0);
-    padding: 20px 40px;
+    padding: 20px 20px;
     z-index: 3;
     position: fixed;
 }

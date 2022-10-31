@@ -1,8 +1,21 @@
 import React from 'react'
 
-const ResponseMessage = () => {
+const ResponseMessage = ({backgroundColor, color, message}) => {
+  
+  const styles= {
+    padding: '5px',
+    width: '100%',
+    border: `1px solid ${color}`,
+    color: color,
+    fontSize: '90%',
+    textAlign: 'center',
+    backgroundColor: backgroundColor
+  }
+
   return (
-    <div>ResponseMessage</div>
+    <div style={styles}>
+      {message}
+    </div>
   )
 }
 
