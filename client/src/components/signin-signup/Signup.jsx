@@ -2,15 +2,26 @@ import axios from 'axios';
 import React, { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import ResponseMessage from '../responses/ResponseMessage'
-import {UserResponseMessageSetterContext} from '../../App';
+import { UserResponseMessageSetterContext } from '../../App';
 
-const Signup = ({signupData, setSignupData, updateSignupData}) => {
-
+const Signup = () => {
   const UserResponseMessageSetter = useContext(UserResponseMessageSetterContext);
   
   const [error, setError] = useState('');
   
   const navigate = useNavigate();
+
+  const [signupData, setSignupData] = useState({
+    firstname: '',
+    lastname: '',
+    username: '',
+    email: '',
+    password: '',
+  });
+  
+  const updateSignupData = ({currentTarget: input}) => {
+    setSignupData({...signupData, [input.name]: input.value});
+  }
 
   const resetSignupData = () => {
     setSignupData({
@@ -43,20 +54,20 @@ const Signup = ({signupData, setSignupData, updateSignupData}) => {
   
   return (
     <form className='signup-form' onSubmit={submitSignupData}>
-            <h3>Create an Account</h3>
-            <div className="form-container">
-              {error && 
-                <ResponseMessage message={error} backgroundColor='none' color='red' />
-              }
-              <input type="text" placeholder='First name' name="firstname" value={signupData.firstname} onChange={updateSignupData}/>
-              <input type="text" placeholder='Last name' name="lastname" value={signupData.lastname} onChange={updateSignupData}/>
-              <input type="text" placeholder='username' name="username" value={signupData.username} onChange={updateSignupData}/>
-              <input type="text" placeholder='email' name="email" value={signupData.email} onChange={updateSignupData}/>
-              <input type="password" placeholder='Create password' name="password" value={signupData.password} onChange={updateSignupData}/>
-              <input type="submit" value="Create Account" />
-              <label className='form-additional-link'>Already have an account? <Link to='/auth/signin'>Sign in</Link></label>
-            </div>
-          </form>
+      <h3>Create an Account</h3>
+      <div className="form-container">
+        {error && 
+          <ResponseMessage message={error} backgroundColor='none' color='red' />
+        }
+        <input type="text" placeholder='First name' name="firstname" value={signupData.firstname} onChange={updateSignupData}/>
+        <input type="text" placeholder='Last name' name="lastname" value={signupData.lastname} onChange={updateSignupData}/>
+        <input type="text" placeholder='username' name="username" value={signupData.username} onChange={updateSignupData}/>
+        <input type="text" placeholder='email' name="email" value={signupData.email} onChange={updateSignupData}/>
+        <input type="password" placeholder='Create password' name="password" value={signupData.password} onChange={updateSignupData}/>
+        <input type="submit" value="Create Account" />
+        <label className='form-additional-link'>Already have an account? <Link to='/auth/signin'>Sign in</Link></label>
+      </div>
+    </form>
   )
 }
 

@@ -1,4 +1,8 @@
-.homepage-container, .authentication-container {
+.homepage-container, 
+.authentication-container, 
+.post-house-container,
+.other-pages-container,
+.signin-signup-forms-container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;

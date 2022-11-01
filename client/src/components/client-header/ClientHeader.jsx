@@ -1,17 +1,46 @@
 import React, { useEffect, useState } from 'react'
-import {Link} from 'react-router-dom'; 
-import { FaPlus, FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
+import {Link, useNavigate} from 'react-router-dom'; 
+import { FaPlus, FaSignInAlt, FaSignOutAlt, FaUser } from 'react-icons/fa';
 import './navigationStyles.css';
+import axios from 'axios';
 
 const ClientHeader = ({bgColor}) => {  
   const [color, setColor]= useState('rgb(5, 45, 98, 0)');
-  
+  const [userInfo, setUserInfo] = useState({});
+  const [localUser, setLocalUser] = useState('');
+
+  const navigate = useNavigate();
+
   useEffect(()=>{
     setColor(bgColor);
+  },[bgColor])
+
+  useEffect(()=>{
+    const username = localStorage.getItem('userIdentity');
+    setLocalUser(username);
+    if(username) {
+      axios.get(`http://localhost:5000/api/tenant/findByUsername?username=${username}`)
+      .then(res=>{
+        setUserInfo(res.data)
+      })
+      .catch(err=>{
+        console.log(err);
+      })
+    }
   },[])
 
   const styles = {
     backgroundColor: color,
+  }
+
+  const logout = ()=> {
+    localStorage.removeItem('userIdentity');
+    localStorage.removeItem('tenantToken');
+    if(window.location.pathname === '/') {
+      window.location.reload();
+    } else {
+      navigate('/');
+    }
   }
   
   return (
@@ -21,11 +50,21 @@ const ClientHeader = ({bgColor}) => {
       </div>
       <div className='right'>
         <div className='authentication-commands'>
-          <Link className='authentication-link signin-link' to='/auth/signin'><FaSignInAlt className='signin-icon' /> Sign in</Link>
-          <Link className='authentication-link signup-link' to='/auth/signup'><FaSignOutAlt className='signup-icon'/> Sign up</Link>
+          {localUser ? 
+            <>
+              <Link className='loggedinuser-link user-link' to={`/profile/${userInfo.username}`}><FaUser className='signin-icon' /> {userInfo.username}</Link>
+              <button className='logout-button' type='button' onClick={()=>logout()}>
+                <FaSignOutAlt className='signout-icon'/> Log out</button>
+            </> 
+          :
+            <>
+              <Link className='authentication-link signin-link' to='/auth/signin'><FaSignInAlt className='signin-icon' /> Sign in</Link>
+              <Link className='authentication-link signup-link' to='/auth/signup'><FaSignOutAlt className='signup-icon'/> Sign up</Link>
+            </> 
+          }
         </div>
         <div className='call-to-action'>
-          <Link className='post-house-link' to='/auth/signin'><FaPlus className='post-house-icon' /> Post House</Link>
+          <Link className='post-house-link' to='/create-post'><FaPlus className='post-house-icon' /> Post House</Link>
         </div>
       </div>
     </div>

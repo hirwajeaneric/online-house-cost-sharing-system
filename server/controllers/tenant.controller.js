@@ -29,7 +29,6 @@ exports.signin = async (req, res, next) => {
 
 exports.signup = async (req, res, next) => {
     try {
-
         console.log(req.body);
 
         const { error } = validateSignup(req.body);
@@ -55,6 +54,16 @@ exports.signup = async (req, res, next) => {
 
 exports.list = (req, res, next) => {
     tenantModel.find()
+    .then(response => {
+        res.status(200).send(response);
+    })
+    .catch(err=> {
+        res.status(500).send('Server error: '+err);
+    })
+}
+
+exports.findByUsername = (req, res, next) => {
+    tenantModel.findOne({username: req.query.username})
     .then(response => {
         res.status(200).send(response);
     })

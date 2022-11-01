@@ -4,17 +4,17 @@ import { Link, useNavigate } from 'react-router-dom'
 import ResponseMessage from '../responses/ResponseMessage'
 import {UserResponseMessageContext} from '../../App';
 
-const Signin = ({signinData, updateSigninData}) => {
+const Signin = () => {
     const [error, setError] = useState('');
     
     const navigate = useNavigate();
     
     var {visible, message} = useContext(UserResponseMessageContext);
 
-    const [userMessage, setUserMessage] = useState({
-        visible: '', 
-        message: ''
-    })
+    const [signinData, setSigninData] = useState({
+        username: '',
+        password: ''
+      });
 
     useEffect(()=>{
         setUserMessage({
@@ -22,6 +22,15 @@ const Signin = ({signinData, updateSigninData}) => {
             message: message
         })
     },[visible, message])
+
+    const [userMessage, setUserMessage] = useState({
+        visible: '', 
+        message: ''
+    })
+
+    const updateSigninData = ({currentTarget: input}) => {
+        setSigninData({...signinData, [input.name]: input.value});
+      }
 
     if(visible) {
         setTimeout(() => {
@@ -34,16 +43,16 @@ const Signin = ({signinData, updateSigninData}) => {
         const url = "http://localhost:5000/api/tenant/signin";
         axios.post(url, signinData)
         .then(res => {
-            localStorage.setItem('tenantToken',res.token);
-            localStorage.setItem('userIdentity',res.user.username)
+            localStorage.setItem('tenantToken',res.data.token);
+            localStorage.setItem('userIdentity',res.data.user.username)
             navigate('/');
         })
         .catch ((error)=> {
-          if(error.response && error.response.status >= 400 && error.response.status <= 500 ){
-              setError(error.response.data.message);
-          }
+            if(error.response && error.response.status >= 400 && error.response.status <= 500 ){
+                setError(error.response.data.message);
+            }
         })
-      }
+    }
 
     return (
         <>
@@ -63,7 +72,7 @@ const Signin = ({signinData, updateSigninData}) => {
                 </div>
             </form>
         </>
-  )
+    )
 }
 
 export default Signin
