@@ -16,7 +16,6 @@ const joinRequestSchema = new mongoose.Schema({
     agreeWithCriteria: {type: String, required: true},
     sendDate: {type: String, required: true},
     approved: {type: String, required: true},
-    
 });
 
 const JoinRequest = mongoose.model('joinRequest', joinRequestSchema);

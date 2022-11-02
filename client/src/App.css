@@ -2,7 +2,8 @@
 .authentication-container, 
 .post-house-container,
 .other-pages-container,
-.signin-signup-forms-container {
+.signin-signup-forms-container,
+.user-profile-container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;

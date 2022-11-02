@@ -3,7 +3,7 @@ import './App.css';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
 import Home from './pages/tenantPages/Home';
-import Posts from './pages/tenantPages/Posts';
+// import Posts from './pages/tenantPages/ViewUpdateHouse';
 import HouseDetails from './pages/tenantPages/HouseDetails';
 import SearchResults from './pages/tenantPages/SearchResults';
 import RequestToJoin from './pages/tenantPages/RequestToJoin';
@@ -14,6 +14,8 @@ import UserProfile from './pages/tenantPages/UserProfile';
 import OtherPages from './pages/tenantPages/OtherPages';
 import Signin from './components/signin-signup/Signin';
 import Signup from './components/signin-signup/Signup';
+import UserHouse from './components/user-profile/UserHouse';
+import UserHouseDetails from './components/user-profile/UserHouseDetails';
 
 export const UserResponseMessageContext = createContext();
 export const UserResponseMessageSetterContext = createContext();
@@ -38,12 +40,15 @@ function App() {
             <Route path='/' element={<Home />} />
             <Route path='/' element={<OtherPages />} >
               <Route path='housedetails/:id' element={<HouseDetails />} />
-              <Route path='posts' element={<Posts />} />
+              {/* <Route path='posts' element={<Posts />} /> */}
               <Route path='house/:id' element={<PostDetails />} />
-              <Route path='results' element={<SearchResults />} />  
-              
+              <Route path='results' element={<SearchResults />} /> 
+
               {tenantToken &&
-                <Route path='profile/:username' element={<UserProfile />} />   
+                <Route path='profile/:username' element={<UserProfile />} >
+                  <Route path='' element={<UserHouse />} />
+                  <Route path='rented-house/:id' element={<UserHouseDetails />} />
+                </Route>   
               }
               <Route path='profile/:username' exact element={<Navigate replace to='/auth/signin' />} />
 

@@ -4,7 +4,7 @@ import { FaPlus, FaSignInAlt, FaSignOutAlt, FaUser } from 'react-icons/fa';
 import './navigationStyles.css';
 import axios from 'axios';
 
-const ClientHeader = ({bgColor}) => {  
+const ClientHeader = ({bgColor, boxShadow}) => {  
   const [color, setColor]= useState('rgb(5, 45, 98, 0)');
   const [userInfo, setUserInfo] = useState({});
   const [localUser, setLocalUser] = useState('');
@@ -31,6 +31,7 @@ const ClientHeader = ({bgColor}) => {
 
   const styles = {
     backgroundColor: color,
+    boxShadow: boxShadow,
   }
 
   const logout = ()=> {

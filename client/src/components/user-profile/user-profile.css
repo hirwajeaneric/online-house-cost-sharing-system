@@ -1,0 +1,310 @@
+.user-profile-container h1{
+    font-size: 30px;
+    font-weight: 600;
+    text-align: left;
+}
+
+.user-profile-container {
+    margin-top: 40px;
+    padding: 90px;
+    /* height: 700px; */
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.rented-house-container {
+    margin: 40px 0 0;
+    width: 100%;
+}
+
+.useraccount-house-card {
+    background-color: rgb(238, 238, 238);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 200px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+}
+
+.useraccount-house-card p {
+    font-size: 12px;
+    color: rgb(5, 45, 98);
+}
+
+.useraccount-house-card .house-photo {
+    width: 400px;
+    height: 200px;
+    background-image: url('../../assets//imgs/interior-design.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.useraccount-house-card .house-picture {
+    height: auto;
+    width: 200px;
+}
+
+.rented-house-container h3{
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.rented-house-container .some-home-details {
+    background-color: rgb(227, 227, 227);
+    height: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.some-home-details .left-side, 
+.some-home-details .right-side {
+    width: 45%;
+}
+
+.rented-house-container .command-btns {
+    margin-top: 20px;    
+}
+
+.profile-house-more {
+    background-color: gray;
+    padding: 8px 12px;
+    font-size: 14px;
+    color: white;
+}
+
+.profile-house-more:hover {
+    background-color: rgb(0, 0, 0);
+}
+
+
+/*POST HOUSE BUTTON*/
+
+.post-house-button {
+    
+}
+
+
+
+/*HOUSE DETAILS*/
+
+.houseDetails-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    /* flex-wrap: wrap; */
+    gap: 20px;
+    width: 100%;
+}
+
+.houseDetails-container .house-details,
+.houseDetails-container .join-house-descriptions {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.houseDetails-container .house-details {
+    width: 70%;
+}
+
+.houseDetails-container .join-house-descriptions {
+    width: 28%;
+    padding: 0 20px 20px;
+}
+
+.houseDetails-container .house-photo {
+    width: 100%;
+    height: 400px;
+    background-image: url('../../assets//imgs/interior-design.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-bottom: 20px;
+}
+
+.houseDetails-container h3{
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.houseDetails-container h1 {
+    font-size: 30px;
+    font-weight: 600;
+    text-align: right;
+}
+
+.houseDetails-container .house-details .other-house-info,
+.houseDetails-container .house-details .other-relevant-info,
+.houseDetails-container .house-details .join-requests-space {
+    background-color: rgb(214, 214, 214);
+    font-size: 12px;
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.houseDetails-container .house-details .other-house-info .left-side,
+.houseDetails-container .house-details .other-house-info .right-side {
+    padding: 0 10px 0 10px;
+}
+
+.houseDetails-container .house-details .other-house-info .input-label-container,
+.houseDetails-container .house-details .other-house-info fieldset, 
+.houseDetails-container .house-details .other-relevant-info .input-label-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.houseDetails-container .house-details .other-house-info fieldset {
+    justify-content: space-around;
+}
+
+.houseDetails-container .house-details .other-house-info input[type="text"],
+.houseDetails-container .house-details .other-house-info input[type="file"],
+.houseDetails-container .house-details .other-house-info input[type="number"],
+.houseDetails-container .house-details .other-house-info textarea,
+.houseDetails-container .house-details .other-house-info select {
+    width: 50%;
+    padding: 3px;
+}
+
+.houseDetails-container .house-details .other-house-info input[type="submit"],
+.join-house-descriptions input[type="submit"] {
+    background-color: rgb(0, 73, 168);
+    color: white;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.houseDetails-container .house-details .other-house-info input[type="submit"]:hover,
+.join-house-descriptions input[type="submit"]:hover {
+    background-color: white;
+    color: rgb(5, 45, 98);
+    border: 1px solid rgb(5, 45, 98);
+    padding: 7px 11px;
+}
+
+.houseDetails-container .house-details .other-relevant-info,
+.houseDetails-container .house-details .join-requests-space {
+    flex-direction: column;
+}
+
+.houseDetails-container .house-details .other-relevant-info {
+    background-color: rgb(231, 231, 231);
+}
+
+.houseDetails-container .house-details .join-requests-space {
+    background-color: rgb(145, 145, 145);
+    width: 100%;
+}
+
+.join-requests-space h3 {
+    margin-bottom: 20px;
+}
+
+.available-requests {
+    width: 100%;
+}
+
+.other-relevant-info .input-label-container .title,
+.other-relevant-info .input-label-container .data {
+    width: 50%;
+}
+
+.house-details .other-house-info .right-side,
+.house-details .other-house-info .left-side {
+    width: 50%;
+}
+
+.a-join-request-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.a-join-request-container:hover {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+}
+
+.a-join-request-container .requestData {
+    background-color: white;
+    padding: 10px;
+    width: 100%;
+}
+
+.a-join-request-container .requestData:hover {
+    background-color: whitesmoke;
+}
+
+.a-join-request-container .requestData .request-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.a-join-request-container .requestData .request-title h4 {
+    font-size: 14px;
+}
+
+.a-join-request-container .requestData .request-title p {
+    color: gray;
+}
+
+.no-requests {
+    padding: 20px;
+}
+
+
+/*JOIN REQUIREMENTS*/
+.join-house-descriptions {
+    font-size: 13px;
+    width: 100%;
+}
+
+.join-house-descriptions .form-data .input-label-container,
+.join-house-descriptions .form-data fieldset {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.join-house-descriptions .form-data fieldset {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.join-house-descriptions .form-data {
+    width: 100%;
+}
+
+.join-house-descriptions .form-data .input-label-container {
+ 
+}
+
+.join-house-descriptions .form-data input[type="text"],
+.join-house-descriptions .form-data input[type="file"],
+.join-house-descriptions .form-data input[type="number"],
+.join-house-descriptions .form-data textarea,
+.join-house-descriptions .form-data select {
+    width: 100%;
+    padding: 3px;
+    border: 1px solid rgb(177, 177, 177);
+}

@@ -11,7 +11,7 @@ const PostHouseForm = () => {
   }
 
   return (
-    <div className='posthouse-form-container'>
+    <div className='posthouse-form-container' style={{boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);'}}>
       <form onSubmit={submitRequirements()}>
         <fieldset className='personal-info-section'>
           <legend className='personal-info-legend'>Your personal information</legend>
@@ -40,7 +40,7 @@ const PostHouseForm = () => {
           <input type="text" name="location" placeholder='House location' />
           <input type="file" name="photo"/>
           <textarea name="description" placeholder='House description' rows='3'></textarea>
-          <input type="text" name="rent" placeholder='Rent price'/>
+          <input type="text" name="rent" placeholder='Total rent cost'/>
           <input type="number" name="rooms" placeholder='Number of roooms'/>
           <input type="number" name="bathRooms" placeholder='Number of bathrooms' />
           <fieldset>
@@ -50,7 +50,6 @@ const PostHouseForm = () => {
             <label htmlFor="notfurnished">No</label>
             <input type="radio" name="hasFurniture" id="notfurnished"/>
           </fieldset>
-          
         </fieldset>
 
         <fieldset className='joining-requirements'>
@@ -109,7 +108,7 @@ const PostHouseForm = () => {
           <input type='text' name='refererPhoneNumber' placeholder='Referer Phone Number'/>
           <input type='email' name='refererEmail' placeholder='Referer Email'/>
         </fieldset>
-        <input type="submit" value="Submit Post" />
+        <input style={{boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19)'}} type="submit" value="Submit Post" />
       </form>
     </div>
   )
