@@ -7,6 +7,7 @@ const joiningRequirementsSchema = new mongoose.Schema({
     phoneNumber: {type: String, require: true},
     age: {type: String, require: true},
     gender: {type: String, required: true},
+    ageOfJoiner: {type: String, require: true},
     maritalStatus: {type: String, required: true},
     languages: {type: String, required: true},
     hasPet: {type: String, required: true},

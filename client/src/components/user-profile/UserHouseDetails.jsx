@@ -136,8 +136,12 @@ const UserHouseDetails = () => {
                     <input type="text" name="phoneNumber" placeholder='Your phone number' id="phone" />
                 </div>
                 <div className='input-label-container'>
-                    <label htmlFor='age'>Preferred age: </label>
+                    <label htmlFor='age'>Your age: </label>
                     <input type="number" name="age" placeholder='Your age' id="age" />
+                </div>
+                <div className='input-label-container'>
+                    <label htmlFor='age'>Prefered age of joiner: </label>
+                    <input type="number" name="ageOfJoiner" placeholder='Required age to join' id="age" />
                 </div>
                 <fieldset>
                     <legend>Your gender: </legend>

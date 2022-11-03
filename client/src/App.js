@@ -40,7 +40,7 @@ function App() {
             <Route path='/' element={<Home />} />
             <Route path='/' element={<OtherPages />} >
               <Route path='housedetails/:id' element={<HouseDetails />} />
-              {/* <Route path='posts' element={<Posts />} /> */}
+              {/* <Route path='post' element={<PostDetails />} /> */}
               <Route path='house/:id' element={<PostDetails />} />
               <Route path='results' element={<SearchResults />} /> 
 

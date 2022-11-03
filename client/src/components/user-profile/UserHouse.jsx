@@ -1,13 +1,18 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const UserHouse = () => {
-    const[house,setHouse] = useState({number:'23'});
+    const[house,setHouse] = useState('');
+
+    useEffect(()=> {
+        setHouse('Hello')
+    },[])
+
     return (
-        <div style={{height: '700px'}}>
-            <h1>Your profile</h1>
+        <div style={{height: '700px', width: '100%'}}>
+            <h1 style={{textAlign: 'left'}}>Your profile</h1>
             <div className='rented-house-container'>
-                {house ? 
+                {house.length !== 0 && 
                 <div className='useraccount-house-card'>
                     <div className="house-photo"></div>
                     {/* <img src='../../../public/interior-design.jpg' alt='' className="house-picture" /> */}
@@ -37,13 +42,15 @@ const UserHouse = () => {
                         </div>
                     </div>
                     </div>
-                </div>  
-                :
-                <Link to='/create-post'>
-                    <div className='post-house-button'>
-                        
-                    </div>
-                </Link>
+                </div>  }
+
+                {!house && 
+                    <>
+                        <p style={{margin: '0 0 20px 0'}}>You don't have any post or house yet.</p>
+                        <Link className='post-house-button' to='/create-post'>
+                            <span>Create a post</span>
+                        </Link>
+                    </>
                 }
             </div>
         </div>

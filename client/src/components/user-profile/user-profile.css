@@ -84,7 +84,19 @@
 /*POST HOUSE BUTTON*/
 
 .post-house-button {
-    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    padding: 20px;
+    width: 100%;
+    border: 1px dashed black;
+    background-color: rgb(226, 226, 226);
+}
+
+.post-house-button:hover {
+    background-color: rgb(199, 199, 199);
 }
 
 

@@ -18,7 +18,7 @@ const ClientHomeMain = () => {
       <div className='main-content'>
         <h1>Available Houses, join requests, and more</h1>
         <div className="posted-houses-container">
-          <Link to='posts/post/:id' className="a-house">
+          <Link to='housedetails/:id' className="a-house">
             <img src={sampleImage} alt="" />
             <div className="other-info">
               <p className="short-description">3 bedroom house with good views</p>
@@ -26,7 +26,7 @@ const ClientHomeMain = () => {
               <p className="rent">800,000 RWF</p>
             </div>
           </Link>
-          <Link to='posts/post/:id' className="a-house">
+          <Link to='housedetails/:id' className="a-house">
               <img src={sampleImage} alt="" />
               <div className="other-info">
                 <p className="short-description">3 bedroom house with good views</p>
@@ -34,7 +34,7 @@ const ClientHomeMain = () => {
                 <p className="rent">800,000 RWF</p>
               </div>
           </Link>
-          <Link to='posts/post/:id' className="a-house">
+          <Link to='housedetails/:id' className="a-house">
               <img src={sampleImage} alt="" />
               <div className="other-info">
                 <p className="short-description">3 bedroom house with good views</p>
@@ -42,7 +42,7 @@ const ClientHomeMain = () => {
                 <p className="rent">800,000 RWF</p>
               </div>
           </Link>
-          <Link to='posts/post/:id' className="a-house">
+          <Link to='housedetails/:id' className="a-house">
               <img src={sampleImage} alt="" />
               <div className="other-info">
                 <p className="short-description">3 bedroom house with good views</p>
@@ -50,7 +50,7 @@ const ClientHomeMain = () => {
                 <p className="rent">800,000 RWF</p>
               </div>
           </Link>
-          <Link to='posts/post/:id' className="a-house">
+          <Link to='housedetails/:id' className="a-house">
               <img src={sampleImage} alt="" />
               <div className="other-info">
                 <p className="short-description">3 bedroom house with good views</p>
@@ -58,7 +58,7 @@ const ClientHomeMain = () => {
                 <p className="rent">800,000 RWF</p>
               </div>
           </Link>
-          <Link to='posts/post/:id' className="a-house">
+          <Link to='housedetails/:id' className="a-house">
               <img src={sampleImage} alt="" />
               <div className="other-info">
                 <p className="short-description">3 bedroom house with good views</p>

@@ -25,6 +25,7 @@ const PostHouseForm = () => {
               <label htmlFor="tenantother">Other</label>
               <input type="radio" name="tenantGender" id="tenantother" />
             </fieldset>
+            <input type="text" name="age" placeholder='Your age' />
             <input type='email' name='email' placeholder='Email address'/>
             <input type="text" name="phonenumber" placeholder='Your phone number' />
         </fieldset>
@@ -54,7 +55,7 @@ const PostHouseForm = () => {
 
         <fieldset className='joining-requirements'>
           <legend className='joining-requirements-legend'>Requirements for joining</legend>
-            <input type='text' name='age' placeholder='Age preference. Format: 18-30'/>
+            <input type='text' name='ageOfJoiner' placeholder='Age preference. Format: 18-30'/>
             <fieldset>
               <legend>Gender</legend>
               <label htmlFor="male">Male</label>
