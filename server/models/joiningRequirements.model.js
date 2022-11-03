@@ -7,21 +7,17 @@ const joiningRequirementsSchema = new mongoose.Schema({
     phoneNumber: {type: String, require: true},
     age: {type: String, require: true},
     gender: {type: String, required: true},
+    ageOfJoiner: {type: String, require: true},
     maritalStatus: {type: String, required: true},
     languages: {type: String, required: true},
-    nationality: {type: String, required: true},
-    occupation: {type: String, required: true},
     hasPet: {type: String, required: true},
-    specialMedicalConditions: {type: String, required: true},
-    handicaped: {type: String, required: true},
-    drink: {type: String, required: true},
+    hasSpecialMedicalConditions: {type: String, required: true},
     smoke: {type: String, required: true},
-    party: {type: String, required: true},
     moreDescriptions: {type: String, required: false},
     postDate: {type: String, required: true},
-    numberOfJoinRequests: {type: String, required: true},
-    reffererEmail: {type: String, required: true},
-    reffererPhoneNumber: {type: String, required: true}
+    numberOfJoinRequests: {type: String, required: false},
+    refererEmail: {type: String, required: false},
+    refererPhoneNumber: {type: String, required: false}
 });
 
 const JoiningRequirements = mongoose.model('joiningRequirements', joiningRequirementsSchema);

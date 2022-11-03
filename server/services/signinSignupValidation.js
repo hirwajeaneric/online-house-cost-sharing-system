@@ -11,8 +11,9 @@ exports.validateSignin = (data) => {
 
 exports.validateSignup = (data) => {
     const schema = Joi.object({
+        firstname: Joi.string().required().label('First name'),
+        lastname: Joi.string().required().label('Last name'),
         username: Joi.string().required().label('Username'),
-        name: Joi.string().required().label('Name'),
         email: Joi.string().email().required().label('Email'),
         password: passwordComplexity().required().label('Password'),
     })

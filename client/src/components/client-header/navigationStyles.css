@@ -1,0 +1,78 @@
+/*NAVIGATION BAR*/
+.navigation-container, 
+.navigation-container .right,
+.authentication-commands {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    color: white;
+}
+
+.navigation-container {
+    width: 100%;   
+    padding: 20px 20px;
+    z-index: 3;
+    position: fixed;
+}
+
+.logo-space {
+    width: 50%;
+
+}
+
+.navigation-container .right {
+    width: 50%;
+    justify-content: flex-end;
+    gap: 20px;
+    align-items: center;
+}
+
+.logo-space h1 {
+    font-size: 25px;
+    font-weight: 900;
+}
+
+.authentication-commands {
+    justify-content: flex-end;
+    gap: 20px;
+    align-items: center;
+}
+
+.authentication-link .signin-icon,
+.authentication-link .signup-icon, 
+.post-house-icon,
+.logout-button .signout-icon,
+.user-link .signin-icon {
+    display: inline-block;
+}
+
+.user-link {
+    padding: 2px 20px 3px;
+    align-items: center;
+    background-color: rgb(0, 58, 134);
+    border-radius: 40px;
+}
+
+.user-link:hover {
+    padding: 2px 20px 3px;
+    align-items: center;
+    background-color: rgb(0, 83, 191);
+    border-radius: 40px;
+}
+
+.post-house-link {
+    padding: 8px 12px;
+    background-color: red;
+    border: 1px solid white;
+    border-radius: 5px;
+}
+
+.post-house-link:hover {
+    background-color: white;
+    border: 1px solid red;
+    color: red;
+}
+
+.post-house-icon {
+
+}

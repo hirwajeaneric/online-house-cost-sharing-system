@@ -58,6 +58,7 @@ exports.list = (req, res, next) => {
     })
 }
 
+
 exports.deleteAccount = (req, res, next) => {
     const userId = req.query.id;
     adminModel.findByIdAndRemove(userId)

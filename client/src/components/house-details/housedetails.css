@@ -1,0 +1,55 @@
+.house-details-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
+    padding: 130px 100px 100px;
+}
+
+.house-details-container .join-house-descriptions,
+.house-details-container .house-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.house-details-container .house-details {
+    width: 70%;
+    font-size: 90%;
+}
+
+.house-details-container .join-house-descriptions {
+    width: 28%;
+    padding: 0 20px 20px;
+}
+
+.house-details-container .house-details .house-photo {
+    width: 100%;
+    height: 400px;
+    background-image: url('../../assets/imgs/interior-design.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-bottom: 20px;
+} 
+
+.house-details-container h3{
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.house-details-container h1 {
+    font-size: 30px;
+    font-weight: 600;
+    text-align: right;
+}
+
+.house-details-container .house-details .other-house-info h4{
+    border-bottom: 1px solid rgb(197, 197, 197); 
+    font-size: 16px; 
+    font-weight: 500; 
+    margin: 20px 0 20px;
+} 

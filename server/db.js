@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-module.exports = ()=> {
+module.exports = () => {
     const connectionParams = {
         useNewUrlParser: true,
         useUnifiedTopology: true,

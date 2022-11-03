@@ -11,7 +11,6 @@ const joinRequestSchema = new mongoose.Schema({
     handicaped: {type: String, required: true},
     drink: {type: String, required: true},
     smoke: {type: String, required: true},
-    party: {type: String, required: true},
     comment: {type: String, required: false},
     agreeWithCriteria: {type: String, required: true},
     sendDate: {type: String, required: true},

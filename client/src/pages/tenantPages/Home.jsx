@@ -5,8 +5,8 @@ import ClientHomeMain from '../../components/client-app-home-main/ClientBody';
 
 const Home = () => {
   return (
-    <div>
-      <ClientHeader />
+    <div className='homepage-container'>
+      <ClientHeader bgColor='rgb(5, 45, 98, 0)' boxShadow='' />
       <ClientHomeMain />
       <ClientFooter />
     </div>
