@@ -1,14 +1,18 @@
 import React from 'react'
 import '../../components/house-details/housedetails.css';
-import { Link } from 'react-router-dom';
 import { FaBath, FaBed, FaChair, FaHome, FaThumbsUp } from 'react-icons/fa';
+import ResponseMessage from '../../components/responses/ResponseMessage';
 
 const HouseDetails = () => {
+  
+  const joinFormManager = () => {
+
+  }
+
   return (
     <div className='house-details-container'>
-
+      <ResponseMessage backgroundColor='#e6ffee' color='green' message='Join request sent'/>
       <div className='house-details'>
-        {/* <h3 style={{marginBottom: '20px'}}>House Information</h3> */}
         <div className='house-photo'></div>
         <div className='other-house-info'>
           <h4>DESCRIPTION</h4>
@@ -19,17 +23,32 @@ const HouseDetails = () => {
           <p className='rent-price'>Rent price: <span>1000 USD</span></p>
           <h4 className="other-house-descriptions">MORE DETAILS</h4>
           <div className="more-details">
-            <p className="type"><FaHome /> Type: <span>Apartment</span></p>
-            <p className="verified"><FaThumbsUp /> Verified?: <span>Yes</span></p>
-            <p className="rooms"><FaBed /> Number of roooms: <span>4</span></p>
-            <p className="bathrooms"><FaBath /> Bathrooms: <span>3</span></p>
-            <p className="furniture"><FaChair /> Furnished: <span>Yes</span></p>
+            <p className="type">
+              <span className='left'><FaHome  className='icon'/> Type:</span> 
+              <span className='right'>Apartment</span>
+            </p>
+            <p className="verified">
+              <span className='left'><FaThumbsUp className='icon'/> Verified?:</span>
+              <span className='right'>Yes</span>
+            </p>
+            <p className="rooms">
+              <span className='left'><FaBed className='icon'/> Number of roooms:</span> 
+              <span className='right'>4</span>
+            </p>
+            <p className="bathrooms">
+              <span className='left'><FaBath className='icon'/> Bathrooms:</span> 
+              <span className='right'>3</span>
+            </p>
+            <p className="furniture">
+              <span className='left'><FaChair className='icon'/> Furnished:</span> 
+              <span className='right'>Yes</span>
+            </p>
           </div>
           <h4>CURRENT OCCUPIER</h4>
-          <p className='nameofoccupier'>Name of occupier: <span>John Doe</span></p>
-          <p className='phone-number'>Phone number of occupier: <span>07896273232</span></p>
-          <p className='emailofoccupier'>Email of occupier: <span>firstname@gmail.com</span></p>
-          <p className='genderofoccupier'>Gender: <span>Male</span></p>
+          <p className='nameofoccupier'><span className='left'>Name of occupier:</span> <span className='right'>John Doe</span></p>
+          <p className='phone-number'><span className='left'>Phone number of occupier:</span> <span className='right'>07896273232</span></p>
+          <p className='emailofoccupier'><span className='left'>Email of occupier:</span> <span className='right'>firstname@gmail.com</span></p>
+          <p className='genderofoccupier'><span className='left'>Gender:</span> <span className='right'>Male</span></p>
         </div>      
       </div>
 
@@ -68,11 +87,14 @@ const HouseDetails = () => {
           </div>
         </div> 
 
-        <h3>WOULD LIKE TO JOIN?</h3>
+        <h3 style={{marginBottom: '10px'}}>WOULD LIKE TO JOIN?</h3>
+        
+        <button className='join-button' onClick={()=> joinFormManager()}>JOIN</button>
+        
         <form>
           <div className='input-label-container'>
-            <label htmlFor='age'>Prefered age of joiner: </label>
-            <input type="number" name="ageOfJoiner" placeholder='Required age to join' id="age" />
+            <label htmlFor='age'>Your age: </label>
+            <input type="number" name="ageOfJoiner" placeholder='Your age' id="age" />
           </div>
           <fieldset>
             <legend>Your gender: </legend>
@@ -87,11 +109,11 @@ const HouseDetails = () => {
             </label>
           </fieldset>
           <div className='input-label-container'>
-            <label htmlFor='languages'>Preferred Languages: </label>
-            <input type="text" name="languages" placeholder='Preferred languages' id="languages" />
+            <label htmlFor='languages'>Languages spoken: </label>
+            <input type="text" name="languages" placeholder='Separate with comma' id="languages" />
           </div>
           <fieldset>
-            <legend>Preferred gender: </legend>
+            <legend>Your gender: </legend>
             <label htmlFor="male">Male &nbsp;&nbsp;
                 <input type="radio" name="gender" id="male"/>
             </label>
@@ -103,7 +125,7 @@ const HouseDetails = () => {
             </label>
           </fieldset>
           <fieldset>
-            <legend>Marital Status</legend>
+            <legend>Your marital status</legend>
             <label htmlFor="married">Married &nbsp;&nbsp;
                 <input type="radio" name="maritalStatus" id="married"/>
             </label>
@@ -112,48 +134,58 @@ const HouseDetails = () => {
             </label>
           </fieldset>
           <fieldset>
-            <legend>Has Pet/s?</legend>
+            <legend>Do you have pet/s?</legend>
             <label htmlFor="haspet">Yes &nbsp;&nbsp;
                 <input type="radio" name="hasPet" id="haspet"/>
             </label>
             <label htmlFor="hasnopet">No &nbsp;&nbsp;
                 <input type="radio" name="hasPet" id="hasnopet" />
             </label>
-            <label htmlFor="haspetorno">Don't mind &nbsp;&nbsp;
+            <label htmlFor="haspetorno">Might get one in the future &nbsp;&nbsp;
                 <input type="radio" name="hasPet" id="haspetorno" />
             </label>
           </fieldset>
           <fieldset>
-            <legend>Has special medical conditions?</legend>
+            <legend>Do you have special medical conditions?</legend>
             <label htmlFor="medicalconds">Yes &nbsp;&nbsp;
                 <input type="radio" name="hasSpecialMedicalConditions" id="medicalconds"/>
             </label>
             <label htmlFor="nomedicalconds">No &nbsp;&nbsp;
                 <input type="radio" name="hasSpecialMedicalConditions" id="nomedicalconds" />
             </label>
-            <label htmlFor="hasorno">Don't mind &nbsp;&nbsp;
-                <input type="radio" name="hasSpecialMedicalConditions" id="hasorno" />
-            </label>
           </fieldset>
+          <div className='input-label-container'>
+            <label htmlFor='medicalcondition'>What is your medical condition? </label>
+            <input type="text" name="medicalCondition" placeholder='Medical condition' id="medicalcondition" />
+          </div>
           <fieldset>
-            <legend>Do you accept a smoker?</legend>
+            <legend>Do you smoke?</legend>
             <label htmlFor="acceptsmoker">Yes &nbsp;&nbsp;
                 <input type="radio" name="smoke" id="acceptsmoker"/>
             </label>
             <label htmlFor="noacceptsmoker">No &nbsp;&nbsp;
                 <input type="radio" name="smoke" id="noacceptsmoker" />
             </label>
-            <label htmlFor="acceptsmokerorno">Don't mind &nbsp;&nbsp;
-                <input type="radio" name="smoke" id="acceptsmokerorno" />
-            </label>
           </fieldset>
           <div className='input-label-container'>
-            <label htmlFor="more-descriptions">More descriptions</label>
-            <textarea name='moreDescriptions' id='more-descritions' placeholder='More descriptions'>
+            <label htmlFor="more-descriptions">Your comment:</label>
+            <textarea rows='4' name='moreDescriptions' id='more-descritions' placeholder='What is on your mind?'>
             </textarea>
           </div>
+          <fieldset>
+            <legend>What do you think about the above criteria?</legend>
+            <label htmlFor="okay">I am okay with them &nbsp;&nbsp;
+                <input type="radio" name="agreeWithCriteria" id="okay"/>
+            </label>
+            <label htmlFor="discuss">We can discuss on some of them &nbsp;&nbsp;
+                <input type="radio" name="agreeWithCriteria" id="discuss"/>
+            </label>
+          </fieldset>
           <div className='input-label-container' style={{justifyContent: 'flex-end', alignItems: 'flex-end', marginTop: '20px'}}>
-              <input id='submit-modifications' type="submit" value="Join" />
+              <input id='submit-modifications' type="submit" value="Submit Join Request" />
+          </div>
+          <div className="input-label-container">
+            <ResponseMessage backgroundColor='#ffcccc' color='red' message='Age is required!'/>
           </div>
         </form>
       </div>

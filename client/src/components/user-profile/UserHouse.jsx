@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import ResponseMessage from '../responses/ResponseMessage';
 
 const UserHouse = () => {
     const[house,setHouse] = useState('');
@@ -10,6 +11,7 @@ const UserHouse = () => {
 
     return (
         <div style={{height: '700px', width: '100%'}}>
+            <ResponseMessage backgroundColor='#e6ffee' color='green' message='Successfully Posted a House'/>
             <h1 style={{textAlign: 'left'}}>Your profile</h1>
             <div className='rented-house-container'>
                 {house.length !== 0 && 

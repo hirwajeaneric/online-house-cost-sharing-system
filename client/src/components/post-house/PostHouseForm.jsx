@@ -1,4 +1,5 @@
 import React from 'react'
+import ResponseMessage from '../responses/ResponseMessage'
 
 const PostHouseForm = () => {
   
@@ -109,8 +110,9 @@ const PostHouseForm = () => {
           <input type='text' name='refererPhoneNumber' placeholder='Referer Phone Number'/>
           <input type='email' name='refererEmail' placeholder='Referer Email'/>
         </fieldset>
-        <input style={{boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19)'}} type="submit" value="Submit Post" />
+        <input style={{ marginBottom: '20px' ,boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19)'}} type="submit" value="Submit Post" />
       </form>
+      <ResponseMessage backgroundColor='#ffcccc' color='red' message='Age is required!'/>
     </div>
   )
 }

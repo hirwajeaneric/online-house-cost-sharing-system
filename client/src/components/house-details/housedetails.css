@@ -53,3 +53,160 @@
     font-weight: 500; 
     margin: 20px 0 20px;
 } 
+
+.house-details .location {
+    font-size: 16px;
+    color: black;
+    font-weight: 600;
+    margin-top: 20px;
+}
+
+.house-details .rent-price {
+    color: red;
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 20px;
+}
+
+.house-details .more-details .icon{
+    display: inline-block;
+}
+
+.house-details .nameofoccupier,
+.house-details .phone-number, 
+.house-details .emailofoccupier,
+.house-details .genderofoccupier,
+.house-details .more-details p {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    padding: 10px;
+}
+
+.house-details .more-details .left,
+.house-details .more-details .right {
+    width: 50%;
+}
+
+.house-details .more-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.house-details .more-details p:nth-child(odd)  {
+    background-color: #f2f2f2;
+}
+
+.house-details .nameofoccupier .right,
+.house-details .phone-number .right, 
+.house-details .emailofoccupier .right,
+.house-details .genderofoccupier .right,
+.house-details .nameofoccupier .left,
+.house-details .phone-number .left, 
+.house-details .emailofoccupier .left,
+.house-details .genderofoccupier .left {
+    width: 50%;
+}
+
+.house-details .nameofoccupier .right,
+.house-details .phone-number .right, 
+.house-details .emailofoccupier .right,
+.house-details .genderofoccupier .right {
+    font-weight: 600;
+}
+
+
+
+/*JOIN HOUSE DESCRIPTIONS*/
+
+.join-house-descriptions .details .description {
+    margin: 0 0 20px;
+}
+
+.join-house-descriptions .details h4 {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0 0 10px;
+}
+
+.join-house-descriptions .details {
+    margin: 0 0 30px;
+}
+
+.join-house-descriptions .listing-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    gap: 10px;
+    padding: 10px;
+}
+
+.join-house-descriptions .listing-container:nth-child(odd) {
+    background-color: rgb(220, 220, 220);
+}
+
+.join-house-descriptions .listing-container .title,
+.join-house-descriptions .listing-container .info {
+    width: 50%;
+}
+
+.join-house-descriptions .listing-container .info {
+    font-weight: 600;
+}
+
+
+
+/*JOIN FORM*/
+
+.join-house-descriptions .join-button {
+    background-color: rgb(78, 203, 78);
+    padding: 8px 12px;
+    color: white;
+    border: none;
+    font-weight: 600;
+    width: 100%;
+    cursor: pointer;
+}
+
+.join-house-descriptions .join-button:hover {
+    background-color: white;
+    color: rgb(78, 203, 78);
+    padding: 6px 10px;
+    border: 2px solid rgb(78, 203, 78);
+}
+
+.join-house-descriptions .input-label-container,
+.join-house-descriptions fieldset {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+}
+
+.join-house-descriptions .input-label-container label,
+.join-house-descriptions .input-label-container input[type='text'],
+.join-house-descriptions .input-label-container input[type='number'],
+.join-house-descriptions .input-label-container textarea
+.join-house-descriptions fieldset {
+    width: 50%;
+}
+
+.join-house-descriptions fieldset label {
+    margin-right: 10px;
+}
+
+.join-house-descriptions .input-label-container input[type='text'],
+.join-house-descriptions .input-label-container input[type='number'],
+.join-house-descriptions .input-label-container textarea {
+    padding: 3px;
+    border: 1px solid gray;
+}

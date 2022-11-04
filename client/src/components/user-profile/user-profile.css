@@ -7,7 +7,6 @@
 .user-profile-container {
     margin-top: 40px;
     padding: 90px;
-    /* height: 700px; */
     width: 100%;
     justify-content: flex-start;
 }
@@ -105,10 +104,18 @@
 
 .houseDetails-container {
     display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    width: 100%;
+}
+
+.houseDetails-container .main{
+    display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-start;
-    /* flex-wrap: wrap; */
     gap: 20px;
     width: 100%;
 }
@@ -162,6 +169,10 @@
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 20px;
+}
+
+.houseDetails-container .house-details .other-house-info {
+    margin-top: 10px;
 }
 
 .houseDetails-container .house-details .other-house-info .left-side,
