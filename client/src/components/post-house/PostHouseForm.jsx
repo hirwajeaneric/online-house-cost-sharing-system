@@ -39,43 +39,36 @@ const PostHouseForm = () => {
     JoinRequests: ''
   });
 
-  const[savedHouse, setSavedHouse] = useState({});
-  const[savedRequirements, setSavedRequirements] = useState({});
-
   const[errors, setErrors] = useState('');
 
   const handleHouseInputs = ({currentTarget: input}) => {
-    setHouseData({...houseData, [input.name]: input.value})
-    console.log(houseData);
+    setHouseData({...houseData, [input.name]: input.value});
   }
 
   const handleJoinRequirementInfo = ({currentTarget: input}) => {
-    setJoinRequirements({...joinRequirements, [input.name]: input.value})
-    console.log(joinRequirements);
+    setJoinRequirements({...joinRequirements, [input.name]: input.value});
   }
 
-  const submitPost = (e) => {
+  const submitPost = async(e) => {
+    
     e.preventDefault();
+
     houseData.tenantOne = joinRequirements.names;
     houseData.phoneNumberOfFirstTenant = joinRequirements.phoneNumber;
 
     const HOUSE_URL = 'http://localhost:5000/api/house/save';
     const JOINREQUIREMENTS_URL = 'http://localhost:5000/api/joinRequirements/save';
 
-    axios.post(HOUSE_URL, houseData)
-    .then(res=> {
-      setSavedHouse(res.data.message);
-      console.log(savedHouse);
-    })
-    .catch(error=> setErrors(error));
-
-    axios.post(JOINREQUIREMENTS_URL, joinRequirements)
-    .then(res=> {
-      setSavedRequirements(res.data.message);
-      console.log(savedRequirements);
-    })
-    .catch(error=> setErrors(error));
-
+    try {
+      // const houseSaveResponse = await axios.post(HOUSE_URL, houseData);
+      // console.log(houseSaveResponse.data);
+      
+      const joinReqSaveResponse = await axios.post(JOINREQUIREMENTS_URL, joinRequirements);
+      console.log(joinReqSaveResponse.data);  
+    
+    } catch (error) {
+      setErrors(error)
+    }
   }
 
   return (
@@ -102,7 +95,7 @@ const PostHouseForm = () => {
           <legend className='house-information-section-legend'>House information</legend>
           <input type="text" name="number" value={houseData.number} onChange={handleHouseInputs} placeholder='House number' />
           <select name='type' value={houseData.type} onChange={handleHouseInputs}>
-            <option value="">Choose Type</option>
+            <option value="">Choose House Type</option>
             <option value="appartment">Appartment</option>
             <option value="Single house, one floor">Single house, one floor</option>
             <option value="Single house, two floors">Single house, two floors</option>
@@ -144,8 +137,6 @@ const PostHouseForm = () => {
             <input type="text" name="languages" value={joinRequirements.languages} onChange={handleJoinRequirementInfo} placeholder='Spoken languages. "Separate by comma"' />
             <fieldset>
               <legend>Has Pet/s?</legend>
-              <label htmlFor="haspet">Yes</label>
-              <input type="radio" value='Yes' name="hasPet" onChange={handleJoinRequirementInfo} id="haspet"/>
               <label htmlFor="hasnopet">No</label>
               <input type="radio" value='No' name="hasPet" onChange={handleJoinRequirementInfo} id="hasnopet" />
               <label htmlFor="haspetorno">Don't mind</label>
@@ -153,8 +144,6 @@ const PostHouseForm = () => {
             </fieldset>
             <fieldset>
               <legend>Has special medical conditions?</legend>
-              <label htmlFor="medicalconds">Yes</label>
-              <input type="radio" value="Yes" name="hasSpecialMedicalConditions" onChange={handleJoinRequirementInfo} id="medicalconds"/>
               <label htmlFor="nomedicalconds">No</label>
               <input type="radio" value="No" name="hasSpecialMedicalConditions" onChange={handleJoinRequirementInfo} id="nomedicalconds" />
               <label htmlFor="hasorno">Don't mind</label>
@@ -162,8 +151,6 @@ const PostHouseForm = () => {
             </fieldset>
             <fieldset>
               <legend>Do you accept a smoker?</legend>
-              <label htmlFor="acceptsmoker">Yes</label>
-              <input type="radio" value="Yes" name="smoke" onChange={handleJoinRequirementInfo} id="acceptsmoker"/>
               <label htmlFor="noacceptsmoker">No</label>
               <input type="radio" value="No" name="smoke" onChange={handleJoinRequirementInfo} id="noacceptsmoker" />
               <label htmlFor="acceptsmokerorno">Don't mind</label>
@@ -180,7 +167,7 @@ const PostHouseForm = () => {
         </fieldset>
         <input style={{ marginBottom: '20px' ,boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19)'}} type="submit" value="Submit Post" />
       </form>
-      <ResponseMessage backgroundColor='#ffcccc' color='red' message='Age is required!'/>
+      {errors && <ResponseMessage backgroundColor='#ffcccc' color='red' message={errors}/>}
     </div>
   )
 }

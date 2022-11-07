@@ -5,7 +5,7 @@ const cors = require('cors');
 const connection = require('./db');
 const adminRoutes = require('./routes/admin.routes');
 const tenantRoutes = require('./routes/tenant.routes');
-const houseRoues = require('./routes/house.routes');
+const houseRoutes = require('./routes/house.routes');
 const joinRequestRoutes = require('./routes/joinRequest.routes');
 const joinRequirementsRoutes = require('./routes/joinRequirement.routes');
 
@@ -17,7 +17,7 @@ app.use(cors());
 //Routes
 app.use('/api/admin/', adminRoutes);
 app.use('/api/tenant/', tenantRoutes);
-app.use('/api/house/', houseRoues);
+app.use('/api/house/', houseRoutes);
 app.use('/api/joinRequest/', joinRequestRoutes);
 app.use('/api/joinRequirements/', joinRequirementsRoutes);
 

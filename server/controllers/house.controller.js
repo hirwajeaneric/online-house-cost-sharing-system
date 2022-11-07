@@ -113,7 +113,10 @@ exports.broadSearch = (req, res, next) => {
 exports.save = (req, res, next) => {
     houseModel.create(req.body)
     .then(response=> {
-        res.status(200).send({ message: 'House saved!', house: response })
+        res.status(200).send({ 
+            message: 'House saved!', 
+            house: response 
+        })
     })
     .catch(err=>{
         res.status(500).send("Server error: "+err)

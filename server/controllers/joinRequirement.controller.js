@@ -47,14 +47,27 @@ exports.broadSearch = (req, res, next) => {
     })
 }
 
-exports.save = (req, res, next) => {
-    joinRequirementModel.create(req.body)
-    .then(response => {
-        res.status(200).send({ message: 'Joining requirements posted!', joinRequest: response })
-    })
-    .catch(err=>{
-        res.status(500).send("Server error: "+err)
-    })
+exports.save = async(req, res, next) => {
+    try {
+        const res = await joinRequirementModel.create(req.body);   
+        res.status(201).send({message: 'House Post Created', dataResponse: res});
+        // const fetchedHouse = await require('../models/house.model').findOne({email: req.body.email});   
+        
+        // console.log("The already saved house.");
+        // console.log(fetchedHouse);
+        
+        // fetchedHouse.joinPost = req.body._id;
+        
+        // console.log("After adding the join post.");
+        // console.log(fetchedHouse);
+
+        // const response = await require('../models/house.model').findByIdAndUpdate(fetchedHouse._id, fetchedHouse);        
+        // console.log("The Output.");
+        // console.log(response);
+        // res.status(201).send({message: 'House Post Created', data: response});
+    } catch (error) {
+        res.status(500).send(`Server Error: ${error}`);
+    }
 }
 
 exports.update = (req, res, next) => {
