@@ -93,6 +93,10 @@ const HouseDetails = () => {
         
         <form>
           <div className='input-label-container'>
+            <label htmlFor='name'>Your name: </label>
+            <input type="text" name="nameOfJoiner" placeholder='Full name' id="name" />
+          </div>
+          <div className='input-label-container'>
             <label htmlFor='age'>Your age: </label>
             <input type="number" name="ageOfJoiner" placeholder='Your age' id="age" />
           </div>
@@ -112,18 +116,6 @@ const HouseDetails = () => {
             <label htmlFor='languages'>Languages spoken: </label>
             <input type="text" name="languages" placeholder='Separate with comma' id="languages" />
           </div>
-          <fieldset>
-            <legend>Your gender: </legend>
-            <label htmlFor="male">Male &nbsp;&nbsp;
-                <input type="radio" name="gender" id="male"/>
-            </label>
-            <label htmlFor="female">Female &nbsp;&nbsp;
-                <input type="radio" name="gender" id="female" />
-            </label>
-            <label htmlFor="other">Other &nbsp;&nbsp;
-                <input type="radio" name="other" id="other" />
-            </label>
-          </fieldset>
           <fieldset>
             <legend>Your marital status</legend>
             <label htmlFor="married">Married &nbsp;&nbsp;

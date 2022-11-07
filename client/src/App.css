@@ -4,7 +4,8 @@
 .other-pages-container,
 .signin-signup-forms-container,
 .user-profile-container,
-.house-detials-container {
+.house-detials-container,
+.join-request-container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;

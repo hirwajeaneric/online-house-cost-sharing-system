@@ -15,7 +15,7 @@ const houseSchema = new mongoose.Schema({
     bathRooms: {type: String, required: true},
     hasFurniture: {type: String, required: true},
     images: {type: String, required: false},
-    admin: {type: String, required: false},
+    // admin: {type: String, required: false},
     joinPost: {type: String, required: false},
     joinRequests: {type: String, required: false},
 });

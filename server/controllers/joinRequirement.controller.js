@@ -48,7 +48,7 @@ exports.broadSearch = (req, res, next) => {
 }
 
 exports.save = (req, res, next) => {
-    joinRequirementModel.save()
+    joinRequirementModel.create(req.body)
     .then(response => {
         res.status(200).send({ message: 'Joining requirements posted!', joinRequest: response })
     })

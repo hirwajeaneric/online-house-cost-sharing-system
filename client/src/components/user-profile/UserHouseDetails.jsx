@@ -1,9 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import ResponseMessage from '../responses/ResponseMessage'
+import JoinRequestPopup from './JoinRequestPopup';
 
 const UserHouseDetails = () => {
-  return (
+    
+    const[displayPopup, setDisplayPopup] = useState(false);
+    
+    const displayModal = ()=>{
+        setDisplayPopup(prev => !prev);
+    }
+
+    return (
     <div className='houseDetails-container'>
         <ResponseMessage backgroundColor='#e6ffee' color='green' message='Successfully Posted a House'/>
         <div className="main">
@@ -93,8 +101,10 @@ const UserHouseDetails = () => {
                 
                 <div className="join-requests-space">
                     <h3>Join Requests</h3>
+                    {/* <button onClick={displayModal}>View Popup</button> */}
+                    {/* <JoinRequestPopup displayPopup={displayPopup} setDisplayPopup={setDisplayPopup} /> */}
                     <div className="available-requests">
-                        <Link className='a-join-request-container'>
+                        <Link to='../request/:id' className='a-join-request-container'>
                             <div className="requestData">
                                 <div className="request-title">
                                     <h4>Kalisa Jean Pierre</h4>
@@ -103,7 +113,8 @@ const UserHouseDetails = () => {
                                 <p className='request-description'>Hello Orthence, I am Okay with the requiremest you posted. In fact, I fulfill them all. I can't wait to here from you.</p>
                             </div>
                         </Link>
-                        <Link className='a-join-request-container'>
+                        {/* <JoinRequestPopup displayPopup={displayPopup} setDisplayPopup={setDisplayPopup} /> */}
+                        <Link to='../request/:id' className='a-join-request-container'>
                             <div className="requestData">
                                 <div className="request-title">
                                     <h4>Kalisa Jean Pierre</h4>
@@ -112,7 +123,8 @@ const UserHouseDetails = () => {
                                 <p className='request-description'>Hello Orthence, I am Okay with the requiremest you posted. In fact, I fulfill them all. I can't wait to here from you.</p>
                             </div>
                         </Link>
-                        <Link className='a-join-request-container'>
+                        {/* <JoinRequestPopup displayPopup={displayPopup} setDisplayPopup={setDisplayPopup} /> */}
+                        <Link to='../request/:id' className='a-join-request-container'>
                             <div className="requestData">
                                 <div className="request-title">
                                     <h4>Kalisa Jean Pierre</h4>
@@ -121,6 +133,7 @@ const UserHouseDetails = () => {
                                 <p className='request-description'>Hello Orthence, I am Okay with the requiremest you posted. In fact, I fulfill them all. I can't wait to here from you.</p>
                             </div>
                         </Link>
+                        {/* <JoinRequestPopup displayPopup={displayPopup} setDisplayPopup={setDisplayPopup} /> */}
                     </div>
                     <div className='no-requests'>
                         <p>You don't have requests yet.</p>
