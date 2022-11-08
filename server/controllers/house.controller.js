@@ -1,4 +1,7 @@
 const houseModel = require('../models/house.model');
+const fs = require('fs');
+const multer = require('multer');
+const moment = require('moment');
 
 exports.testing = (req, res, next) => {
     res.send('Admin Router works well!');
@@ -134,8 +137,34 @@ exports.broadSearch = (req, res, next) => {
     })
 }
 
+/**MULTER CONFIGURATION */
+
+//Image storage Path
+const imgconfig = multer.diskStorage({
+    destination: (req, file, callback) => {
+        callback(null, './uploads')
+    },
+    filename: (req, file, callback) => {
+        callback(null, `img-${moment(new Date()).format('DD-MM-YYYY')}-${file.originalname}`)
+    }
+})
+
+//Image filter
+const isImage = function(req, file, callback) {
+    if(file.mimetype.startsWith('image')) {
+        callback(null, true)
+    } else {
+        callback(new Error('Only images are allowed!'))
+    }
+}
+
+exports.upload = multer({
+    storage: imgconfig,
+    fileFilter: isImage
+})
+
 exports.save = (req, res, next) => {
-    houseModel.create(req.body)
+    new houseModel({...req.body, photo: req.file.filename }).save()
     .then(response=> {
         res.status(200).send({ 
             message: 'House saved!', 
