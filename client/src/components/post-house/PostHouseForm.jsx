@@ -114,6 +114,9 @@ const PostHouseForm = () => {
     } else if (joinRequirements.phoneNumber === '') {
       setErrors('Your phone number is required')
       return;
+    } else if (joinRequirements.phoneNumber.length !== 10) {
+      setErrors('Your phone number is required')
+      return;
     } else if (joinRequirements.age === '') {
       setErrors('Your age is required')
       return;
@@ -176,13 +179,13 @@ const PostHouseForm = () => {
         setErrors('');
         const isAlreadySaved = await axios.get(`http://localhost:5000/api/house/findByNumber?number=${houseData.number}`);
         if (isAlreadySaved.data[0]) {
-          setErrors('This house is already posted! You cannot post it twice.');
+          setErrors('This house is already posted!');
         } else {
           await axios.post('http://localhost:5000/api/house/save', houseData);
           await axios.post('http://localhost:5000/api/joinRequirements/save', joinRequirements);
           setSpinner({
             active: true,
-            message: 'Saving'
+            message: 'Saving, It will take a few seconds...'
           });
           setTimeout(async () => {
             const fetchedHouse = await axios.get(`http://localhost:5000/api/house/findByNumber?number=${houseData.number}`);  

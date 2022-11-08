@@ -18,8 +18,8 @@ exports.list = (req, res, next) => {
     })
 }
 
-exports.findByEmail = (req, res, next) => {
-    houseModel.find({ email: req.query.email })
+exports.findByPhoneNumberOfFirstTenant = (req, res, next) => {
+    houseModel.find({ phoneNumberOfFirstTenant: req.query.phoneNumberOfFirstTenant })
     .then(response=> {
         if (response) {
             res.status(200).send(response)

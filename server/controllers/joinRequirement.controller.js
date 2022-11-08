@@ -78,7 +78,7 @@ exports.updatingHouseData = (req, res, next) => {
 
 function updateHouse(req) {
     const findHouse = (fetchedRequirements) => {
-        axios.get(`http://localhost:5000/api/house/findByEmail?email=${fetchedRequirements.email}`)
+        axios.get(`http://localhost:5000/api/house/findByPhoneNumberOfFirstTenant?phoneNumberOfFirstTenant=${fetchedRequirements[0].phoneNumber}`)
         .then(response => {
             var fetchedHouse = response.data;
             stepTwo(fetchedHouse, fetchedRequirements);
@@ -89,7 +89,7 @@ function updateHouse(req) {
     const findRequirements = (req) => {
         axios.get(`http://localhost:5000/api/joinRequirements/findByEmail?email=${req.body.email}`)
         .then(response => {
-          findHouse(response);  
+          findHouse(response.data);  
         })
         .catch(error=>console.log(error));
     }
@@ -97,12 +97,7 @@ function updateHouse(req) {
     findRequirements(req);
 
     const stepTwo = (fetchedHouse, fetchedRequirements) => {
-        console.log('The id is: ');
-        console.log(fetchedRequirements.data[0]._id);
-        console.log('I want to update: '+fetchedHouse[0].number);
-
-        fetchedHouse[0].joinPost = fetchedRequirements.data[0]._id;
-        
+        fetchedHouse[0].joinPost = fetchedRequirements[0]._id;
         axios.put(`http://localhost:5000/api/house/update?id=${fetchedHouse[0]._id}`, fetchedHouse[0])
         .then(response => {
             console.log('Successfully Updated house');
