@@ -18,6 +18,20 @@ exports.list = (req, res, next) => {
     })
 }
 
+exports.findByEmail = (req, res, next) => {
+    houseModel.find({ email: req.query.email })
+    .then(response=> {
+        if (response) {
+            res.status(200).send(response)
+        } else {
+            res.status(404).send("No houses available")
+        }
+    })
+    .catch(err=>{
+        res.status(500).send("Server error: "+err)
+    })
+}
+
 exports.findByVerified = (req, res, next) => {
     houseModel.find({ verified: req.query.verified })
     .then(response=> {

@@ -1,4 +1,6 @@
 const joinRequirementModel = require('../models/joiningRequirements.model');
+const axios = require('axios');
+const { response } = require('express');
 
 exports.testing = (req, res, next) => {
     res.send('Join requirements router works well!');
@@ -47,28 +49,69 @@ exports.broadSearch = (req, res, next) => {
     })
 }
 
-exports.save = async(req, res, next) => {
-    try {
-        const res = await joinRequirementModel.create(req.body);   
-        res.status(201).send({message: 'House Post Created', dataResponse: res});
-        // const fetchedHouse = await require('../models/house.model').findOne({email: req.body.email});   
-        
-        // console.log("The already saved house.");
-        // console.log(fetchedHouse);
-        
-        // fetchedHouse.joinPost = req.body._id;
-        
-        // console.log("After adding the join post.");
-        // console.log(fetchedHouse);
-
-        // const response = await require('../models/house.model').findByIdAndUpdate(fetchedHouse._id, fetchedHouse);        
-        // console.log("The Output.");
-        // console.log(response);
-        // res.status(201).send({message: 'House Post Created', data: response});
-    } catch (error) {
-        res.status(500).send(`Server Error: ${error}`);
-    }
+exports.findByEmail = (req, res, next) => {
+    joinRequirementModel.find({ email: req.query.email })
+    .then(response=> {
+        if (response) {
+            res.status(200).send(response)
+        } else {
+            res.status(404).send("No post available for this filter.")
+        }
+    })
+    .catch(err=>{
+        res.status(500).send("Server error: "+err)
+    })
 }
+
+exports.save = (req, res, next) => {
+    joinRequirementModel.create(req.body)
+    .then(response => {
+        next();
+        res.status(201).send({message: 'Join request saved', joinRequest: response});
+    })
+    .catch(error=>res.status(500).send({message: error}));
+}
+
+exports.updatingHouseData = (req, res, next) => {
+    updateHouse(req);
+}
+
+function updateHouse(req) {
+    const findHouse = (fetchedRequirements) => {
+        axios.get(`http://localhost:5000/api/house/findByEmail?email=${fetchedRequirements.email}`)
+        .then(response => {
+            var fetchedHouse = response.data;
+            stepTwo(fetchedHouse, fetchedRequirements);
+        })
+        .catch(error=>console.log(error));
+    }
+
+    const findRequirements = (req) => {
+        axios.get(`http://localhost:5000/api/joinRequirements/findByEmail?email=${req.body.email}`)
+        .then(response => {
+          findHouse(response);  
+        })
+        .catch(error=>console.log(error));
+    }
+
+    findRequirements(req);
+
+    const stepTwo = (fetchedHouse, fetchedRequirements) => {
+        console.log('The id is: ');
+        console.log(fetchedRequirements.data[0]._id);
+        console.log('I want to update: '+fetchedHouse[0].number);
+
+        fetchedHouse[0].joinPost = fetchedRequirements.data[0]._id;
+        
+        axios.put(`http://localhost:5000/api/house/update?id=${fetchedHouse[0]._id}`, fetchedHouse[0])
+        .then(response => {
+            console.log('Successfully Updated house');
+            console.log(response.data);
+        })
+        .catch(error=> console.log(error))
+    }
+};
+
 
 exports.update = (req, res, next) => {
     joinRequirementModel.findByIdAndUpdate(req.query.id, req.body)

@@ -43,8 +43,6 @@ exports.signup = async (req, res, next) => {
         const salt = await bcrypt.genSalt(Number(process.env.SALT));
         const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
-        console.log(req.body);
-
         await new tenantModel({ ...req.body, password: hashedPassword }).save();
         res.status(201).send({ message: "Account created"});
     } catch (error) {
