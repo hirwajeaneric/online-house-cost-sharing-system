@@ -60,7 +60,17 @@ exports.findByStatus = (req, res, next) => {
     })
 }
 
-exports.findByStatus = (req, res, next) => {
+exports.findByNumber = (req, res, next) => {
+    houseModel.find({number: req.query.number})
+    .then(response=> {
+        res.status(200).send(response);
+    })
+    .catch(err=>{
+        res.status(500).send("Server error: "+err)
+    })
+}
+
+exports.findById = (req, res, next) => {
     houseModel.findById(req.query.id)
     .then(response=> {
         if (response) {

@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import ResponseMessage from '../responses/ResponseMessage';
 import axios from 'axios';
+import Loading from '../../assets/imgs/3dotsspiner.gif';
+import { useNavigate } from 'react-router-dom';
 
 const PostHouseForm = () => {
-  
+  const navigate = useNavigate();
   const [joinRequirements, setJoinRequirements] = useState({
     names: '',
     tenantGender: '',
@@ -40,7 +42,50 @@ const PostHouseForm = () => {
     JoinRequests: ''
   });
 
+  function resetInputs() {
+    setJoinRequirements({
+      names: '',
+      tenantGender: '',
+      email: '',
+      phoneNumber: '',
+      age: '',
+      gender: '',
+      ageOfJoiner: '',
+      maritalStatus: '',
+      languages: '',
+      hasPet:'',
+      hasSpecialMedicalConditions: '',
+      smoke: '',
+      moreDescriptions: '',
+      postDate: new Date().toLocaleDateString(),
+      refererEmail:'',
+      refererPhoneNumber:'',
+      numberOfJoinRequests: ''
+    });
+
+    setHouseData({
+      number: '',
+      type: '',
+      location: '',
+      tenantOne: '',
+      phoneNumberOfFirstTenant: '',
+      description: '',
+      rent: '',
+      verified: 'No',
+      rooms:'',
+      bathRooms: '',
+      hasFurniture: '',
+      joinPost: '',
+      JoinRequests: ''
+    });
+
+    setErrors('');
+    setSpinner({active: false, message: ''});
+  }
+
   const[errors, setErrors] = useState('');
+
+  const[spinner, setSpinner] = useState({active: false, message: ''});
 
   const handleHouseInputs = ({currentTarget: input}) => {
     setHouseData({...houseData, [input.name]: input.value});
@@ -51,24 +96,111 @@ const PostHouseForm = () => {
   }
 
   const submitPost = async(e) => {
-    
+
     e.preventDefault();
 
     houseData.tenantOne = joinRequirements.names;
     houseData.phoneNumberOfFirstTenant = joinRequirements.phoneNumber;
-
-    const HOUSE_URL = 'http://localhost:5000/api/house/save';
-    const JOINREQUIREMENTS_URL = 'http://localhost:5000/api/joinRequirements/save';
-
-    try {
-      const houseSaveResponse = await axios.post(HOUSE_URL, houseData);
-      console.log(houseSaveResponse.data);
-      
-      const joinReqSaveResponse = await axios.post(JOINREQUIREMENTS_URL, joinRequirements);
-      console.log(joinReqSaveResponse.data);  
     
-    } catch (error) {
-      setErrors(error)
+    if (joinRequirements.names === '') {
+      setErrors('Your name is required')
+      return;
+    } else if (joinRequirements.tenantGender === '') {
+      setErrors('Your name is required')
+      return;
+    } else if (joinRequirements.email === '') {
+      setErrors('Your email is required')
+      return;
+    } else if (joinRequirements.phoneNumber === '') {
+      setErrors('Your phone number is required')
+      return;
+    } else if (joinRequirements.age === '') {
+      setErrors('Your age is required')
+      return;
+    } else if (joinRequirements.gender === '') {
+      setErrors('Required gender to join is required')
+      return;
+    } else if (joinRequirements.ageOfJoiner === '') {
+      setErrors('Prefered age range is required')
+      return;
+    } else if (joinRequirements.maritalStatus === '') {
+      setErrors('Marital status required to join is required')
+      return;
+    } else if (joinRequirements.languages === '') {
+      setErrors('Spoken Language(s) required to join is/are required')
+      return;
+    } else if (joinRequirements.hasPet === '') {
+      setErrors("Has pet can not be left empty")
+      return;
+    } else if (joinRequirements.hasSpecialMedicalConditions === '') {
+      setErrors("Has special medical conditions can't be left empty")
+      return;
+    } else if (joinRequirements.smoke === '') {
+      setErrors("Do you accept a smoker can't be left empty")
+      return;
+    } else if (joinRequirements.moreDescriptions === '') {
+      setErrors('More descriptions are required')
+      return;
+    } else if (houseData.number === '') {
+      setErrors('House number is required')
+      return;
+    } else if (houseData.type === '') {
+      setErrors('House type is required')
+      return;
+    } else if (houseData.location === '') {
+      setErrors('Location is required')
+      return;
+    } else if (houseData.description === '') {
+      setErrors('House descriptions are required')
+      return;
+    } else if (houseData.rent === '') {
+      setErrors('Rent is required')
+      return;
+    } else if (houseData.rooms === '') {
+      setErrors('The number of roooms is required')
+      return;
+    } else if (houseData.bathRooms === '') {
+      setErrors('The number of bathrooms is required')
+      return;
+    } else if (houseData.hasFurniture === '') {
+      setErrors('Furnished? (Has furniture) can not be left empty')
+      return;
+    } else if (houseData.rooms <= 0) {
+      setErrors('Invalid number of rooms')
+      return;
+    } else if (houseData.bathRooms <= 0) {
+      setErrors('Invalid number of bathrooms')
+      return;
+    } else {
+      try {
+        setErrors('');
+        const isAlreadySaved = await axios.get(`http://localhost:5000/api/house/findByNumber?number=${houseData.number}`);
+        if (isAlreadySaved.data[0]) {
+          setErrors('This house is already posted! You cannot post it twice.');
+        } else {
+          await axios.post('http://localhost:5000/api/house/save', houseData);
+          await axios.post('http://localhost:5000/api/joinRequirements/save', joinRequirements);
+          setSpinner({
+            active: true,
+            message: 'Saving'
+          });
+          setTimeout(async () => {
+            const fetchedHouse = await axios.get(`http://localhost:5000/api/house/findByNumber?number=${houseData.number}`);  
+            if(fetchedHouse.data[0].joinPost) {
+              setSpinner({
+                active: true,
+                message: 'Saved'
+              });
+              resetInputs();
+              navigate(`/profile/${localStorage.getItem('userIdentity')}`);
+            } else {
+              setErrors('Unable to create post, Please try again!');
+            }
+          }, 10000);
+        }
+      } catch (error) {
+        setErrors(error)
+      } 
     }
   }
 
@@ -169,9 +301,30 @@ const PostHouseForm = () => {
           <input type='text' name='refererPhoneNumber' value={joinRequirements.refererPhoneNumber} onChange={handleJoinRequirementInfo} placeholder='Referer Phone Number'/>
           <input type='email' name='refererEmail' value={joinRequirements.refererEmail} onChange={handleJoinRequirementInfo} placeholder='Referer Email'/>
         </fieldset>
-        <input style={{ marginBottom: '20px' ,boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19)'}} type="submit" value="Submit Post" />
+        <div style={{diplay: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
+          <div style={{width: '100%'}}>
+            <input style={{width: '100%', cursor: 'pointer', marginBottom: '20px' ,boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19)'}} type="submit" value="Submit Post" />
+          </div>
+          <div style={{width: '100%'}}>
+            <button 
+              onClick={()=> resetInputs()}
+              style={{
+                width: '100%', 
+                cursor: 'pointer', 
+                color: 'white', 
+                background: 'black', 
+                padding: '8px 12px', 
+                borderRadius: '10px', 
+                marginBottom: '20px' ,
+                boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19)'
+              }} 
+              type="button">Cancel
+            </button>
+          </div>
+        </div>
       </form>
       {errors && <ResponseMessage backgroundColor='#ffcccc' color='red' message={errors}/>}
+      {!errors && spinner.active && <div style={{display: 'flex', alignItems: 'center'}}><p style={{fontSize: '20px', fontWeight: '600', marginRight: '20px'}}>{spinner.message}</p><img style={{width: '50px', height: '50px'}} src={Loading} alt=''/></div>}
     </div>
   )
 }
