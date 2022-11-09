@@ -44,7 +44,8 @@ const Signin = () => {
         axios.post(url, signinData)
         .then(res => {
             localStorage.setItem('tenantToken',res.data.token);
-            localStorage.setItem('userIdentity',res.data.user.username)
+            localStorage.setItem('userIdentity',res.data.user.username);
+            localStorage.setItem('userEmail', res.data.user.email);
             navigate('/');
         })
         .catch ((error)=> {

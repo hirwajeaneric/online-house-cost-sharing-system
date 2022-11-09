@@ -33,7 +33,7 @@ exports.findById = (req, res, next) => {
 }
 
 exports.findByJoinPost = (req, res, next) => {
-    joinRequestModel.findById({joinPost: req.query.joinPost})
+    joinRequestModel.find({joinPost: req.query.joinPost})
     .then(response=> {
         if (response) {
             res.status(200).send(response)
@@ -76,9 +76,9 @@ exports.findByJoinPost = (req, res, next) => {
 // }
 
 exports.save = (req, res, next) => {
-    joinRequestModel.save()
+    joinRequestModel.create(req.body)
     .then(response => {
-        res.status(200).send({ message: 'Request posted!', joinRequest: response })
+        res.status(201).send({ message: 'Request posted!', joinRequest: response })
     })
     .catch(err=>{
         res.status(500).send("Server error: "+err)
@@ -88,7 +88,7 @@ exports.save = (req, res, next) => {
 exports.update = (req, res, next) => {
     joinRequestModel.findByIdAndUpdate(req.query.id, req.body)
     .then(response => {
-        res.status(200).send({ message: 'Request updated!', joinRequest: response })
+        res.status(201).send({ message: 'Request updated!', joinRequest: response })
     })
     .catch(err=>{
         res.status(500).send("Server error: "+err)

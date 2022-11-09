@@ -3,17 +3,20 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { UserResponseMessageContext, UserResponseMessageSetterContext } from '../../App';
 import ResponseMessage from '../responses/ResponseMessage';
-import Loading from '../../assets/imgs/3dotsspiner.gif';
 
 const UserHouseDetails = () => {
-    const [houseFormError, setHouseFormError] = useState('');
-    const [joinRequirementsError, setJoinRequirementsError] = useState('');
-    const [joinRequests, setJoinRequests] = useState([]);
-
     const userResponseMessageSetter = useContext(UserResponseMessageSetterContext);
+    
     const userResponseMessage = useContext(UserResponseMessageContext);
 
+    const [houseFormError, setHouseFormError] = useState('');
+    
+    const [joinRequirementsError, setJoinRequirementsError] = useState('');
+    
+    const [joinRequests, setJoinRequests] = useState([]);
+    
     const [file, setFile] = useState('');
+    
     const [joinRequirements, setJoinRequirements] = useState({
         names: '',
         tenantGender: '',
@@ -53,9 +56,6 @@ const UserHouseDetails = () => {
         joinRequests: 0
     });
 
-    const[spinner, setSpinner] = useState({active: false, message: ''});
-    const[spinnerTwo, setSpinnerTwo] = useState({active: false, message: ''});
-
     /**Fetch house */
     useEffect(()=> {
         axios.get(`http://localhost:5000/api/house/findByUsername?username=${localStorage.getItem('userIdentity')}`,{ 
@@ -65,7 +65,6 @@ const UserHouseDetails = () => {
         })
         .then(response=>{
             setHouseData(response.data[0]);
-            console.log(houseData);
         })
         .catch(error => {
             console.log(error);
@@ -74,10 +73,9 @@ const UserHouseDetails = () => {
 
     /**Fetch Join Requests */
     useEffect(()=>{
-        axios.get(`http://localhost:5000/api/joinRequests/findByJoinPost?joinPost=${houseData.joinPost}`)
+        axios.get(`http://localhost:5000/api/joinRequest/findByJoinPost?joinPost=${houseData.joinPost}`)
         .then(response=>{
             setJoinRequests(response.data);
-            console.log(response.data);
         })
         .catch(error => {
             console.log(error);
@@ -89,7 +87,6 @@ const UserHouseDetails = () => {
         axios.get(`http://localhost:5000/api/joinRequirements/findById?id=${houseData.joinPost}`)
         .then(response=>{
             setJoinRequirements(response.data);
-            console.log(response.data);
         })
         .catch(error => {
             console.log(error);
@@ -251,15 +248,6 @@ const UserHouseDetails = () => {
             <div className="main">
                 <div className='house-details'>
                     <h3 style={{marginBottom: '20px'}}>House Information</h3>
-                    {/* <div 
-                        style={{background: "url('http://localhost:5000/api/uploads/"+houseData.photo+"')", 
-                        width: '100%',
-                        height: '400px',
-                        backgroundSize: 'cover', 
-                        backgroundRepeat: 'no-repeat'
-                    }}
-                        className='house-photo'>
-                    </div> */}
                     <img 
                         src={`http://localhost:5000/api/uploads/${houseData.photo}`} 
                         alt="" 
@@ -474,8 +462,7 @@ const UserHouseDetails = () => {
                             <input id='submit-modifications' type="submit" value="Save modifications" />
                         </div>
                         {joinRequirementsError && <ResponseMessage backgroundColor='#ffcccc' color='red' message='Age is required!'/>}
-                        {!joinRequirementsError && spinnerTwo.active && <div style={{display: 'flex', alignItems: 'center'}}><p style={{fontSize: '20px', fontWeight: '600', marginRight: '20px'}}>{spinner.message}</p><img style={{width: '50px', height: '50px'}} src={Loading} alt=''/></div>}
-                    </form>
+                        </form>
                 </div>
             </div>    
         </div>

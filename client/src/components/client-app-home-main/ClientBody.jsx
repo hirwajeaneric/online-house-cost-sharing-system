@@ -22,7 +22,7 @@ const ClientHomeMain = () => {
           console.log(error);
       })
   },[]);
-  
+
   return (
     <div className='client-home-main-container'>
       <div className='banner'>
@@ -38,6 +38,7 @@ const ClientHomeMain = () => {
         <h1>Available Houses, join requests, and more</h1>
         <div className="posted-houses-container">
           {houses && houses.map((house, index) => (
+            !house.tenantTwo &&
             <Link key={index} to={`housedetails/${house._id}`} className="a-house">
               <img src={`http://localhost:5000/api/uploads/${house.photo}`} alt="" />
               <div className="other-info">

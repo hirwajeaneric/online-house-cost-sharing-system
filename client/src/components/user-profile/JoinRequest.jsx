@@ -1,6 +1,8 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import ResponseMessage from '../responses/ResponseMessage';
 
 const Container = styled.div`
     display: flex;
@@ -102,6 +104,19 @@ const JoinRequest = () => {
     const urlparameters = useParams();
     const navigate = useNavigate();
 
+    const [joinRequest, setJoinRequest] = useState({});
+    const [error, setError] = useState('');
+
+    useEffect(()=>{
+        axios.get(`http://localhost:5000/api/joinRequest/findById?id=${urlparameters.id}`)
+        .then(response=>{
+            setJoinRequest(response.data);
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    },[urlparameters])
+
     const acceptRequest = () => {
 
     }
@@ -116,53 +131,47 @@ const JoinRequest = () => {
 
     return (
         <Container>
+            {error && <ResponseMessage backgroundColor='#ffcccc' color='red' message={error} />}
             <Title>Join Request
-                <RequestStatus>Pending</RequestStatus>
+                <RequestStatus>{joinRequest.approved === 'No'? 'Pending' : 'Approved'}</RequestStatus>
             </Title>
             <RequestDetails>
                 <LeftSide>
-                    <h1>Name: Joan Doe</h1>
+                    <h1>{joinRequest.name}</h1>
                     <DataContainer>
                         <p>Age:</p>
-                        <Data>26</Data>
+                        <Data>{joinRequest.age}</Data>
                     </DataContainer>
                     <DataContainer>
                         <p>Gender:</p>
-                        <Data>Male</Data>
+                        <Data>{joinRequest.gender}</Data>
                     </DataContainer>
                     <DataContainer>
                         <p>Marital Status:</p>
-                        <Data>Single</Data>
+                        <Data>{joinRequest.maritalStatus}</Data>
                     </DataContainer>
                     <DataContainer>
                         <p>Owns a pet:</p>
-                        <Data>No</Data>
+                        <Data>{joinRequest.hasPet}</Data>
                     </DataContainer>
                     <DataContainer>
                         <p>Has special medical condition/s:</p>
-                        <Data>Yes</Data>
-                    </DataContainer>
-                    <DataContainer>
-                        <p>Medical Condition:</p>
-                        <Data>Synus</Data>
+                        <Data>{joinRequest.specialMedicalConditions}</Data>
                     </DataContainer>
                 </LeftSide>
                 <RightSide>
                     <DataContainer>
-                        <p>Smoke?</p>
-                        <Data>No</Data>
+                        <p>Medical Condition:</p>
+                        <Data>{joinRequest.medicalCondition}</Data>
                     </DataContainer>
                     <DataContainer>
-                        <p>Agree with criteria:</p>
-                        <Data>Yes</Data>
+                        <p>Smoke?</p>
+                        <Data>{joinRequest.smoke}</Data>
                     </DataContainer>
                     <DataContainer>
                         <p>Message:</p>
                         <Data>
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. 
-                            Sit cupiditate quasi fugiat laborum aut, voluptatem ipsam. 
-                            Natus repellendus laborum exercitationem ab deserunt reprehenderit 
-                            illo ea doloribus nesciunt, corporis dicta in?
+                            {joinRequest.comment}
                         </Data>
                     </DataContainer>
                 </RightSide>
