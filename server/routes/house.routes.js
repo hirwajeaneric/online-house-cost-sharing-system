@@ -13,7 +13,7 @@ router.get('/findByLocation', findByLocation);
 router.get('/findByTenant', findByTenant);
 router.get('/search', broadSearch);
 router.post('/save', upload.single('photo'), save);
-router.put('/update', update);
+router.put('/update', upload.single('photo'), update);
 router.delete('/delete', removeHouse);
 
 module.exports = router;

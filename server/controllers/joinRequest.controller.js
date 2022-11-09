@@ -18,6 +18,34 @@ exports.list = (req, res, next) => {
     })
 }
 
+exports.findById = (req, res, next) => {
+    joinRequestModel.findById(req.query.id)
+    .then(response=> {
+        if (response) {
+            res.status(200).send(response)
+        } else {
+            res.status(404).send("No request available.")
+        }
+    })
+    .catch(err=>{
+        res.status(500).send("Server error: "+err)
+    })
+}
+
+exports.findByJoinPost = (req, res, next) => {
+    joinRequestModel.findById({joinPost: req.query.joinPost})
+    .then(response=> {
+        if (response) {
+            res.status(200).send(response)
+        } else {
+            res.status(404).send("No request available.")
+        }
+    })
+    .catch(err=>{
+        res.status(500).send("Server error: "+err)
+    })
+}
+
 // exports.broadSearch = (req, res, next) => {
 //     joinRequestModel.find({ 
 //         age: req.query. age, 

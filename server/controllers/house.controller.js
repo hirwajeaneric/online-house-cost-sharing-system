@@ -177,7 +177,7 @@ exports.save = (req, res, next) => {
 }
 
 exports.update = (req, res, next) => {
-    houseModel.findByIdAndUpdate(req.query.id, req.body)
+    req.file ? new houseModel({...req.body, photo: req.file.filename }).update() : houseModel.findByIdAndUpdate(req.query.id, req.body)
     .then(response=> {
         res.status(200).send({ message: 'House updated!', house: response })
     })
