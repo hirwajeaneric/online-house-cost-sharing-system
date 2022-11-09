@@ -49,13 +49,13 @@ exports.findByVerified = (req, res, next) => {
     })
 }
 
-exports.findByStatus = (req, res, next) => {
-    houseModel.find({ status: req.query.status })
+exports.findByUsername = (req, res, next) => {
+    houseModel.find({ username: req.query.username })
     .then(response=> {
         if (response) {
             res.status(200).send(response)
         } else {
-            res.status(404).send("No houses available")
+            res.status(404).send("No house available")
         }
     })
     .catch(err=>{
@@ -137,8 +137,7 @@ exports.broadSearch = (req, res, next) => {
     })
 }
 
-/**MULTER CONFIGURATION */
-
+/**MULTER CONFIGURATION ------------------------------------ */
 //Image storage Path
 const imgconfig = multer.diskStorage({
     destination: (req, file, callback) => {
@@ -163,6 +162,7 @@ exports.upload = multer({
     fileFilter: isImage
 })
 
+/**--------------------------------------------------------- */
 exports.save = (req, res, next) => {
     new houseModel({...req.body, photo: req.file.filename }).save()
     .then(response=> {

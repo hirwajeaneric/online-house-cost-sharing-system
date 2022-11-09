@@ -15,6 +15,7 @@ app.use(express.json());
 app.use(cors());
 
 //Routes
+app.use('/api/uploads/', express.static('./uploads'));
 app.use('/api/admin/', adminRoutes);
 app.use('/api/tenant/', tenantRoutes);
 app.use('/api/house/', houseRoutes);

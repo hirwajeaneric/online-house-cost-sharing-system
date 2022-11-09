@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import ResponseMessage from '../responses/ResponseMessage';
 import axios from 'axios';
 import Loading from '../../assets/imgs/3dotsspiner.gif';
 import { useNavigate } from 'react-router-dom';
+import { UserResponseMessageSetterContext } from '../../App';
 
 const PostHouseForm = () => {
+  const UserResponseMessageSetter = useContext(UserResponseMessageSetterContext);
   const navigate = useNavigate();
+  const [file, setFile] = useState('');
   const [joinRequirements, setJoinRequirements] = useState({
     names: '',
     tenantGender: '',
@@ -16,6 +19,7 @@ const PostHouseForm = () => {
     ageOfJoiner: '',
     maritalStatus: '',
     languages: '',
+    photo: '',
     hasPet:'',
     hasSpecialMedicalConditions: '',
     smoke: '',
@@ -29,6 +33,7 @@ const PostHouseForm = () => {
   const [houseData, setHouseData] = useState({
     number: '',
     type: '',
+    username: '',
     location: '',
     tenantOne: '',
     phoneNumberOfFirstTenant: '',
@@ -39,7 +44,7 @@ const PostHouseForm = () => {
     bathRooms: '',
     hasFurniture: '',
     joinPost: '',
-    JoinRequests: ''
+    JoinRequests: 0
   });
 
   function resetInputs() {
@@ -68,15 +73,17 @@ const PostHouseForm = () => {
       type: '',
       location: '',
       tenantOne: '',
+      tenantTwo: '',
       phoneNumberOfFirstTenant: '',
       description: '',
       rent: '',
+      photo: '',
       verified: 'No',
       rooms:'',
       bathRooms: '',
       hasFurniture: '',
       joinPost: '',
-      JoinRequests: ''
+      joinRequests: 0
     });
 
     setErrors('');
@@ -86,6 +93,11 @@ const PostHouseForm = () => {
   const[errors, setErrors] = useState('');
 
   const[spinner, setSpinner] = useState({active: false, message: ''});
+
+  const handleFile = (e) => {
+    const {files} = e.target;
+    setFile(files[0]);
+  }
 
   const handleHouseInputs = ({currentTarget: input}) => {
     setHouseData({...houseData, [input.name]: input.value});
@@ -99,6 +111,17 @@ const PostHouseForm = () => {
 
     e.preventDefault();
 
+    console.log('All house data: ');
+    console.log(houseData);
+
+    const config = {
+      headers: {
+        "Content-Type":"multipart/form-data"
+      }
+    }
+
+    houseData.username = localStorage.getItem('userIdentity');
+    houseData.photo = file;
     houseData.tenantOne = joinRequirements.names;
     houseData.phoneNumberOfFirstTenant = joinRequirements.phoneNumber;
     
@@ -115,7 +138,7 @@ const PostHouseForm = () => {
       setErrors('Your phone number is required')
       return;
     } else if (joinRequirements.phoneNumber.length !== 10) {
-      setErrors('Your phone number is required')
+      setErrors('Invalid phone number')
       return;
     } else if (joinRequirements.age === '') {
       setErrors('Your age is required')
@@ -174,6 +197,9 @@ const PostHouseForm = () => {
     } else if (houseData.bathRooms <= 0) {
       setErrors('Invalid number of bathrooms')
       return;
+    } else if(houseData.photo === '') {
+      setErrors('A photo of the house is required')
+      return;
     } else {
       try {
         setErrors('');
@@ -181,7 +207,7 @@ const PostHouseForm = () => {
         if (isAlreadySaved.data[0]) {
           setErrors('This house is already posted!');
         } else {
-          await axios.post('http://localhost:5000/api/house/save', houseData);
+          await axios.post('http://localhost:5000/api/house/save', houseData, config);
           await axios.post('http://localhost:5000/api/joinRequirements/save', joinRequirements);
           setSpinner({
             active: true,
@@ -194,10 +220,11 @@ const PostHouseForm = () => {
                 active: true,
                 message: 'Saved'
               });
+              UserResponseMessageSetter({visible: true, message: 'House successfully posted!'});
               resetInputs();
               navigate(`/profile/${localStorage.getItem('userIdentity')}`);
             } else {
-              setErrors('Unable to create post, Please try again!');
+              setErrors('Unable to create post, Please try again! Make sure your email and phone number were never used before here.');
             }
           }, 10000);
         }
@@ -239,7 +266,7 @@ const PostHouseForm = () => {
             <option value="Single house, two floors">Single house, two floors</option>
           </select>
           <input type="text" name="location"  value={houseData.location} onChange={handleHouseInputs} placeholder='House location' />
-          <input type="file" name="photo"/>
+          <input type="file" name="photo" onChange={handleFile}/>
           <textarea name="description" value={houseData.description} onChange={handleHouseInputs} placeholder='House description' rows='3'></textarea>
           <input type="text" name="rent" value={houseData.rent} onChange={handleHouseInputs} placeholder='Total rent cost'/>
           <input type="text" name="rooms" value={houseData.rooms} onChange={handleHouseInputs} placeholder='Number of rooms'/>

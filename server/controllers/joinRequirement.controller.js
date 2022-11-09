@@ -49,6 +49,20 @@ exports.broadSearch = (req, res, next) => {
     })
 }
 
+exports.findById = (req, res, next) => {
+    joinRequirementModel.findById(req.query.id)
+    .then(response=> {
+        if (response) {
+            res.status(200).send(response)
+        } else {
+            res.status(404).send("No such post available.")
+        }
+    })
+    .catch(err=>{
+        res.status(500).send("Server error: "+err)
+    })
+}
+
 exports.findByEmail = (req, res, next) => {
     joinRequirementModel.find({ email: req.query.email })
     .then(response=> {

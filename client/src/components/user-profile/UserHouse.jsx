@@ -1,50 +1,71 @@
-import React, { useEffect, useState } from 'react'
+import axios from 'axios';
+import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { UserResponseMessageContext, UserResponseMessageSetterContext } from '../../App';
 import ResponseMessage from '../responses/ResponseMessage';
 
 const UserHouse = () => {
-    const[house,setHouse] = useState('');
+    const[house,setHouse] = useState({});
+
+    const userResponseMessageSetter = useContext(UserResponseMessageSetterContext);
+    const userResponseMessage = useContext(UserResponseMessageContext);
 
     useEffect(()=> {
-        setHouse('Hello')
-    },[])
+        axios.get(`http://localhost:5000/api/house/findByUsername?username=${localStorage.getItem('userIdentity')}`,{ 
+            headers: {
+                "Content-Type":"application/json"    
+            }
+        })
+        .then(response=>{
+            setHouse(response.data[0]);
+            console.log(response.data[0]);
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    },[]);
+
+    setTimeout(()=>{
+        if (userResponseMessage.visible) {
+            userResponseMessageSetter({visible: false, message: ''})
+        }        
+    }, 5000)
 
     return (
         <div style={{height: '700px', width: '100%'}}>
-            <ResponseMessage backgroundColor='#e6ffee' color='green' message='Successfully Posted a House'/>
+            {userResponseMessage.visible && <ResponseMessage backgroundColor='#e6ffee' color='green' message={userResponseMessage.message}/>}
             <h1 style={{textAlign: 'left'}}>Your profile</h1>
             <div className='rented-house-container'>
-                {house.length !== 0 && 
+                {house && 
                 <div className='useraccount-house-card'>
-                    <div className="house-photo"></div>
-                    {/* <img src='../../../public/interior-design.jpg' alt='' className="house-picture" /> */}
+                    <div style={{background: "url('http://localhost:5000/api/uploads/"+house.photo+"')", width: '400px', height: '200px', backgroundSize: 'cover', backgroundRepeat: 'no-repeat'}} className="house-photo"></div>
                     <div className='some-home-details'>
                     <div className="left-side">
-                    <h3>House Number: &nbsp;&nbsp;&nbsp; 2343</h3>
+                    <h3>House Number: &nbsp;&nbsp;&nbsp; {house.number}</h3>
                         <div>
                         <h4>Location:</h4>
-                        <p>Vision City 2</p>
+                        <p>{house.location}</p>
                         </div>
                         <div>
                         <h4>Rent:</h4>
-                        <p>1000000</p>
+                        <p>{house.rent}</p>
                         </div>
                         <div>
                         <h4>Join Requests:</h4>
-                        <p>5</p>
+                        <p>{house.joinRequests}</p>
                         </div>
                     </div>
                     <div className="right-side">
                         <div>
                         <h4>Description:</h4>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptate aliquid necessitatibus earum. Perspiciatis, animi praesentium. Totam exercitationem ducimus dolorem. A ullam excepturi cum corrupti rerum assumenda id voluptas nisi aut?</p>
+                        <p>{house.description}</p>
                         </div>
                         <div className="command-btns">
-                        <Link className='profile-house-more' to='rented-house/:id'>View More / Update</Link>
+                        <Link className='profile-house-more' to={`rented-house/${house._id}`}>View More / Update</Link>
                         </div>
                     </div>
                     </div>
-                </div>  }
+                </div> }
 
                 {!house && 
                     <>

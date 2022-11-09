@@ -24,7 +24,7 @@ export const UserResponseMessageSetterContext = createContext();
 function App() {
 
   const adminToken = localStorage.getItem('ohcss-adminToken');
-  const [userResponse, setUserResponse] = useState({visible: true, message: ''});
+  const [userResponse, setUserResponse] = useState({visible: false, message: ''});
   const [tenantToken, setTenantToken] = useState('');
   
   const tentoken = localStorage.getItem('tenantToken');
