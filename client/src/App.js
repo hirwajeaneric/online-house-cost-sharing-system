@@ -16,6 +16,7 @@ import Signin from './components/signin-signup/Signin';
 import Signup from './components/signin-signup/Signup';
 import UserHouse from './components/user-profile/UserHouse';
 import UserHouseDetails from './components/user-profile/UserHouseDetails';
+import JoinRequest from './components/user-profile/JoinRequest';
 
 export const UserResponseMessageContext = createContext();
 export const UserResponseMessageSetterContext = createContext();
@@ -23,7 +24,7 @@ export const UserResponseMessageSetterContext = createContext();
 function App() {
 
   const adminToken = localStorage.getItem('ohcss-adminToken');
-  const [userResponse, setUserResponse] = useState({visible: true, message: ''});
+  const [userResponse, setUserResponse] = useState({visible: false, message: ''});
   const [tenantToken, setTenantToken] = useState('');
   
   const tentoken = localStorage.getItem('tenantToken');
@@ -48,6 +49,7 @@ function App() {
                 <Route path='profile/:username' element={<UserProfile />} >
                   <Route path='' element={<UserHouse />} />
                   <Route path='rented-house/:id' element={<UserHouseDetails />} />
+                  <Route path='request/:id' element={<JoinRequest />} />
                 </Route>   
               }
               <Route path='profile/:username' exact element={<Navigate replace to='/auth/signin' />} />

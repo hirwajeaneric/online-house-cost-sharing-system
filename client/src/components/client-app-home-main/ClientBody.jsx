@@ -1,9 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../client-app-home-main/mainStyles.css';
 import sampleImage from "../../assets/imgs/interior-design.jpg";
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const ClientHomeMain = () => {
+    const [houses, setHouses] = useState([]);
+
+    /**Fetch house */
+    useEffect(()=> {
+      axios.get(`http://localhost:5000/api/house/list`,{ 
+          headers: {
+              "Content-Type":"application/json"    
+          }
+      })
+      .then(response=>{
+          setHouses(response.data);
+          console.log(houses);
+      })
+      .catch(error => {
+          console.log(error);
+      })
+  },[]);
+
   return (
     <div className='client-home-main-container'>
       <div className='banner'>
@@ -18,78 +37,17 @@ const ClientHomeMain = () => {
       <div className='main-content'>
         <h1>Available Houses, join requests, and more</h1>
         <div className="posted-houses-container">
-          <Link to='housedetails/:id' className="a-house">
-            <img src={sampleImage} alt="" />
-            <div className="other-info">
-              <p className="short-description">3 bedroom house with good views</p>
-              <p className="location">Kigali City, Vision City</p>
-              <p className="rent">800,000 RWF</p>
-            </div>
-          </Link>
-          <Link to='housedetails/:id' className="a-house">
-              <img src={sampleImage} alt="" />
+          {houses && houses.map((house, index) => (
+            !house.tenantTwo &&
+            <Link key={index} to={`housedetails/${house._id}`} className="a-house">
+              <img src={`http://localhost:5000/api/uploads/${house.photo}`} alt="" />
               <div className="other-info">
-                <p className="short-description">3 bedroom house with good views</p>
-                <p className="location">Kigali City, Vision City</p>
-                <p className="rent">800,000 RWF</p>
+                <p className="short-description">{house.description}</p>
+                <p className="location">{house.location}</p>
+                <p className="rent">{house.rent} RWF</p>
               </div>
-          </Link>
-          <Link to='housedetails/:id' className="a-house">
-              <img src={sampleImage} alt="" />
-              <div className="other-info">
-                <p className="short-description">3 bedroom house with good views</p>
-                <p className="location">Kigali City, Vision City</p>
-                <p className="rent">800,000 RWF</p>
-              </div>
-          </Link>
-          <Link to='housedetails/:id' className="a-house">
-              <img src={sampleImage} alt="" />
-              <div className="other-info">
-                <p className="short-description">3 bedroom house with good views</p>
-                <p className="location">Kigali City, Vision City</p>
-                <p className="rent">800,000 RWF</p>
-              </div>
-          </Link>
-          <Link to='housedetails/:id' className="a-house">
-              <img src={sampleImage} alt="" />
-              <div className="other-info">
-                <p className="short-description">3 bedroom house with good views</p>
-                <p className="location">Kigali City, Vision City</p>
-                <p className="rent">800,000 RWF</p>
-              </div>
-          </Link>
-          <Link to='housedetails/:id' className="a-house">
-              <img src={sampleImage} alt="" />
-              <div className="other-info">
-                <p className="short-description">3 bedroom house with good views</p>
-                <p className="location">Kigali City, Vision City</p>
-                <p className="rent">800,000 RWF</p>
-              </div>
-          </Link>
-          <Link to='posts/post/:id' className="a-house">
-              <img src={sampleImage} alt="" />
-              <div className="other-info">
-                <p className="short-description">3 bedroom house with good views</p>
-                <p className="location">Kigali City, Vision City</p>
-                <p className="rent">800,000 RWF</p>
-              </div>
-          </Link>
-          <Link to='posts/post/:id' className="a-house">
-              <img src={sampleImage} alt="" />
-              <div className="other-info">
-                <p className="short-description">3 bedroom house with good views</p>
-                <p className="location">Kigali City, Vision City</p>
-                <p className="rent">800,000 RWF</p>
-              </div>
-          </Link>
-          <Link to='posts/post/:id' className="a-house">
-              <img src={sampleImage} alt="" />
-              <div className="other-info">
-                <p className="short-description">3 bedroom house with good views</p>
-                <p className="location">Kigali City, Vision City</p>
-                <p className="rent">800,000 RWF</p>
-              </div>
-          </Link>
+            </Link>
+          ))}
         </div>
       </div>
     </div>

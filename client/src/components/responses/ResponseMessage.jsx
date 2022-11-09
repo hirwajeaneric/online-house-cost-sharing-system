@@ -7,7 +7,7 @@ const ResponseMessage = ({backgroundColor, color, message}) => {
     width: '100%',
     border: `1px solid ${color}`,
     color: color,
-    fontSize: '90%',
+    fontSize: '100%',
     textAlign: 'center',
     backgroundColor: backgroundColor
   }

@@ -1,4 +1,7 @@
 const houseModel = require('../models/house.model');
+const fs = require('fs');
+const multer = require('multer');
+const moment = require('moment');
 
 exports.testing = (req, res, next) => {
     res.send('Admin Router works well!');
@@ -9,6 +12,20 @@ exports.list = (req, res, next) => {
     .then((response) => {
         if (response) {
             res.status(200).send(response);
+        } else {
+            res.status(404).send("No houses available")
+        }
+    })
+    .catch(err=>{
+        res.status(500).send("Server error: "+err)
+    })
+}
+
+exports.findByPhoneNumberOfFirstTenant = (req, res, next) => {
+    houseModel.find({ phoneNumberOfFirstTenant: req.query.phoneNumberOfFirstTenant })
+    .then(response=> {
+        if (response) {
+            res.status(200).send(response)
         } else {
             res.status(404).send("No houses available")
         }
@@ -32,13 +49,13 @@ exports.findByVerified = (req, res, next) => {
     })
 }
 
-exports.findByStatus = (req, res, next) => {
-    houseModel.find({ status: req.query.status })
+exports.findByUsername = (req, res, next) => {
+    houseModel.find({ username: req.query.username })
     .then(response=> {
         if (response) {
             res.status(200).send(response)
         } else {
-            res.status(404).send("No houses available")
+            res.status(404).send("No house available")
         }
     })
     .catch(err=>{
@@ -46,7 +63,17 @@ exports.findByStatus = (req, res, next) => {
     })
 }
 
-exports.findByStatus = (req, res, next) => {
+exports.findByNumber = (req, res, next) => {
+    houseModel.find({number: req.query.number})
+    .then(response=> {
+        res.status(200).send(response);
+    })
+    .catch(err=>{
+        res.status(500).send("Server error: "+err)
+    })
+}
+
+exports.findById = (req, res, next) => {
     houseModel.findById(req.query.id)
     .then(response=> {
         if (response) {
@@ -110,10 +137,39 @@ exports.broadSearch = (req, res, next) => {
     })
 }
 
+/**MULTER CONFIGURATION ------------------------------------ */
+//Image storage Path
+const imgconfig = multer.diskStorage({
+    destination: (req, file, callback) => {
+        callback(null, './uploads')
+    },
+    filename: (req, file, callback) => {
+        callback(null, `img-${moment(new Date()).format('DD-MM-YYYY')}-${file.originalname}`)
+    }
+})
+
+//Image filter
+const isImage = function(req, file, callback) {
+    if(file.mimetype.startsWith('image')) {
+        callback(null, true)
+    } else {
+        callback(new Error('Only images are allowed!'))
+    }
+}
+
+exports.upload = multer({
+    storage: imgconfig,
+    fileFilter: isImage
+})
+
+/**--------------------------------------------------------- */
 exports.save = (req, res, next) => {
-    houseModel.create(req.body)
+    new houseModel({...req.body, photo: req.file.filename }).save()
     .then(response=> {
-        res.status(200).send({ message: 'House saved!', house: response })
+        res.status(200).send({ 
+            message: 'House saved!', 
+            house: response 
+        })
     })
     .catch(err=>{
         res.status(500).send("Server error: "+err)
@@ -121,7 +177,7 @@ exports.save = (req, res, next) => {
 }
 
 exports.update = (req, res, next) => {
-    houseModel.findByIdAndUpdate(req.query.id, req.body)
+    req.file ? new houseModel({...req.body, photo: req.file.filename }).update() : houseModel.findByIdAndUpdate(req.query.id, req.body)
     .then(response=> {
         res.status(200).send({ message: 'House updated!', house: response })
     })
