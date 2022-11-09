@@ -1,47 +1,66 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import '../../components/house-details/housedetails.css';
 import { FaBath, FaBed, FaChair, FaHome, FaThumbsUp } from 'react-icons/fa';
 import ResponseMessage from '../../components/responses/ResponseMessage';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 const HouseDetails = () => {
   
+  const params = useParams();
   const joinFormManager = () => {
 
   }
+
+  const [house, setHouse] = useState([]);
+
+  /**Fetch house */
+  useEffect(()=> {
+    axios.get(`http://localhost:5000/api/house/findById?id=${params.id}`,{ 
+        headers: {
+            "Content-Type":"application/json"    
+        }
+    })
+    .then(response=>{
+        setHouse(response.data);
+        console.log(house);
+    })
+    .catch(error => {
+        console.log(error);
+    })
+  },[]);
 
   return (
     <div className='house-details-container'>
       <ResponseMessage backgroundColor='#e6ffee' color='green' message='Join request sent'/>
       <div className='house-details'>
-        <div className='house-photo'></div>
-        <div className='other-house-info'>
+        <img src={`http://localhost:5000/api/uploads/${house.photo}`} alt="" />
+        <div className='other-house-info' style={{width: '100%'}}>
           <h4>DESCRIPTION</h4>
-          <p className="house-description">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. At neque porro ea accusantium necessitatibus ullam quis quae sequi corporis ex, eligendi similique beatae placeat illum perspiciatis quos numquam sunt velit?
-          </p>
-          <p className="location">Location: <span>Vision city 2</span></p>
-          <p className='rent-price'>Rent price: <span>1000 USD</span></p>
+          <p className="house-description">{house.description}</p>
+          <p className="location">Location: <span>{house.location}</span></p>
+          <p className='rent-price'>Rent price: <span>{house.rent} FRW</span></p>
           <h4 className="other-house-descriptions">MORE DETAILS</h4>
           <div className="more-details">
             <p className="type">
               <span className='left'><FaHome  className='icon'/> Type:</span> 
-              <span className='right'>Apartment</span>
+              <span className='right'>{house.type}</span>
             </p>
             <p className="verified">
               <span className='left'><FaThumbsUp className='icon'/> Verified?:</span>
-              <span className='right'>Yes</span>
+              <span className='right'>{house.verified}</span>
             </p>
             <p className="rooms">
               <span className='left'><FaBed className='icon'/> Number of roooms:</span> 
-              <span className='right'>4</span>
+              <span className='right'>{house.rooms}</span>
             </p>
             <p className="bathrooms">
               <span className='left'><FaBath className='icon'/> Bathrooms:</span> 
-              <span className='right'>3</span>
+              <span className='right'>{house.bathRooms}</span>
             </p>
             <p className="furniture">
               <span className='left'><FaChair className='icon'/> Furnished:</span> 
-              <span className='right'>Yes</span>
+              <span className='right'>{house.hasFurniture}</span>
             </p>
           </div>
           <h4>CURRENT OCCUPIER</h4>

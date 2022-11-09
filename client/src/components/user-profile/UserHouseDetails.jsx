@@ -251,7 +251,7 @@ const UserHouseDetails = () => {
             <div className="main">
                 <div className='house-details'>
                     <h3 style={{marginBottom: '20px'}}>House Information</h3>
-                    <div 
+                    {/* <div 
                         style={{background: "url('http://localhost:5000/api/uploads/"+houseData.photo+"')", 
                         width: '100%',
                         height: '400px',
@@ -259,7 +259,12 @@ const UserHouseDetails = () => {
                         backgroundRepeat: 'no-repeat'
                     }}
                         className='house-photo'>
-                    </div>
+                    </div> */}
+                    <img 
+                        src={`http://localhost:5000/api/uploads/${houseData.photo}`} 
+                        alt="" 
+                        style={{width: '100%',height: '400px'}}
+                    />
                     {houseFormError && <ResponseMessage backgroundColor='#ffcccc' color='red' message={houseFormError}/>}
                     <form onSubmit={updateHouseData} className='other-house-info'>
                         <div className="left-side">
