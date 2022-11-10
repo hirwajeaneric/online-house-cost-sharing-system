@@ -33,9 +33,7 @@ const UserHouseDetails = () => {
         smoke: '',
         moreDescriptions: '',
         postDate: new Date().toLocaleDateString(),
-        refererEmail:'',
-        refererPhoneNumber:'',
-        numberOfJoinRequests: ''
+        refererEmail:''
     });
 
     const [houseData, setHouseData] = useState({
@@ -240,7 +238,7 @@ const UserHouseDetails = () => {
             userResponseMessageSetter({visible: false, message: ''});
             window.location.reload();
         }        
-    }, 5000)
+    }, 5000);
 
     return (
         <div className='houseDetails-container'>
@@ -446,17 +444,6 @@ const UserHouseDetails = () => {
                             <label htmlFor="more-descriptions">More descriptions</label>
                             <textarea name='moreDescriptions' value={joinRequirements.moreDescriptions} onChange={handleJoinRequirementInfo} id='more-descritions' placeholder='More descriptions'>
                             </textarea>
-                        </div>
-
-
-                        <h3 style={{marginBottom: '20px'}}>Referrence Information</h3>
-                        <div className="input-label-container">
-                            <label htmlFor="referrerEmail">Email of your referrer</label>
-                            <input type="text" name="refererEmail" value={joinRequirements.refererEmail} onChange={handleJoinRequirementInfo} placeholder='Email of your referrer' id="referrerEmail" />
-                        </div>
-                        <div className="input-label-container">
-                            <label htmlFor="referrerPhone">Phone number of your referrer</label>
-                            <input type="text" name="refererPhoneNumber" value={joinRequirements.refererPhoneNumber} onChange={handleJoinRequirementInfo} placeholder='Phone number of your referrer' id="referrerPhone" />
                         </div>
                         <div className='input-label-container' style={{justifyContent: 'flex-end', alignItems: 'flex-end', marginTop: '20px'}}>
                             <input id='submit-modifications' type="submit" value="Save modifications" />

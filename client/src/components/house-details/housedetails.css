@@ -195,6 +195,7 @@
 .join-house-descriptions .input-label-container label,
 .join-house-descriptions .input-label-container input[type='text'],
 .join-house-descriptions .input-label-container input[type='number'],
+.join-house-descriptions .input-label-container input[type='email'],
 .join-house-descriptions .input-label-container textarea
 .join-house-descriptions fieldset {
     width: 50%;
@@ -206,6 +207,7 @@
 
 .join-house-descriptions .input-label-container input[type='text'],
 .join-house-descriptions .input-label-container input[type='number'],
+.join-house-descriptions .input-label-container input[type='email'],
 .join-house-descriptions .input-label-container textarea {
     padding: 3px;
     border: 1px solid gray;

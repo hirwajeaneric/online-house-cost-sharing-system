@@ -7,6 +7,7 @@ const houseSchema = new mongoose.Schema({
     location: {type: String, required: true},
     tenantOne: {type: String, required: false},
     tenantTwo: {type: String, required: false},
+    tenantTwoUsername: {type: String, required: false},
     photo: {type: String, required: false},
     phoneNumberOfFirstTenant: {type: String, required:false},
     description: {type: String, required: true},

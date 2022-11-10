@@ -5,7 +5,8 @@ import { UserResponseMessageContext, UserResponseMessageSetterContext } from '..
 import ResponseMessage from '../responses/ResponseMessage';
 
 const UserHouse = () => {
-    const[house,setHouse] = useState({});
+    const [house,setHouse] = useState({});
+    const [userJoinRequests, setUserJoinRequests] = useState([]);
 
     const userResponseMessageSetter = useContext(UserResponseMessageSetterContext);
     const userResponseMessage = useContext(UserResponseMessageContext);
@@ -25,6 +26,17 @@ const UserHouse = () => {
         })
     },[]);
 
+    useEffect(()=> {
+        axios.get(`http://localhost:5000/api/joinRequest/findByUsername?username=${localStorage.getItem('userIdentity')}`)
+        .then(response=>{
+            setUserJoinRequests(response.data);
+            console.log(response.data);
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    },[]);
+
     setTimeout(()=>{
         if (userResponseMessage.visible) {
             userResponseMessageSetter({visible: false, message: ''})
@@ -37,35 +49,39 @@ const UserHouse = () => {
             <h1 style={{textAlign: 'left'}}>Your profile</h1>
             <div className='rented-house-container'>
                 {house && 
-                <div className='useraccount-house-card'>
-                    <div style={{background: "url('http://localhost:5000/api/uploads/"+house.photo+"')", width: '400px', height: '200px', backgroundSize: 'cover', backgroundRepeat: 'no-repeat'}} className="house-photo"></div>
-                    <div className='some-home-details'>
-                    <div className="left-side">
-                    <h3>House Number: &nbsp;&nbsp;&nbsp; {house.number}</h3>
-                        <div>
-                        <h4>Location:</h4>
-                        <p>{house.location}</p>
+                <>
+                    <h2 style={{fontSize: '20px', marginBottom: '20px'}}>Your house</h2>
+                    <div className='useraccount-house-card'>
+                        <div style={{background: "url('http://localhost:5000/api/uploads/"+house.photo+"')", width: '400px', height: '200px', backgroundSize: 'cover', backgroundRepeat: 'no-repeat'}} className="house-photo"></div>
+                        <div className='some-home-details'>
+                        <div className="left-side">
+                        <h3>House Number: &nbsp;&nbsp;&nbsp; {house.number}</h3>
+                            <div>
+                            <h4>Location:</h4>
+                            <p>{house.location}</p>
+                            </div>
+                            <div>
+                            <h4>Rent:</h4>
+                            <p>{house.rent}</p>
+                            </div>
+                            <div>
+                            {/* <h4>Join Requests:</h4>
+                            <p>{house.joinRequests}</p> */}
+                            </div>
                         </div>
-                        <div>
-                        <h4>Rent:</h4>
-                        <p>{house.rent}</p>
+                        <div className="right-side">
+                            <div>
+                            <h4>Description:</h4>
+                            <p>{house.description}</p>
+                            </div>
+                            <div className="command-btns">
+                            <Link className='profile-house-more' to={`rented-house/${house._id}`}>View More / Update</Link>
+                            </div>
                         </div>
-                        <div>
-                        <h4>Join Requests:</h4>
-                        <p>{house.joinRequests}</p>
                         </div>
                     </div>
-                    <div className="right-side">
-                        <div>
-                        <h4>Description:</h4>
-                        <p>{house.description}</p>
-                        </div>
-                        <div className="command-btns">
-                        <Link className='profile-house-more' to={`rented-house/${house._id}`}>View More / Update</Link>
-                        </div>
-                    </div>
-                    </div>
-                </div> }
+                </> 
+                }
 
                 {!house && 
                     <>
@@ -74,6 +90,33 @@ const UserHouse = () => {
                             <span>Create a post</span>
                         </Link>
                     </>
+                }
+
+                {userJoinRequests.length!==0 && 
+                <>
+                    <h2 style={{fontSize: '20px', margin: '30px 0 20px'}}>Join requests</h2>
+                    <div className='join-requests-container' style={{display: 'flex', flexDirection: 'column', justifyContent: 'flexStart', alignItems: 'center'}}>
+                        {userJoinRequests && userJoinRequests.map((joinRequest, index) => (
+                            <div key={index} style={{ background: joinRequest.approved==='Yes' ? '#b3ffcc' :'#e0ebeb' ,boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19)' ,width: '100%', padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', marginBottom: '20px'}}>
+                                <div className='top-div' style={{ fontSize: '14px', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100'}}>
+                                    <h2><strong>To: </strong>{joinRequest.nameOfOccupier}</h2>
+                                    <h2><strong>House number: </strong>{joinRequest.houseNumber}</h2>
+                                    <p>{joinRequest.sendDate}</p>
+                                </div>
+                                <div className='main-div' style={{fontSize: '14px',marginTop: '20px', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
+                                    <div className='left-div' style={{width: '50%'}}>
+                                        <p><strong>Description: </strong>{joinRequest.houseDescription}</p>
+                                        <p><strong>Location: </strong>{joinRequest.location}</p>
+                                    </div>
+                                    <div className='right-div' style={{width: '50%', display: 'flex', flexDirection: 'column',alignItems: 'flex-end', justifyContent: 'flex-end'}}>
+                                        <p>{joinRequest.approved === 'Yes' ? 'Approved' : 'Pending'}</p>
+                                        <Link style={{fontSize: '15px', padding: '1px 7px', background: 'orange', color: 'white', borderRadius: '20px'}} to={`/housedetails/${joinRequest.houseId}`}>View more</Link>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </>
                 }
             </div>
         </div>

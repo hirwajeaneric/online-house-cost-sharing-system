@@ -1,8 +1,10 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate, Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { MdEmail, MdPhone} from 'react-icons/md';
 import ResponseMessage from '../responses/ResponseMessage';
+import { UserResponseMessageContext, UserResponseMessageSetterContext } from '../../App';
 
 const Container = styled.div`
     display: flex;
@@ -100,13 +102,15 @@ const LinkBack ={
 };
 
 const JoinRequest = () => {
-
+    const userResponseMessage = useContext(UserResponseMessageContext);
+    const userResponseMessageSetter = useContext(UserResponseMessageSetterContext);
     const urlparameters = useParams();
-    const navigate = useNavigate();
 
     const [joinRequest, setJoinRequest] = useState({});
     const [error, setError] = useState('');
+    const [house, setHouse] = useState({});
 
+    /** Fetching the actual join request */    
     useEffect(()=>{
         axios.get(`http://localhost:5000/api/joinRequest/findById?id=${urlparameters.id}`)
         .then(response=>{
@@ -115,22 +119,72 @@ const JoinRequest = () => {
         .catch(error => {
             console.log(error);
         })
-    },[urlparameters])
+    },[urlparameters]);
 
-    const acceptRequest = () => {
+    /** Fetching house data using the join post id */
+    useEffect(()=>{
+        axios.get(`http://localhost:5000/api/house/findByJoinPost?joinPost=${joinRequest.joinPost}`)
+        .then(response=>{
+            setHouse(response.data[0]);
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    },[joinRequest]);
 
+    /** Accepting the Join request */
+    const acceptRequest = async(e) => {
+        e.preventDefault();
+        joinRequest.approved = 'Yes';
+        await axios.put(`http://localhost:5000/api/joinRequest/update?id=${urlparameters.id}`, joinRequest)
+        .then(response => {
+            if (response.data.joinRequest) {
+                console.log('Join Request updated!');
+            }
+        })
+        .catch(error => {
+            setError(error);
+        })
+
+        house.tenantTwo = joinRequest.name;
+        house.tenantTwoUsername = joinRequest.username;
+        await axios.put(`http://localhost:5000/api/house/update?id=${house._id}`, house)
+        .then(response => {
+            if (response.data.joinRequest) {
+                userResponseMessageSetter({visible: true, message: 'Join Request approved!'});
+            }
+        })
+        .catch(error => {
+            setError(error);
+        })
+    };
+
+    /** Rejecting the join request */
+    const rejectRequest = (e) => {
+        e.preventDefault();
+        joinRequest.approved = 'No';
+        axios.put(`http://localhost:5000/api/joinRequest/update?id=${urlparameters.id}`, joinRequest)
+        .then(response => {
+            if (response.data.joinRequest) {
+                userResponseMessageSetter({visible: true, message: 'Join request updated!'});
+            }
+        })
+        .catch(error => {
+            setError(error);
+        })
     }
 
-    const rejectRequest = () => {
-        
-    }
-
-    const cancel = () =>  {
-        navigate('')
-    }
+    /** Removing the response message after 5 secs */
+    setTimeout(()=>{
+        if (userResponseMessage.visible) {
+            userResponseMessageSetter({visible: false, message: ''});
+            window.location.reload();
+        }        
+    }, 5000);
 
     return (
         <Container>
+            {!error && userResponseMessage.visible && <ResponseMessage backgroundColor='#e6ffee' color='green' message={userResponseMessage.message}/>}
             {error && <ResponseMessage backgroundColor='#ffcccc' color='red' message={error} />}
             <Title>Join Request
                 <RequestStatus>{joinRequest.approved === 'No'? 'Pending' : 'Approved'}</RequestStatus>
@@ -174,12 +228,22 @@ const JoinRequest = () => {
                             {joinRequest.comment}
                         </Data>
                     </DataContainer>
+                    <DataContainer>
+                        <p>Phone number:</p>
+                        <Data>{joinRequest.phoneNumber}</Data>
+                    </DataContainer>
+                    <DataContainer>
+                        <p>Email:</p>
+                        <Data>
+                            {joinRequest.email}
+                        </Data>
+                    </DataContainer>
                 </RightSide>
             </RequestDetails>
-            <Form>
-                <AcceptBtn type='button' onClick={()=> acceptRequest()}>ACCEPT</AcceptBtn>
+            <Form onSubmit={acceptRequest}>
+                <AcceptBtn type='submit'>ACCEPT</AcceptBtn>
                 <Link style={LinkBack} to={`/profile/${urlparameters.username}/rented-house/${urlparameters.id}`}>BACK</Link>
-                <RejectBtn type='button' onClick={()=> rejectRequest()}>REJECT</RejectBtn>
+                <RejectBtn type='button' onClick={(e)=> rejectRequest()}>REJECT</RejectBtn>
             </Form>
         </Container>
     )

@@ -21,6 +21,13 @@ const HouseDetails = () => {
   const [error, setError] = useState(''); 
   const [joinRequest, setJoinRequest] = useState({
     name: '', 
+    phoneNumber: '',
+    houseNumber:'',
+    houseId: '',
+    location: '',
+    houseDescription: '',
+    nameOfOccupier:'',
+    email: '',
     age: '',
     gender: '',
     maritalStatus: '',
@@ -38,6 +45,13 @@ const HouseDetails = () => {
   function resetInputs() {
     setJoinRequest({
       name: '', 
+      phoneNumber: '',
+      houseNumber:'',
+      houseId: '',
+      location: '',
+      houseDescription: '',
+      nameOfOccupier:'',
+      email: '',
       age: '',
       gender: '',
       maritalStatus: '',
@@ -98,10 +112,19 @@ const HouseDetails = () => {
     if (joinRequest.name === '') {
       setError('Your name is required');
       return;
+    } else if(joinRequest.phoneNumber === ''){
+      setError('Your phone number is required');
+      return;
+    } else if(joinRequest.phoneNumber.length !== 10){
+      setError('Invalid phone number. Phone number should be 10 digits long.');
+      return;
+    } if (joinRequest.email === '') {
+      setError('Your email is required');
+      return;
     } else if(joinRequest.age === ''){
       setError('Your age is required');
       return;
-    } else if(joinRequest.gender === ''){
+    } if(joinRequest.gender === ''){
       setError('Your gender is required');
       return;
     } else if(joinRequest.maritalStatus === ''){
@@ -117,9 +140,15 @@ const HouseDetails = () => {
       setError('Do you smoke can not be left empty');
       return;
     } else {
+      joinRequest.houseId = house._id;
+      joinRequest.location = house.location;
+      joinRequest.houseDescription = house.description;
+      joinRequest.houseNumber = house.number;
+      joinRequest.nameOfOccupier = joinRequirements.names;
       joinRequest.sendDate = new Date().toDateString();
       joinRequest.approved = 'No';
       joinRequest.joinPost = joinRequirements._id;
+      joinRequest.username = localStorage.getItem('userIdentity');
       
       setError('');
 
@@ -214,9 +243,9 @@ const HouseDetails = () => {
         </div>
 
         {joinRequirements.email === localStorage.getItem('userEmail') ? 
-        '' 
+          '' 
         : 
-        (localStorage.getItem('tenantToken')) 
+        ((localStorage.getItem('tenantToken')) 
           ? 
           <>
             <h3 style={{marginBottom: '10px'}}>WOULD LIKE TO JOIN?</h3>
@@ -224,6 +253,14 @@ const HouseDetails = () => {
               <div className='input-label-container'>
                 <label htmlFor='name'>Your name: </label>
                 <input type="text" name="name" value={joinRequest.name} onChange={handleInputs} placeholder='Full name' id="name" />
+              </div>
+              <div className='input-label-container'>
+                <label htmlFor='phone'>Your phone number: </label>
+                <input type="text" name="phoneNumber" value={joinRequest.phoneNumber} onChange={handleInputs} placeholder='Your phone number' id="phone" />
+              </div>
+              <div className='input-label-container'>
+                <label htmlFor='email'>Your email: </label>
+                <input type="email" name="email" value={joinRequest.email} onChange={handleInputs} placeholder='Your email' id="email" />
               </div>
               <div className='input-label-container'>
                 <label htmlFor='age'>Your age: </label>
@@ -312,7 +349,7 @@ const HouseDetails = () => {
             </form>
           </>
           :
-            <button className='join-button' onClick={()=> joinFormManager()}>JOIN</button>
+            <button className='join-button' onClick={()=> joinFormManager()}>JOIN</button>)
         }
       </div>
 

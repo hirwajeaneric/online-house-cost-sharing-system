@@ -28,10 +28,16 @@ const ClientHomeMain = () => {
       <div className='banner'>
         <div className="banner-overflow">
         <h1>Post, Connect, Share, Discover, and more</h1>
-          <form>
+          {/* <form>
             <input type="text" name='location' placeholder='Search locations'/>
             <input type="submit" value='Search'/>
-          </form>
+          </form> */}
+          <p style={{width: '60%', textAlign: 'center'}}>
+            Welcome to Online House Cost Sharing System (OHCSS) 
+            where you can find perfect partners to share the cost of 
+            your dream house and remove the burden of high rent price 
+            all at one living luxury and comfort of your like.
+          </p>
         </div>
       </div>
       <div className='main-content'>
