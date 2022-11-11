@@ -35,8 +35,11 @@ const ClientHeader = ({bgColor, boxShadow}) => {
   }
 
   const logout = ()=> {
+    
     localStorage.removeItem('userIdentity');
     localStorage.removeItem('tenantToken');
+    localStorage.removeItem('userEmail');
+
     if(window.location.pathname === '/') {
       window.location.reload();
     } else {

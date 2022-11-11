@@ -1,8 +1,13 @@
+.client-home-main-container {
+    width: 100%;
+}
+
 .banner {
     color: white;
     background-image: url('../../assets/imgs/interior-design.jpg');
     background-repeat: no-repeat;
     background-size: cover;
+    width: 100%;
 }
 
 .banner, .banner-overflow {
@@ -15,7 +20,7 @@
 }
 
 .banner-overflow {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.6);
 }
 
 .banner h1 {

@@ -16,8 +16,6 @@ const joiningRequirementsSchema = new mongoose.Schema({
     moreDescriptions: {type: String, required: false},
     postDate: {type: String, required: true},
     numberOfJoinRequests: {type: String, required: false},
-    refererEmail: {type: String, required: false},
-    refererPhoneNumber: {type: String, required: false}
 });
 
 const JoiningRequirements = mongoose.model('joiningRequirements', joiningRequirementsSchema);

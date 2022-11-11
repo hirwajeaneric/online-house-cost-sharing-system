@@ -87,8 +87,8 @@ exports.findById = (req, res, next) => {
     })
 }
 
-exports.findByLocation = (req, res, next) => {
-    houseModel.find({ location: req.query.location })
+exports.findByJoinPost = (req, res, next) => {
+    houseModel.find({ joinPost: req.query.joinPost })
     .then(response=> {
         if (response) {
             res.status(200).send(response)

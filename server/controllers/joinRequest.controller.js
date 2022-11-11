@@ -32,6 +32,20 @@ exports.findById = (req, res, next) => {
     })
 }
 
+exports.findByUsername = (req, res, next) => {
+    joinRequestModel.find({username: req.query.username})
+    .then(response=> {
+        if (response) {
+            res.status(200).send(response)
+        } else {
+            res.status(404).send("No request available.")
+        }
+    })
+    .catch(err=>{
+        res.status(500).send("Server error: "+err)
+    })
+}
+
 exports.findByJoinPost = (req, res, next) => {
     joinRequestModel.find({joinPost: req.query.joinPost})
     .then(response=> {
