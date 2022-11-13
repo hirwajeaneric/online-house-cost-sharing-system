@@ -23,7 +23,6 @@ export const UserResponseMessageSetterContext = createContext();
 
 function App() {
 
-  const adminToken = localStorage.getItem('ohcss-adminToken');
   const [userResponse, setUserResponse] = useState({visible: false, message: ''});
   const [tenantToken, setTenantToken] = useState('');
   
@@ -36,6 +35,7 @@ function App() {
   return (
     <UserResponseMessageContext.Provider value={userResponse}>
       <UserResponseMessageSetterContext.Provider value={setUserResponse}>
+        
         <BrowserRouter>
           <Routes>
             <Route path='/' element={<Home />} />
@@ -72,6 +72,7 @@ function App() {
             </Route>
           </Routes>
         </BrowserRouter>
+        
       </UserResponseMessageSetterContext.Provider>
     </UserResponseMessageContext.Provider>
   );

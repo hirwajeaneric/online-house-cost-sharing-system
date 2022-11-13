@@ -5,6 +5,7 @@ import ResponseMessage from '../../components/responses/ResponseMessage';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { UserResponseMessageContext, UserResponseMessageSetterContext } from '../../App';
+import { MdFormatListNumbered } from 'react-icons/md';
 
 const HouseDetails = () => {
   const responseMessage = useContext(UserResponseMessageContext);
@@ -184,8 +185,8 @@ const HouseDetails = () => {
               <span className='right'>{house.type}</span>
             </p>
             <p className="verified">
-              <span className='left'><FaThumbsUp className='icon'/> Verified?:</span>
-              <span className='right'>{house.verified}</span>
+              <span className='left'><MdFormatListNumbered className='icon'/> Number:</span>
+              <span className='right'>{house.number}</span>
             </p>
             <p className="rooms">
               <span className='left'><FaBed className='icon'/> Number of roooms:</span> 

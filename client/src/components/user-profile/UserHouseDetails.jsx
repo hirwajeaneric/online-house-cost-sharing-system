@@ -320,10 +320,6 @@ const UserHouseDetails = () => {
 
                     <div className="other-relevant-info">
                         <div className="input-label-container">
-                            <p className='title'>Verified? </p>
-                            <p className='data'>{houseData.verified}</p>
-                        </div>
-                        <div className="input-label-container">
                             <p className='title'>Partner: </p>
                             <p className='data'>{houseData.tenantTwo}</p>
                         </div>

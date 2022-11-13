@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import '../client-app-home-main/mainStyles.css';
-import sampleImage from "../../assets/imgs/interior-design.jpg";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -44,7 +43,7 @@ const ClientHomeMain = () => {
         <h1>Available Houses, join requests, and more</h1>
         <div className="posted-houses-container">
           {houses && houses.map((house, index) => (
-            !house.tenantTwo &&
+            !house.tenantTwo && house.joinPost &&
             <Link key={index} to={`housedetails/${house._id}`} className="a-house">
               <img src={`http://localhost:5000/api/uploads/${house.photo}`} alt="" />
               <div className="other-info">

@@ -115,6 +115,8 @@ const JoinRequest = () => {
         axios.get(`http://localhost:5000/api/joinRequest/findById?id=${urlparameters.id}`)
         .then(response=>{
             setJoinRequest(response.data);
+            console.log('The join request:');
+            console.log(response.data);
         })
         .catch(error => {
             console.log(error);
@@ -126,6 +128,8 @@ const JoinRequest = () => {
         axios.get(`http://localhost:5000/api/house/findByJoinPost?joinPost=${joinRequest.joinPost}`)
         .then(response=>{
             setHouse(response.data[0]);
+            console.log('The house to be joined:');
+            console.log(response.data[0]);
         })
         .catch(error => {
             console.log(error);
@@ -135,38 +139,57 @@ const JoinRequest = () => {
     /** Accepting the Join request */
     const acceptRequest = async(e) => {
         e.preventDefault();
-        joinRequest.approved = 'Yes';
-        await axios.put(`http://localhost:5000/api/joinRequest/update?id=${urlparameters.id}`, joinRequest)
-        .then(response => {
-            if (response.data.joinRequest) {
-                console.log('Join Request updated!');
-            }
-        })
-        .catch(error => {
-            setError(error);
-        })
 
-        house.tenantTwo = joinRequest.name;
-        house.tenantTwoUsername = joinRequest.username;
-        await axios.put(`http://localhost:5000/api/house/update?id=${house._id}`, house)
-        .then(response => {
-            if (response.data.joinRequest) {
-                userResponseMessageSetter({visible: true, message: 'Join Request approved!'});
-            }
-        })
-        .catch(error => {
-            setError(error);
-        })
+        if (house.tenantTwo !== '' && house.tenantTwoUsername !== '') {
+            setError('Unable to approve this user, you already have another approved user.')
+        } else {
+            joinRequest.approved = 'Yes';
+            await axios.put(`http://localhost:5000/api/joinRequest/update?id=${urlparameters.id}`, joinRequest)
+            .then(response => {
+                if (response.data.joinRequest) {
+                    console.log(response.data);
+                }
+            })
+            .catch(error => {
+                setError(error);
+            })
+    
+            house.tenantTwo = joinRequest.name;
+            house.tenantTwoUsername = joinRequest.username;
+            await axios.put(`http://localhost:5000/api/house/update?id=${house._id}`, house)
+            .then(response => {
+                if (response.data) {
+                    userResponseMessageSetter({visible: true, message: 'Join Request approved!'});
+                }
+            })
+            .catch(error => {
+                setError(error);
+            })
+        }
     };
 
     /** Rejecting the join request */
-    const rejectRequest = (e) => {
+    const rejectRequest = async(e) => {
         e.preventDefault();
         joinRequest.approved = 'No';
-        axios.put(`http://localhost:5000/api/joinRequest/update?id=${urlparameters.id}`, joinRequest)
+        await axios.put(`http://localhost:5000/api/joinRequest/update?id=${urlparameters.id}`, joinRequest)
         .then(response => {
             if (response.data.joinRequest) {
                 userResponseMessageSetter({visible: true, message: 'Join request updated!'});
+            }
+        })
+        .catch(error => {
+            setError(error);
+        })
+
+        house.tenantTwo = '';
+        house.tenantTwoUsername = '';
+        console.log('Updating the house:');
+        console.log(house);
+        await axios.put(`http://localhost:5000/api/house/update?id=${house._id}`, house)
+        .then(response => {
+            if (response.data) {
+                userResponseMessageSetter({visible: true, message: 'Join Request Rejected!'});
             }
         })
         .catch(error => {
@@ -243,7 +266,7 @@ const JoinRequest = () => {
             <Form onSubmit={acceptRequest}>
                 <AcceptBtn type='submit'>ACCEPT</AcceptBtn>
                 <Link style={LinkBack} to={`/profile/${urlparameters.username}/rented-house/${urlparameters.id}`}>BACK</Link>
-                <RejectBtn type='button' onClick={(e)=> rejectRequest()}>REJECT</RejectBtn>
+                <RejectBtn type='button' onClick={rejectRequest}>REJECT</RejectBtn>
             </Form>
         </Container>
     )
