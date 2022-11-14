@@ -6,7 +6,7 @@ const ClientFooter = () => {
     <div className='footer-container'>
       <div className='copyrights-and-others'>
         <p className="copyrights">
-          &copy; 2022. Online House Cost Sharing • Made by Mukunde Uwacu Marie Orthence.
+          &copy; 2022. HOUSEONLINE. An Online House Cost Sharing System • Made by Mukunde Uwacu Marie Orthence.
         </p>
       </div>
     </div>

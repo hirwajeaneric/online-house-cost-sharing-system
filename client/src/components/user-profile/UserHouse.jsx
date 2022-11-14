@@ -37,6 +37,18 @@ const UserHouse = () => {
         })
     },[]);
 
+    const deleteHouse = (e)=> {
+        e.preventDefault();
+    
+        axios.delete(`http://localhost:5000/api/house/delete-house?id=${house._id}`)
+        .then(response => {
+          userResponseMessageSetter({visible: true, message: response.data.message})
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    }
+
     setTimeout(()=>{
         if (userResponseMessage.visible) {
             userResponseMessageSetter({visible: false, message: ''})
@@ -52,7 +64,8 @@ const UserHouse = () => {
                 <>
                     <h2 style={{fontSize: '20px', marginBottom: '20px'}}>Your house</h2>
                     <div className='useraccount-house-card'>
-                        <div style={{background: "url('http://localhost:5000/api/uploads/"+house.photo+"')", width: '400px', height: '200px', backgroundSize: 'cover', backgroundRepeat: 'no-repeat'}} className="house-photo"></div>
+                        <img src={'http://localhost:5000/api/uploads/'+house.photo} alt="" style={{width: '400px', height: '200px',}} />
+                        {/* <div style={{background: "url('http://localhost:5000/api/uploads/"+house.photo+"')", width: '400px', height: '200px', backgroundSize: 'cover', backgroundRepeat: 'no-repeat'}} className="house-photo"></div> */}
                         <div className='some-home-details'>
                         <div className="left-side">
                         <h3>House Number: &nbsp;&nbsp;&nbsp; {house.number}</h3>
@@ -64,18 +77,15 @@ const UserHouse = () => {
                             <h4>Rent:</h4>
                             <p>{house.rent}</p>
                             </div>
-                            <div>
-                            {/* <h4>Join Requests:</h4>
-                            <p>{house.joinRequests}</p> */}
-                            </div>
                         </div>
                         <div className="right-side">
                             <div>
-                            <h4>Description:</h4>
-                            <p>{house.description}</p>
+                                <h4>Description:</h4>
+                                <p>{house.description}</p>
                             </div>
-                            <div className="command-btns">
-                            <Link className='profile-house-more' to={`rented-house/${house._id}`}>View More / Update</Link>
+                            <div className="command-btns" style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                                <Link className='profile-house-more' to={`rented-house/${house._id}`}>View More / Update</Link>
+                                <button aria-label='delete house' style={{padding: '8px 12px', background: 'tomato', color: 'white', fontSize: '14px'}} onClick={()=> deleteHouse()} type='button'>Delete</button>
                             </div>
                         </div>
                         </div>

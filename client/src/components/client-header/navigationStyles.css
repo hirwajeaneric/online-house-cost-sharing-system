@@ -17,7 +17,7 @@
 
 .logo-space {
     width: 50%;
-
+    z-index: 4;
 }
 
 .navigation-container .right {
@@ -27,9 +27,8 @@
     align-items: center;
 }
 
-.logo-space h1 {
-    font-size: 25px;
-    font-weight: 900;
+.logo-space a img {
+    z-index: inherit;
 }
 
 .authentication-commands {

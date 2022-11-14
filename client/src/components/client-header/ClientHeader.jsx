@@ -50,7 +50,8 @@ const ClientHeader = ({bgColor, boxShadow}) => {
   return (
     <div className='navigation-container' style={styles}>
       <div className='logo-space'>
-        <Link to='/'><h1>ONLINE HOUSE COST SHARING</h1></Link>
+        {/* <Link to='/'><h1>ONLINE HOUSE COST SHARING</h1></Link> */}
+        <Link to='/'><img style={{width: '220px', height: 'auto'}} src="/OHCSS-logo-1.png" alt="" /></Link>
       </div>
       <div className='right'>
         <div className='authentication-commands'>

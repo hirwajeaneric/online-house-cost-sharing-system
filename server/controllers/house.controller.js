@@ -102,7 +102,7 @@ exports.findByJoinPost = (req, res, next) => {
 }
 
 exports.findByTenant = (req, res, next) => {
-    houseModel.find({ tenantOne: req.query.tenant, tenantTwo: req.query.tenant})
+    houseModel.find({ tenantOne: req.query.tenantOne, tenantTwo: req.query.tenantTwo})
     .then(response=> {
         if (response) {
             res.status(200).send(response)
@@ -189,7 +189,17 @@ exports.update = (req, res, next) => {
 exports.removeHouse = (req, res, next) => {
     houseModel.findByIdAndDelete(req.query.id)
     .then(response=> {
-        res.status(200).send({ message: 'House deleted!', house: response })
+        res.status(201).send({ message: 'House deleted!', house: response })
+    })
+    .catch(err=>{
+        res.status(500).send("Server error: "+err)
+    })
+}
+
+exports.deleteByHouseNumber = (req, res, next) => {
+    houseModel.findOneAndRemove({number: req.query.number})
+    .then(response=> {
+        res.status(201).send(response)
     })
     .catch(err=>{
         res.status(500).send("Server error: "+err)

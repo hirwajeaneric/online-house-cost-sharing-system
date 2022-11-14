@@ -25,9 +25,7 @@ const PostHouseForm = () => {
     smoke: '',
     moreDescriptions: '',
     postDate: new Date().toLocaleDateString(),
-    refererEmail:'',
-    refererPhoneNumber:'',
-    numberOfJoinRequests: ''
+    refererEmail:''
   });
 
   const [houseData, setHouseData] = useState({
@@ -63,8 +61,6 @@ const PostHouseForm = () => {
       smoke: '',
       moreDescriptions: '',
       postDate: new Date().toLocaleDateString(),
-      refererEmail:'',
-      refererPhoneNumber:'',
       numberOfJoinRequests: ''
     });
 
@@ -73,7 +69,6 @@ const PostHouseForm = () => {
       type: '',
       location: '',
       tenantOne: '',
-      tenantTwo: '',
       phoneNumberOfFirstTenant: '',
       description: '',
       rent: '',
@@ -203,7 +198,9 @@ const PostHouseForm = () => {
     } else {
       try {
         setErrors('');
+
         const isAlreadySaved = await axios.get(`http://localhost:5000/api/house/findByNumber?number=${houseData.number}`);
+        
         if (isAlreadySaved.data[0]) {
           setErrors('This house is already posted!');
         } else {
@@ -224,9 +221,16 @@ const PostHouseForm = () => {
               resetInputs();
               navigate(`/profile/${localStorage.getItem('userIdentity')}`);
             } else {
-              setErrors('Unable to create post, Please try again! Make sure your email and phone number were never used before here.');
+              setErrors('Unable to create post, Please try again! Make sure your email and phone number were never used here before.');
+              axios.delete(`http://localhost:5000/api/house/deleteByHouseNumber?number=${houseData.number}`)
+              .then(response => {
+                setErrors('Saving cancelled');
+              })
+              .catch(error=> {
+                setErrors(error);
+              })
             }
-          }, 10000);
+          }, 12000);
         }
       } catch (error) {
         setErrors(error)
@@ -289,8 +293,8 @@ const PostHouseForm = () => {
               <input type="radio" name="gender" value='Male' onChange={handleJoinRequirementInfo} id="male"/>
               <label htmlFor="female">Female</label>
               <input type="radio" name="gender" value='Female' onChange={handleJoinRequirementInfo} id="female" />
-              <label htmlFor="other">Other</label>
-              <input type="radio" name="gender" value='Other' onChange={handleJoinRequirementInfo} id="other" />
+              <label htmlFor="both">Both</label>
+              <input type="radio" name="gender" value='Both' onChange={handleJoinRequirementInfo} id="both" />
             </fieldset>
             <fieldset>
               <legend>Marital Status</legend>
@@ -325,12 +329,6 @@ const PostHouseForm = () => {
             </textarea>
         </fieldset>
 
-        {/* Information about the reference. */}
-        <fieldset className='reference-information'>
-          <legend className='reference-information-legend'>Reference information</legend>
-          <input type='text' name='refererPhoneNumber' value={joinRequirements.refererPhoneNumber} onChange={handleJoinRequirementInfo} placeholder='Referer Phone Number'/>
-          <input type='email' name='refererEmail' value={joinRequirements.refererEmail} onChange={handleJoinRequirementInfo} placeholder='Referer Email'/>
-        </fieldset>
         <div style={{diplay: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
           <div style={{width: '100%'}}>
             <input style={{width: '100%', cursor: 'pointer', marginBottom: '20px' ,boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19)'}} type="submit" value="Submit Post" />
