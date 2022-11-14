@@ -1,9 +1,8 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useState } from 'react';
 import './App.css';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
 import Home from './pages/tenantPages/Home';
-// import Posts from './pages/tenantPages/ViewUpdateHouse';
 import HouseDetails from './pages/tenantPages/HouseDetails';
 import SearchResults from './pages/tenantPages/SearchResults';
 import RequestToJoin from './pages/tenantPages/RequestToJoin';
@@ -24,13 +23,6 @@ export const UserResponseMessageSetterContext = createContext();
 function App() {
 
   const [userResponse, setUserResponse] = useState({visible: false, message: ''});
-  const [tenantToken, setTenantToken] = useState('');
-  
-  const tentoken = localStorage.getItem('tenantToken');
-
-  useEffect(()=>{
-    setTenantToken(tentoken);
-  },[])
 
   return (
     <UserResponseMessageContext.Provider value={userResponse}>
@@ -41,34 +33,37 @@ function App() {
             <Route path='/' element={<Home />} />
             <Route path='/' element={<OtherPages />} >
               <Route path='housedetails/:id' element={<HouseDetails />} />
-              {/* <Route path='post' element={<PostDetails />} /> */}
               <Route path='house/:id' element={<PostDetails />} />
               <Route path='results' element={<SearchResults />} /> 
 
-              {tenantToken &&
+              {localStorage.getItem('tenantToken') ?
                 <Route path='profile/:username' element={<UserProfile />} >
                   <Route path='' element={<UserHouse />} />
                   <Route path='rented-house/:id' element={<UserHouseDetails />} />
                   <Route path='request/:id' element={<JoinRequest />} />
-                </Route>   
+                </Route>
+                :
+                <Route path='profile/:username' exact element={<Navigate replace to='/auth/signin' />} />   
               }
-              <Route path='profile/:username' exact element={<Navigate replace to='/auth/signin' />} />
 
-              {tenantToken &&
-                <Route path='join/:id' element={<RequestToJoin />} /> 
+              {localStorage.getItem('tenantToken') ?
+                <Route path='join/:id' element={<RequestToJoin />} />
+                :
+                <Route path='join/:id' exact element={<Navigate replace to='/auth/signin' />} /> 
               }
-              <Route path='join/:id' exact element={<Navigate replace to='/auth/signin' />} />
 
-              {tenantToken && 
-                <Route path='create-post' element={<PostHouse />} /> 
+              {localStorage.getItem('tenantToken') ? 
+                <Route path='create-post' element={<PostHouse />} />
+                :
+                <Route path='create-post' exact element={<Navigate replace to='/auth/signin' />} /> 
               } 
-              <Route path='create-post' exact element={<Navigate replace to='/auth/signin' />} />
 
               <Route path='auth' element={<SigninSignup />} >
                 <Route path='' element={<Signin formType='signin'/>} />
                 <Route path='signin' element={<Signin formType='signin'/>} />
                 <Route path='signup' element={<Signup formType='signup'/>} />
               </Route>
+              
             </Route>
           </Routes>
         </BrowserRouter>

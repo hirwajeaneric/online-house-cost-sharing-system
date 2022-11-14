@@ -396,8 +396,8 @@ const UserHouseDetails = () => {
                             <label htmlFor="female">Female &nbsp;&nbsp;
                                 <input type="radio" name="gender" id="female" value='Female' onChange={handleJoinRequirementInfo} checked={joinRequirements.gender==='Female' ? true : false}/>
                             </label>
-                            <label htmlFor="other">Other &nbsp;&nbsp;
-                                <input type="radio" name="gender" id="other" value='Other' onChange={handleJoinRequirementInfo} checked={joinRequirements.gender==='Other' ? true : false}/>
+                            <label htmlFor="both">Both &nbsp;&nbsp;
+                                <input type="radio" name="gender" id="Both" value='Both' onChange={handleJoinRequirementInfo} checked={joinRequirements.gender==='Both' ? true : false}/>
                             </label>
                         </fieldset>
                         <fieldset>

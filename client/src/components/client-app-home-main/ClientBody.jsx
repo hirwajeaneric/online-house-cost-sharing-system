@@ -32,7 +32,7 @@ const ClientHomeMain = () => {
             <input type="submit" value='Search'/>
           </form> */}
           <p style={{width: '60%', textAlign: 'center'}}>
-            Welcome to Online House Cost Sharing System (OHCSS) 
+            Welcome to HOUSEONLINE, an Online House Cost Sharing System 
             where you can find perfect partners to share the cost of 
             your dream house and remove the burden of high rent price 
             all at one living luxury and comfort of your like.
@@ -40,7 +40,7 @@ const ClientHomeMain = () => {
         </div>
       </div>
       <div className='main-content'>
-        <h1>Available Houses, join requests, and more</h1>
+        <h1>Available Houses, make join request, and more</h1>
         <div className="posted-houses-container">
           {houses && houses.map((house, index) => (
             !house.tenantTwo && house.joinPost &&

@@ -293,8 +293,8 @@ const PostHouseForm = () => {
               <input type="radio" name="gender" value='Male' onChange={handleJoinRequirementInfo} id="male"/>
               <label htmlFor="female">Female</label>
               <input type="radio" name="gender" value='Female' onChange={handleJoinRequirementInfo} id="female" />
-              <label htmlFor="other">Other</label>
-              <input type="radio" name="gender" value='Other' onChange={handleJoinRequirementInfo} id="other" />
+              <label htmlFor="both">Both</label>
+              <input type="radio" name="gender" value='Both' onChange={handleJoinRequirementInfo} id="both" />
             </fieldset>
             <fieldset>
               <legend>Marital Status</legend>

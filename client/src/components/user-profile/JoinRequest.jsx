@@ -1,8 +1,7 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import { useNavigate, Link, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { MdEmail, MdPhone} from 'react-icons/md';
 import ResponseMessage from '../responses/ResponseMessage';
 import { UserResponseMessageContext, UserResponseMessageSetterContext } from '../../App';
 
@@ -140,7 +139,7 @@ const JoinRequest = () => {
     const acceptRequest = async(e) => {
         e.preventDefault();
 
-        if (house.tenantTwo !== '' && house.tenantTwoUsername !== '') {
+        if (house.tenantTwo && house.tenantTwoUsername) {
             setError('Unable to approve this user, you already have another approved user.')
         } else {
             joinRequest.approved = 'Yes';
