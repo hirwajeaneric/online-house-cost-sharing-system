@@ -17,17 +17,6 @@ const HouseDetails = () => {
     navigate('/auth/signin');
   }
 
-  const [rentRequest, setRentRequest] = useState({
-    name: '', 
-    phoneNumber: '',
-    houseId: '',
-    email: '',
-    gender: '',
-    comment: '',
-    willFindPatner: '',
-    sendDate: new Date().toDateString(),
-    approved: 'No',
-  });
   const [joinRequirements, setJoinRequirements] = useState({});
   const [house, setHouse] = useState({});
   const [error, setError] = useState(''); 
@@ -77,58 +66,6 @@ const HouseDetails = () => {
       approved: '',
       joinPost: joinRequirements._id,
     });
-
-    setRentRequest({
-      name: '', 
-      phoneNumber: '',
-      houseId: '',
-      email: '',
-      gender: '',
-      comment: '',
-      willFindPatner:'',
-      sendDate: new Date().toDateString(),
-      approved: 'No',
-    })
-  }
-
-  /** Submitting rent request */
-  const submitRentRequest = (e)=>{
-    e.preventDefault();
-
-
-    if (rentRequest.name === '') {
-      setError('Your name is required');
-      return;
-    } else if(rentRequest.phoneNumber === ''){
-      setError('Your phone number is required');
-      return;
-    } else if(rentRequest.phoneNumber.length !== 10){
-      setError('Invalid phone number. Phone number should be 10 digits long.');
-      return;
-    } if (rentRequest.email === '') {
-      setError('Your email is required');
-      return;
-    } if(rentRequest.gender === ''){
-      setError('Your gender is required');
-      return;
-    } else if(rentRequest.willFindPatner === ''){
-      setError('You must say if you wish to find a partner or not');
-      return;
-    } else {
-      rentRequest.houseId = house._id;
-
-      axios.post(`http://localhost:5000/api/rentRequest/save`, rentRequest)
-      .then(response => {
-        if(response.data) {
-          console.log(response.data);
-          responseMessageSetter({visible: true, message: response.data.message});
-          resetInputs();
-        }
-      })
-      .catch(error => {
-        setError(error);
-      })
-    }
   }
 
   /** Removing the response message after 5 secs */
@@ -167,11 +104,6 @@ const HouseDetails = () => {
   /** Handle inputs */
   const handleInputs = ({currentTarget: input}) => {
     setJoinRequest({...joinRequest, [input.name]: input.value});
-  }
-
-  /** HandleRentInputs */
-  const handleRentInputs = ({currentTarget: input}) => {
-    setRentRequest({...rentRequest, [input.name]: input.value});
   }
 
   /** Saving the join request */
@@ -269,18 +201,13 @@ const HouseDetails = () => {
               <span className='right'>{house.hasFurniture}</span>
             </p>
           </div>
-          {house.tenantOne && 
-            <>
-              <h4>CURRENT OCCUPIER</h4>
-              <p className='nameofoccupier'><span className='left'>Name of occupier:</span> <span className='right'>{house.tenantOne}</span></p>
-              <p className='genderofoccupier'><span className='left'>Gender:</span> <span className='right'>{joinRequirements.tenantGender}</span></p>
-              <p className='phone-number'><span className='left'>Phone number of occupier:</span> <span className='right'>{house.phoneNumberOfFirstTenant}</span></p>
-            </>
-          }
+          <h4>CURRENT OCCUPIER</h4>
+          <p className='nameofoccupier'><span className='left'>Name of occupier:</span> <span className='right'>{house.tenantOne}</span></p>
+          <p className='genderofoccupier'><span className='left'>Gender:</span> <span className='right'>{joinRequirements.tenantGender}</span></p>
+          <p className='phone-number'><span className='left'>Phone number of occupier:</span> <span className='right'>{house.phoneNumberOfFirstTenant}</span></p>
         </div>      
       </div>
 
-      {house.joinPost && 
       <div className='join-house-descriptions'>
         <h3 style={{marginBottom: '20px'}}>JOINING REQUIREMENTS</h3>
         <div className='details'>
@@ -425,75 +352,7 @@ const HouseDetails = () => {
           :
             <button className='join-button' onClick={()=> joinFormManager()}>JOIN</button>)
         }
-      </div>}
-
-      {/*Rent functionality*/}
-      {!house.tenantOne && 
-      <div className='join-house-descriptions'>
-        {rentRequest.email === localStorage.getItem('userEmail') ? 
-          '' 
-        : 
-        ((localStorage.getItem('tenantToken')) 
-          ? 
-          <>
-            <h3 style={{marginBottom: '10px'}}>WOULD LIKE TO RENT?</h3>
-            <form onSubmit={submitRentRequest}>
-              <div className='input-label-container'>
-                <label htmlFor='name'>Your name: </label>
-                <input type="text" name="name" value={rentRequest.name} onChange={handleRentInputs} placeholder='Full name' id="name" />
-              </div>
-              <div className='input-label-container'>
-                <label htmlFor='phone'>Your phone number: </label>
-                <input type="text" name="phoneNumber" value={rentRequest.phoneNumber} onChange={handleRentInputs} placeholder='Your phone number' id="phone" />
-              </div>
-              <div className='input-label-container'>
-                <label htmlFor='email'>Your email: </label>
-                <input type="email" name="email" value={rentRequest.email} onChange={handleRentInputs} placeholder='Your email' id="email" />
-              </div>
-              <fieldset>
-                <legend>Your gender: </legend>
-                <label htmlFor="pmale">Male &nbsp;&nbsp; 
-                    <input type="radio" name="gender" value='Male' onChange={handleRentInputs} 
-                    checked={joinRequest.gender ==='' ? false : null} 
-                    id="pmale"/>
-                </label>
-                <label htmlFor="pfemale">Female &nbsp;&nbsp;
-                    <input type="radio" name="gender" value='Female' onChange={handleRentInputs} 
-                    checked={joinRequest.gender ==='' ? false : null} 
-                    id="pfemale" />
-                </label>
-                <label htmlFor="pother">Other &nbsp;&nbsp;
-                    <input type="radio" name="gender" value='Other' onChange={handleRentInputs} 
-                    checked={joinRequest.gender ==='' ? false : null} 
-                    id="pother" />
-                </label>
-              </fieldset>
-              <fieldset>
-                <legend>Will you find a patner to share the rent?</legend>
-                <label htmlFor="willFindPatner">Yes &nbsp;&nbsp;
-                    <input type="radio" name="willFindPatner" value='Yes' onChange={handleRentInputs} checked={rentRequest.willFindPatner ==='' ? false : null} id="willFindPatner"/>
-                </label>
-                <label htmlFor="willNotFindPatner">No &nbsp;&nbsp;
-                    <input type="radio" name="willFindPatner" value='No' onChange={handleRentInputs} checked={rentRequest.willFindPatner ==='' ? false : null} id="willNotFindPatner" />
-                </label>
-              </fieldset>
-              <div className='input-label-container'>
-                <label htmlFor="more-descriptions">Your comment:</label>
-                <textarea rows='4' name='comment' value={rentRequest.comment} onChange={handleInputs} id='more-descritions' placeholder='What is on your mind?'>
-                </textarea>
-              </div>
-              <div className='input-label-container' style={{justifyContent: 'flex-end', alignItems: 'flex-end', marginTop: '20px'}}>
-                  <input id='submit-modifications' type="submit" value="Submit Request" />
-              </div>
-              <div className="input-label-container">
-                {error && <ResponseMessage backgroundColor='#ffcccc' color='red' message={error}/>}
-              </div>
-            </form>
-          </>
-          :
-            <button className='join-button' onClick={()=> joinFormManager()}>RENT HOUSE</button>)
-        }
-      </div>}
+      </div>
 
     </div>
   )
