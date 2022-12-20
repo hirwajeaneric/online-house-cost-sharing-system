@@ -5,41 +5,53 @@ import { UserResponseMessageContext, UserResponseMessageSetterContext } from '..
 import ResponseMessage from '../responses/ResponseMessage';
 
 const UserHouse = () => {
-    const [house,setHouse] = useState({});
+    const [houses,setHouses] = useState([]);
     const [userJoinRequests, setUserJoinRequests] = useState([]);
+    const [userIdentity, setUserIdentity] = useState({});
+    const [isHouseAvailable, setIsHouseAvailable] = useState(true);
 
     const userResponseMessageSetter = useContext(UserResponseMessageSetterContext);
     const userResponseMessage = useContext(UserResponseMessageContext);
 
+    //Fetch user information
     useEffect(()=> {
-        axios.get(`http://localhost:5000/api/house/findByUsername?username=${localStorage.getItem('userIdentity')}`,{ 
+        axios.get(`http://localhost:5000/api/tenant/findByUsername?username=${localStorage.getItem('userIdentity')}`)
+        .then(response=>{
+            setUserIdentity(response.data)
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    },[]);
+
+    //Fetch houses
+    useEffect(()=> {
+        axios.get(`http://localhost:5000/api/house/list`,{ 
             headers: {
                 "Content-Type":"application/json"    
             }
         })
         .then(response=>{
-            setHouse(response.data[0]);
-            console.log(response.data[0]);
+            setHouses(response.data); 
         })
         .catch(error => {
             console.log(error);
         })
-    },[]);
+    },[houses]);
 
+    //Fetch Join requests
     useEffect(()=> {
         axios.get(`http://localhost:5000/api/joinRequest/findByUsername?username=${localStorage.getItem('userIdentity')}`)
         .then(response=>{
             setUserJoinRequests(response.data);
-            console.log(response.data);
         })
         .catch(error => {
             console.log(error);
         })
     },[]);
 
-    const deleteHouse = (e)=> {
-        e.preventDefault();
-    
+    //Delete house
+    const deleteHouse = (house)=> {
         axios.delete(`http://localhost:5000/api/house/delete-house?id=${house._id}`)
         .then(response => {
           userResponseMessageSetter({visible: true, message: response.data.message})
@@ -56,52 +68,94 @@ const UserHouse = () => {
     }, 5000)
 
     return (
-        <div style={{height: '700px', width: '100%'}}>
+        <div style={{minHeight: "100vh",width: '100%'}}>
+            
+            {/* Where the response message displays */}
             {userResponseMessage.visible && <ResponseMessage backgroundColor='#e6ffee' color='green' message={userResponseMessage.message}/>}
+            
             <h1 style={{textAlign: 'left'}}>Your profile</h1>
+            
             <div className='rented-house-container'>
-                {house && 
-                <>
-                    <h2 style={{fontSize: '20px', marginBottom: '20px'}}>Your house</h2>
-                    <div className='useraccount-house-card'>
-                        <img src={'http://localhost:5000/api/uploads/'+house.photo} alt="" style={{width: '400px', height: '200px',}} />
-                        {/* <div style={{background: "url('http://localhost:5000/api/uploads/"+house.photo+"')", width: '400px', height: '200px', backgroundSize: 'cover', backgroundRepeat: 'no-repeat'}} className="house-photo"></div> */}
-                        <div className='some-home-details'>
-                        <div className="left-side">
-                        <h3>House Number: &nbsp;&nbsp;&nbsp; {house.number}</h3>
-                            <div>
-                            <h4>Location:</h4>
-                            <p>{house.location}</p>
-                            </div>
-                            <div>
-                            <h4>Rent:</h4>
-                            <p>{house.rent}</p>
-                            </div>
-                        </div>
-                        <div className="right-side">
-                            <div>
-                                <h4>Description:</h4>
-                                <p>{house.description}</p>
-                            </div>
-                            <div className="command-btns" style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                                <Link className='profile-house-more' to={`rented-house/${house._id}`}>View More / Update</Link>
-                                <button aria-label='delete house' style={{padding: '8px 12px', background: 'tomato', color: 'white', fontSize: '14px'}} onClick={()=> deleteHouse()} type='button'>Delete</button>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                </> 
+                <h2 style={{fontSize: '20px', margin: '0px 0px 20px'}}>Your house{houses.length > 1 ? 's' : ''}</h2>
+                {/* If a person does not have a house in their account yet */}
+                <Link style={{marginBottom: '20px'}} className='post-house-button' to='/add-house'>
+                    <span>Add New house</span>
+                </Link>
+                 
+                {/* Displaying owned houses */}
+                {houses && 
+                    houses.map((house, index) => (
+                        house.ownerId === userIdentity._id ? 
+                            <div key={index} className='useraccount-house-card' style={{marginBottom: '20px'}}>
+                                <img src={'http://localhost:5000/api/uploads/'+house.photo} alt="" style={{width: '400px', height: '200px',}} />
+                                <div className='some-home-details'>
+                                    <div className="left-side">
+                                        <h3>House Number: &nbsp;&nbsp;&nbsp; {house.number}</h3>
+                                        <div>
+                                        <h4>Location:</h4>
+                                        <p>{house.location}</p>
+                                        </div>
+                                        <div>
+                                        <h4>Rent:</h4>
+                                        <p>{house.rent}</p>
+                                        </div>
+                                    </div>
+                                    <div className="right-side">
+                                        <div>
+                                            <h4>Description:</h4>
+                                            <p>{house.description}</p>
+                                        </div>
+                                        <div className="command-btns" style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                                            <Link className='profile-house-more' to={`rented-house/${house._id}`}>View More / Update</Link>
+                                            <button aria-label='delete house' style={{padding: '8px 12px', background: 'tomato', color: 'white', fontSize: '14px'}} onClick={()=> deleteHouse(house)} type='button'>Delete</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                            : ""
+                    )) 
                 }
 
-                {!house && 
-                    <>
-                        <p style={{margin: '0 0 20px 0'}}>You don't have any post or house yet.</p>
-                        <Link className='post-house-button' to='/create-post'>
-                            <span>Create a post</span>
-                        </Link>
-                    </>
+                {/* Displaying rented houses */}
+                {houses.map((house, index) => (house.tenantOne === userIdentity.firstname+" "+userIdentity.lastname) && 
+                    <h2 style={{fontSize: '20px', margin: '20px 0px'}}>Rented house</h2>)
                 }
 
+                {houses && 
+                    houses.map((house, index) => (
+                        house.tenantOne === userIdentity.firstname+" "+userIdentity.lastname && 
+                        <>
+                            <div key={index} className='useraccount-house-card'>
+                                <img src={'http://localhost:5000/api/uploads/'+house.photo} alt="" style={{width: '400px', height: '200px',}} />
+                                <div className='some-home-details'>
+                                <div className="left-side">
+                                <h3>House Number: &nbsp;&nbsp;&nbsp; {house.number}</h3>
+                                    <div>
+                                    <h4>Location:</h4>
+                                    <p>{house.location}</p>
+                                    </div>
+                                    <div>
+                                    <h4>Rent:</h4>
+                                    <p>{house.rent}</p>
+                                    </div>
+                                </div>
+                                <div className="right-side">
+                                    <div>
+                                        <h4>Description:</h4>
+                                        <p>{house.description}</p>
+                                    </div>
+                                    <div className="command-btns" style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                                        <Link className='profile-house-more' to={`rented-house/${house._id}`}>View More / Update</Link>
+                                        <button aria-label='delete house' style={{padding: '8px 12px', background: 'tomato', color: 'white', fontSize: '14px'}} onClick={(house)=> deleteHouse()} type='button'>Delete</button>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </>
+                    )) 
+                }
+
+                {/* In case there are join requests, they will be displayed */}
                 {userJoinRequests.length!==0 && 
                 <>
                     <h2 style={{fontSize: '20px', margin: '30px 0 20px'}}>Join requests</h2>

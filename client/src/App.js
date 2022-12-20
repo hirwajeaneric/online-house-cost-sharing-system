@@ -7,6 +7,7 @@ import HouseDetails from './pages/tenantPages/HouseDetails';
 import SearchResults from './pages/tenantPages/SearchResults';
 import RequestToJoin from './pages/tenantPages/RequestToJoin';
 import PostHouse from './pages/tenantPages/PostHouse';
+import AddHouse from './pages/tenantPages/AddHouse';
 import PostDetails from './pages/tenantPages/PostDetails';
 import SigninSignup from './pages/authentication/SigninSignup';
 import UserProfile from './pages/tenantPages/UserProfile';
@@ -56,6 +57,12 @@ function App() {
                 <Route path='create-post' element={<PostHouse />} />
                 :
                 <Route path='create-post' exact element={<Navigate replace to='/auth/signin' />} /> 
+              }
+
+              {localStorage.getItem('tenantToken') ? 
+                <Route path='add-house' element={<AddHouse />} />
+                :
+                <Route path='add-house' exact element={<Navigate replace to='/auth/signin' />} /> 
               } 
 
               <Route path='auth' element={<SigninSignup />} >

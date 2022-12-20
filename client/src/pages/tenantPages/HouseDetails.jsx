@@ -30,6 +30,7 @@ const HouseDetails = () => {
   });
   const [joinRequirements, setJoinRequirements] = useState({});
   const [house, setHouse] = useState({});
+  const [userIdentity, setUserIdentity] = useState({})
   const [error, setError] = useState(''); 
   const [joinRequest, setJoinRequest] = useState({
     name: '', 
@@ -90,6 +91,17 @@ const HouseDetails = () => {
       approved: 'No',
     })
   }
+
+  //Fetch all user information
+  useEffect(()=>{
+    axios.get(`http://localhost:5000/api/tenant/findByUsername?username=${localStorage.getItem('userIdentity')}`)
+    .then(response=>{
+      setUserIdentity(response.data)
+    })
+    .catch(error=>{
+      setError(error)
+    })
+  },[])
 
   /** Submitting rent request */
   const submitRentRequest = (e)=>{
@@ -428,7 +440,7 @@ const HouseDetails = () => {
       </div>}
 
       {/*Rent functionality*/}
-      {!house.tenantOne && 
+      {!house.tenantOne && house.ownerId !== userIdentity._id &&
       <div className='join-house-descriptions'>
         {rentRequest.email === localStorage.getItem('userEmail') ? 
           '' 

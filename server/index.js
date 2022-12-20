@@ -3,11 +3,13 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const connection = require('./db');
+
 const adminRoutes = require('./routes/admin.routes');
 const tenantRoutes = require('./routes/tenant.routes');
 const houseRoutes = require('./routes/house.routes');
 const joinRequestRoutes = require('./routes/joinRequest.routes');
 const joinRequirementsRoutes = require('./routes/joinRequirement.routes');
+const rentRequestRoutes = require('./routes/rentRequest.routes');
 
 connection();
 
@@ -21,6 +23,7 @@ app.use('/api/tenant/', tenantRoutes);
 app.use('/api/house/', houseRoutes);
 app.use('/api/joinRequest/', joinRequestRoutes);
 app.use('/api/joinRequirements/', joinRequirementsRoutes);
+app.use('/api/rentRequest/', rentRequestRoutes);
 
 const port = process.env.PORT || 5000;
 app.listen(port, ()=> console.log(`Listening on port ${port}...`));
