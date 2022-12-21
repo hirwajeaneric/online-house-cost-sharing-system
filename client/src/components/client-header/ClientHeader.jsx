@@ -50,7 +50,6 @@ const ClientHeader = ({bgColor, boxShadow}) => {
   return (
     <div className='navigation-container' style={styles}>
       <div className='logo-space'>
-        {/* <Link to='/'><h1>ONLINE HOUSE COST SHARING</h1></Link> */}
         <Link to='/'><img style={{width: '220px', height: 'auto'}} src="/OHCSS-logo-1.png" alt="" /></Link>
       </div>
       <div className='right'>
@@ -69,7 +68,7 @@ const ClientHeader = ({bgColor, boxShadow}) => {
           }
         </div>
         <div className='call-to-action'>
-          <Link className='post-house-link' to='/create-post'><FaPlus className='post-house-icon' /> Post House</Link>
+          <Link className='post-house-link' to='/add-house'><FaPlus className='post-house-icon' /> Add House</Link>
         </div>
       </div>
     </div>

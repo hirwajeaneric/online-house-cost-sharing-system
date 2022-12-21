@@ -7,6 +7,7 @@ import HouseDetails from './pages/tenantPages/HouseDetails';
 import SearchResults from './pages/tenantPages/SearchResults';
 import RequestToJoin from './pages/tenantPages/RequestToJoin';
 import PostHouse from './pages/tenantPages/PostHouse';
+import AddHouse from './pages/tenantPages/AddHouse';
 import PostDetails from './pages/tenantPages/PostDetails';
 import SigninSignup from './pages/authentication/SigninSignup';
 import UserProfile from './pages/tenantPages/UserProfile';
@@ -16,6 +17,7 @@ import Signup from './components/signin-signup/Signup';
 import UserHouse from './components/user-profile/UserHouse';
 import UserHouseDetails from './components/user-profile/UserHouseDetails';
 import JoinRequest from './components/user-profile/JoinRequest';
+import RentRequest from './components/user-profile/RentRequest';
 
 export const UserResponseMessageContext = createContext();
 export const UserResponseMessageSetterContext = createContext();
@@ -41,6 +43,7 @@ function App() {
                   <Route path='' element={<UserHouse />} />
                   <Route path='rented-house/:id' element={<UserHouseDetails />} />
                   <Route path='request/:id' element={<JoinRequest />} />
+                  <Route path='rent-request/:id' element={<RentRequest />} />
                 </Route>
                 :
                 <Route path='profile/:username' exact element={<Navigate replace to='/auth/signin' />} />   
@@ -56,6 +59,12 @@ function App() {
                 <Route path='create-post' element={<PostHouse />} />
                 :
                 <Route path='create-post' exact element={<Navigate replace to='/auth/signin' />} /> 
+              }
+
+              {localStorage.getItem('tenantToken') ? 
+                <Route path='add-house' element={<AddHouse />} />
+                :
+                <Route path='add-house' exact element={<Navigate replace to='/auth/signin' />} /> 
               } 
 
               <Route path='auth' element={<SigninSignup />} >

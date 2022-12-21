@@ -1,11 +1,13 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { UserResponseMessageContext, UserResponseMessageSetterContext } from '../../App';
 import ResponseMessage from '../responses/ResponseMessage';
 
 const UserHouseDetails = () => {
     const userResponseMessageSetter = useContext(UserResponseMessageSetterContext);
+
+    const houseId = useParams();
     
     const userResponseMessage = useContext(UserResponseMessageContext);
 
@@ -14,6 +16,7 @@ const UserHouseDetails = () => {
     const [joinRequirementsError, setJoinRequirementsError] = useState('');
     
     const [joinRequests, setJoinRequests] = useState([]);
+    const [rentRequests, setRentRequests] = useState([]);
     
     const [file, setFile] = useState('');
     
@@ -54,15 +57,28 @@ const UserHouseDetails = () => {
         joinRequests: 0
     });
 
+    const [userIdentity, setUserIdentity] = useState({});
+    
+    //Fetch user information
+    useEffect(()=> {
+        axios.get(`http://localhost:5000/api/tenant/findByUsername?username=${localStorage.getItem('userIdentity')}`)
+        .then(response=>{
+            setUserIdentity(response.data)
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    },[]);
+
     /**Fetch house */
     useEffect(()=> {
-        axios.get(`http://localhost:5000/api/house/findByUsername?username=${localStorage.getItem('userIdentity')}`,{ 
+        axios.get(`http://localhost:5000/api/house/findById?id=${houseId.id}`,{ 
             headers: {
                 "Content-Type":"application/json"    
             }
         })
         .then(response=>{
-            setHouseData(response.data[0]);
+            setHouseData(response.data);
         })
         .catch(error => {
             console.log(error);
@@ -79,6 +95,17 @@ const UserHouseDetails = () => {
             console.log(error);
         })
     },[houseData.joinPost])
+
+    /**Fetch Rent Requests */
+    useEffect(()=>{
+        axios.get(`http://localhost:5000/api/rentRequest/findByHouseId?houseId=${houseData._id}`)
+        .then(response=>{
+            setRentRequests(response.data);
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    },[houseData._id])
 
     /**Fetch Join Criteria(Join requirements) */
     useEffect(()=>{
@@ -304,21 +331,24 @@ const UserHouseDetails = () => {
                                 </label>
                             </fieldset>
                             </div>
-                            <div className='input-label-container'>
-                                <label htmlFor="tenantOne">Your name: </label>
-                                <input type="text" name="tenantOne" value={houseData.tenantOne} onChange={handleHouseInputs} placeholder='Your name' id="tenatOne" />
-                            </div>
-                            <div className='input-label-container'>
-                                <label htmlFor="yourphone">Your Phone number: </label>
-                                <input type="text" name="phoneNumberOfFirstTenant" value={houseData.phoneNumberOfFirstTenant} onChange={handleHouseInputs} placeholder='Phone number' id="yourphone" />
-                            </div>
+                            {houseData.tenantOne && 
+                                <>
+                                    <div className='input-label-container'>
+                                        <label htmlFor="tenantOne">Your name: </label>
+                                        <input type="text" name="tenantOne" value={houseData.tenantOne} onChange={handleHouseInputs} placeholder='Your name' id="tenatOne" />
+                                    </div>
+                                    <div className='input-label-container'>
+                                        <label htmlFor="yourphone">Your Phone number: </label>
+                                        <input type="text" name="phoneNumberOfFirstTenant" value={houseData.phoneNumberOfFirstTenant} onChange={handleHouseInputs} placeholder='Phone number' id="yourphone" />
+                                    </div>
+                                </>}
                             <div className='input-label-container' style={{justifyContent: 'flex-end', alignItems: 'flex-end', marginTop: '20px'}}>
                                 <input id='submit-modifications' type="submit" value="Save modifications" />
                             </div>
                         </div>
                     </form>
 
-                    <div className="other-relevant-info">
+                    {houseData.tenantOne && !houseData.ownerId && <div className="other-relevant-info">
                         <div className="input-label-container">
                             <p className='title'>Partner: </p>
                             <p className='data'>{houseData.tenantTwo}</p>
@@ -327,9 +357,26 @@ const UserHouseDetails = () => {
                             <p className='title'>Number of Join Requests: </p>
                             <p className='data'>{joinRequests.length}</p>
                         </div>
-                    </div>
-                    
-                    <div className="join-requests-space">
+                    </div>}
+
+                    {/* Rented people */}
+                    {houseData.ownerId === userIdentity._id && <div className="other-relevant-info">
+                        <div className="input-label-container">
+                            <p className='title'>First occupier: </p>
+                            <p className='data'>{houseData.tenantOne}</p>
+                        </div>
+                        <div className="input-label-container">
+                            <p className='title'>Second occupier: </p>
+                            <p className='data'>{houseData.tenantTwo}</p>
+                        </div>
+                        {/* <div className="input-label-container">
+                            <p className='title'>Number of Join Requests: </p>
+                            <p className='data'>{joinRequests.length}</p>
+                        </div> */}
+                    </div>}
+
+                    {/* Join requests space */}
+                    {houseData.username === userIdentity.username && <div className="join-requests-space">
                         <h3>Join Requests</h3>
                         {joinRequests.length!==0 ? 
                             (<div className="available-requests">
@@ -350,10 +397,35 @@ const UserHouseDetails = () => {
                                 <p>You don't have requests yet.</p>
                             </div>
                             }
-                    </div>
-                </div>
+                    </div>}
 
-                <div className='join-house-descriptions'>
+                    {/* Rent requests space */}
+                    {houseData.ownerId === userIdentity._id && <div className="join-requests-space">
+                        <h3>Rent Requests</h3>
+                        {rentRequests.length!==0 ? 
+                            (<div className="available-requests">
+                                {rentRequests.map((request, index)=>(
+                                    <Link key={index} to={`../rent-request/${request._id}`} className='a-join-request-container'>
+                                        <div className="requestData">
+                                            <div className="request-title">
+                                                <h4>{request.name}</h4>
+                                                <p className='request-date'>{request.sendDate}</p>
+                                            </div>
+                                            <p className='request-description'>{request.comment}</p>
+                                        </div>
+                                    </Link>
+                                ))}    
+                            </div>)
+                            :
+                            <div className='no-requests'>
+                                <p>You don't have requests yet.</p>
+                            </div>
+                            }
+                    </div>}
+                </div>
+                
+                {/* Join requirements */}
+                {houseData.username === userIdentity.username && <div className='join-house-descriptions'>
                     <h3 style={{marginBottom: '20px'}}>Joining Requirements</h3>
                     <form onSubmit={updateRequirementsData} className='form-data'>
                         <div className='input-label-container'>
@@ -446,7 +518,7 @@ const UserHouseDetails = () => {
                         </div>
                         {joinRequirementsError && <ResponseMessage backgroundColor='#ffcccc' color='red' message='Age is required!'/>}
                         </form>
-                </div>
+                </div>}
             </div>    
         </div>
     )

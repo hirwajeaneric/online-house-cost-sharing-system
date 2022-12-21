@@ -40,7 +40,21 @@ const ClientHomeMain = () => {
         </div>
       </div>
       <div className='main-content'>
-        <h1>Available Houses, make join request, and more</h1>
+        <h1>Unoccupied Houses</h1>
+        <div className="posted-houses-container">
+          {houses && houses.map((house, index) => (
+            !house.tenantOne &&
+            <Link key={index} to={`housedetails/${house._id}`} className="a-house">
+              <img src={`http://localhost:5000/api/uploads/${house.photo}`} alt="" />
+              <div className="other-info">
+                <p className="short-description">{house.description}</p>
+                <p className="location">{house.location}</p>
+                <p className="rent">{house.rent} RWF</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+        <h1 style={{marginTop: '40px'}}>Occupied Houses, make join request.</h1>
         <div className="posted-houses-container">
           {houses && houses.map((house, index) => (
             !house.tenantTwo && house.joinPost &&
