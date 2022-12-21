@@ -7,12 +7,11 @@ import ResponseMessage from '../responses/ResponseMessage';
 const UserHouse = () => {
     const [houses,setHouses] = useState([]);
     const [userJoinRequests, setUserJoinRequests] = useState([]);
-    const [userIdentity, setUserIdentity] = useState({});
-    const [isHouseAvailable, setIsHouseAvailable] = useState(true);
 
     const userResponseMessageSetter = useContext(UserResponseMessageSetterContext);
     const userResponseMessage = useContext(UserResponseMessageContext);
 
+    const [userIdentity, setUserIdentity] = useState({});
     //Fetch user information
     useEffect(()=> {
         axios.get(`http://localhost:5000/api/tenant/findByUsername?username=${localStorage.getItem('userIdentity')}`)
@@ -117,13 +116,13 @@ const UserHouse = () => {
                 }
 
                 {/* Displaying rented houses */}
-                {houses.map((house, index) => (house.tenantOne === userIdentity.firstname+" "+userIdentity.lastname) && 
+                {houses.map((house, index) => (house.username === userIdentity.username) && 
                     <h2 style={{fontSize: '20px', margin: '20px 0px'}}>Rented house</h2>)
                 }
 
                 {houses && 
                     houses.map((house, index) => (
-                        house.tenantOne === userIdentity.firstname+" "+userIdentity.lastname && 
+                        house.username === userIdentity.username && 
                         <>
                             <div key={index} className='useraccount-house-card'>
                                 <img src={'http://localhost:5000/api/uploads/'+house.photo} alt="" style={{width: '400px', height: '200px',}} />

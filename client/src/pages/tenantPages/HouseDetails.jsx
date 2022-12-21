@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import '../../components/house-details/housedetails.css';
-import { FaBath, FaBed, FaChair, FaHome, FaThumbsUp } from 'react-icons/fa';
+import { FaBath, FaBed, FaChair, FaHome } from 'react-icons/fa';
 import ResponseMessage from '../../components/responses/ResponseMessage';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -19,6 +19,7 @@ const HouseDetails = () => {
 
   const [rentRequest, setRentRequest] = useState({
     name: '', 
+    username: '',
     phoneNumber: '',
     houseId: '',
     email: '',
@@ -26,8 +27,7 @@ const HouseDetails = () => {
     comment: '',
     willFindPatner: '',
     sendDate: new Date().toDateString(),
-    approved: 'No',
-  });
+    approved: 'No'});
   const [joinRequirements, setJoinRequirements] = useState({});
   const [house, setHouse] = useState({});
   const [userIdentity, setUserIdentity] = useState({})
@@ -81,6 +81,7 @@ const HouseDetails = () => {
 
     setRentRequest({
       name: '', 
+      username: '',
       phoneNumber: '',
       houseId: '',
       email: '',
@@ -107,7 +108,6 @@ const HouseDetails = () => {
   const submitRentRequest = (e)=>{
     e.preventDefault();
 
-
     if (rentRequest.name === '') {
       setError('Your name is required');
       return;
@@ -128,6 +128,7 @@ const HouseDetails = () => {
       return;
     } else {
       rentRequest.houseId = house._id;
+      rentRequest.username = userIdentity.username;
 
       axios.post(`http://localhost:5000/api/rentRequest/save`, rentRequest)
       .then(response => {
@@ -163,7 +164,7 @@ const HouseDetails = () => {
     .catch(error => {
         console.log(error);
     })
-  },[]);
+  },[params.id]);
 
   /**Fetch Join requirements (Criteria) */
   useEffect(()=> {
@@ -466,32 +467,29 @@ const HouseDetails = () => {
                 <legend>Your gender: </legend>
                 <label htmlFor="pmale">Male &nbsp;&nbsp; 
                     <input type="radio" name="gender" value='Male' onChange={handleRentInputs} 
-                    checked={joinRequest.gender ==='' ? false : null} 
                     id="pmale"/>
                 </label>
                 <label htmlFor="pfemale">Female &nbsp;&nbsp;
                     <input type="radio" name="gender" value='Female' onChange={handleRentInputs} 
-                    checked={joinRequest.gender ==='' ? false : null} 
                     id="pfemale" />
                 </label>
                 <label htmlFor="pother">Other &nbsp;&nbsp;
                     <input type="radio" name="gender" value='Other' onChange={handleRentInputs} 
-                    checked={joinRequest.gender ==='' ? false : null} 
                     id="pother" />
                 </label>
               </fieldset>
               <fieldset>
                 <legend>Will you find a patner to share the rent?</legend>
                 <label htmlFor="willFindPatner">Yes &nbsp;&nbsp;
-                    <input type="radio" name="willFindPatner" value='Yes' onChange={handleRentInputs} checked={rentRequest.willFindPatner ==='' ? false : null} id="willFindPatner"/>
+                    <input type="radio" name="willFindPatner" value='Yes' onChange={handleRentInputs} id="willFindPatner"/>
                 </label>
                 <label htmlFor="willNotFindPatner">No &nbsp;&nbsp;
-                    <input type="radio" name="willFindPatner" value='No' onChange={handleRentInputs} checked={rentRequest.willFindPatner ==='' ? false : null} id="willNotFindPatner" />
+                    <input type="radio" name="willFindPatner" value='No' onChange={handleRentInputs} id="willNotFindPatner" />
                 </label>
               </fieldset>
               <div className='input-label-container'>
                 <label htmlFor="more-descriptions">Your comment:</label>
-                <textarea rows='4' name='comment' value={rentRequest.comment} onChange={handleInputs} id='more-descritions' placeholder='What is on your mind?'>
+                <textarea rows='4' name='comment' value={rentRequest.comment} onChange={handleRentInputs} id='more-descritions' placeholder='What is on your mind?'>
                 </textarea>
               </div>
               <div className='input-label-container' style={{justifyContent: 'flex-end', alignItems: 'flex-end', marginTop: '20px'}}>

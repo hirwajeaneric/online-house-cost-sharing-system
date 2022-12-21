@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
 const rentRequestSchema = new mongoose.Schema({
-    names: {type: String, require: true},
+    name: {type: String, require: true},
+    username: {type: String, require: true},
     phoneNumber: {type: String, require: true},
     email: {type: String, require: true},
     houseId: {type: String, require: true},

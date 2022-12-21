@@ -57,9 +57,21 @@ const UserHouseDetails = () => {
         joinRequests: 0
     });
 
+    const [userIdentity, setUserIdentity] = useState({});
+    
+    //Fetch user information
+    useEffect(()=> {
+        axios.get(`http://localhost:5000/api/tenant/findByUsername?username=${localStorage.getItem('userIdentity')}`)
+        .then(response=>{
+            setUserIdentity(response.data)
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    },[]);
+
     /**Fetch house */
     useEffect(()=> {
-        console.log(`House id is ${houseId.id}`);
         axios.get(`http://localhost:5000/api/house/findById?id=${houseId.id}`,{ 
             headers: {
                 "Content-Type":"application/json"    
@@ -88,7 +100,7 @@ const UserHouseDetails = () => {
     useEffect(()=>{
         axios.get(`http://localhost:5000/api/rentRequest/findByHouseId?houseId=${houseData._id}`)
         .then(response=>{
-            setJoinRequests(response.data);
+            setRentRequests(response.data);
         })
         .catch(error => {
             console.log(error);
@@ -336,7 +348,7 @@ const UserHouseDetails = () => {
                         </div>
                     </form>
 
-                    {houseData.tenantOne && <div className="other-relevant-info">
+                    {houseData.tenantOne && !houseData.ownerId && <div className="other-relevant-info">
                         <div className="input-label-container">
                             <p className='title'>Partner: </p>
                             <p className='data'>{houseData.tenantTwo}</p>
@@ -346,9 +358,25 @@ const UserHouseDetails = () => {
                             <p className='data'>{joinRequests.length}</p>
                         </div>
                     </div>}
-                    
+
+                    {/* Rented people */}
+                    {houseData.ownerId === userIdentity._id && <div className="other-relevant-info">
+                        <div className="input-label-container">
+                            <p className='title'>First occupier: </p>
+                            <p className='data'>{houseData.tenantOne}</p>
+                        </div>
+                        <div className="input-label-container">
+                            <p className='title'>Second occupier: </p>
+                            <p className='data'>{houseData.tenantTwo}</p>
+                        </div>
+                        {/* <div className="input-label-container">
+                            <p className='title'>Number of Join Requests: </p>
+                            <p className='data'>{joinRequests.length}</p>
+                        </div> */}
+                    </div>}
+
                     {/* Join requests space */}
-                    {houseData.tenantOne && <div className="join-requests-space">
+                    {houseData.username === userIdentity.username && <div className="join-requests-space">
                         <h3>Join Requests</h3>
                         {joinRequests.length!==0 ? 
                             (<div className="available-requests">
@@ -372,12 +400,12 @@ const UserHouseDetails = () => {
                     </div>}
 
                     {/* Rent requests space */}
-                    {houseData.ownerId && <div className="join-requests-space">
+                    {houseData.ownerId === userIdentity._id && <div className="join-requests-space">
                         <h3>Rent Requests</h3>
                         {rentRequests.length!==0 ? 
                             (<div className="available-requests">
-                                {joinRequests.map((request, index)=>(
-                                    <Link key={index} to={`../request/${request._id}`} className='a-join-request-container'>
+                                {rentRequests.map((request, index)=>(
+                                    <Link key={index} to={`../rent-request/${request._id}`} className='a-join-request-container'>
                                         <div className="requestData">
                                             <div className="request-title">
                                                 <h4>{request.name}</h4>
@@ -397,8 +425,7 @@ const UserHouseDetails = () => {
                 </div>
                 
                 {/* Join requirements */}
-
-                {houseData.tenantOne && <div className='join-house-descriptions'>
+                {houseData.username === userIdentity.username && <div className='join-house-descriptions'>
                     <h3 style={{marginBottom: '20px'}}>Joining Requirements</h3>
                     <form onSubmit={updateRequirementsData} className='form-data'>
                         <div className='input-label-container'>

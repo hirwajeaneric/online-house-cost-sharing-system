@@ -17,6 +17,7 @@ import Signup from './components/signin-signup/Signup';
 import UserHouse from './components/user-profile/UserHouse';
 import UserHouseDetails from './components/user-profile/UserHouseDetails';
 import JoinRequest from './components/user-profile/JoinRequest';
+import RentRequest from './components/user-profile/RentRequest';
 
 export const UserResponseMessageContext = createContext();
 export const UserResponseMessageSetterContext = createContext();
@@ -42,6 +43,7 @@ function App() {
                   <Route path='' element={<UserHouse />} />
                   <Route path='rented-house/:id' element={<UserHouseDetails />} />
                   <Route path='request/:id' element={<JoinRequest />} />
+                  <Route path='rent-request/:id' element={<RentRequest />} />
                 </Route>
                 :
                 <Route path='profile/:username' exact element={<Navigate replace to='/auth/signin' />} />   
