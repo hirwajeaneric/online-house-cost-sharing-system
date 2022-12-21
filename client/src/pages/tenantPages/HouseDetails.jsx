@@ -443,10 +443,7 @@ const HouseDetails = () => {
       {/*Rent functionality*/}
       {!house.tenantOne && house.ownerId !== userIdentity._id &&
       <div className='join-house-descriptions'>
-        {rentRequest.email === localStorage.getItem('userEmail') ? 
-          '' 
-        : 
-        ((localStorage.getItem('tenantToken')) 
+        {(localStorage.getItem('tenantToken')) 
           ? 
           <>
             <h3 style={{marginBottom: '10px'}}>WOULD LIKE TO RENT?</h3>
@@ -501,10 +498,8 @@ const HouseDetails = () => {
             </form>
           </>
           :
-            <button className='join-button' onClick={()=> joinFormManager()}>RENT HOUSE</button>)
-        }
+            <button className='join-button' onClick={()=> joinFormManager()}>RENT HOUSE</button>}
       </div>}
-
     </div>
   )
 }

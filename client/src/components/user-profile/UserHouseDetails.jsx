@@ -135,7 +135,7 @@ const UserHouseDetails = () => {
     }
 
     /** Updating joining requirements */
-    const updateRequirementsData = (e) => {
+    const updateRequirementsData = async (e) => {
         e.preventDefault();
 
         if (joinRequirements.names === '') {
@@ -182,12 +182,16 @@ const UserHouseDetails = () => {
             return;
         } else {
             setHouseFormError('');
-            axios.put(`http://localhost:5000/api/joinRequirements/update?id=${joinRequirements._id}`, joinRequirements)
+            // Saving a house
+            const postedJoinRequests = await axios.post(`http://localhost:5000/api/joinRequirements/save`, joinRequirements)
+            // Updating a house information to add the join post
+            houseData.joinPost = postedJoinRequests._id;
+            axios.put(`http://localhost:5000/api/house/update?id=${houseData._id}`, houseData)
             .then(response=> {
                 if(response) {
-                    userResponseMessageSetter({visible: true, message: 'Join requirements updated'})
+                    userResponseMessageSetter({visible: true, message: 'House successfuly posted!'})
                 } else {
-                    setJoinRequirementsError('Failed to update joining criteria')
+                    setJoinRequirementsError('Failed post a house')
                 }
             })
             .catch(error => {
@@ -426,7 +430,7 @@ const UserHouseDetails = () => {
                 
                 {/* Join requirements */}
                 {houseData.username === userIdentity.username && <div className='join-house-descriptions'>
-                    <h3 style={{marginBottom: '20px'}}>Joining Requirements</h3>
+                    <h3 style={{marginBottom: '20px'}}>POST HOUSE with Joining Requirements</h3>
                     <form onSubmit={updateRequirementsData} className='form-data'>
                         <div className='input-label-container'>
                             <label htmlFor='email'>Your email: </label>
@@ -438,7 +442,7 @@ const UserHouseDetails = () => {
                         </div>
                         <div className='input-label-container'>
                             <label htmlFor='age'>Your age: </label>
-                            <input type="number" name="age" value={joinRequirements.age} onChange={handleJoinRequirementInfo} placeholder='Your age' id="age" />
+                            <input type="text" name="age" value={joinRequirements.age} onChange={handleJoinRequirementInfo} placeholder='Your age' id="age" />
                         </div>
                         <div className='input-label-container'>
                             <label htmlFor='age'>Prefered age of joiner: </label>
@@ -514,7 +518,7 @@ const UserHouseDetails = () => {
                             </textarea>
                         </div>
                         <div className='input-label-container' style={{justifyContent: 'flex-end', alignItems: 'flex-end', marginTop: '20px'}}>
-                            <input id='submit-modifications' type="submit" value="Save modifications" />
+                            <input id='submit-modifications' type="submit" value="POST HOUSE" />
                         </div>
                         {joinRequirementsError && <ResponseMessage backgroundColor='#ffcccc' color='red' message='Age is required!'/>}
                         </form>
