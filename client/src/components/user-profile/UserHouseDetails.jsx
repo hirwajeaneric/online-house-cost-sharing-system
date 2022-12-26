@@ -30,13 +30,11 @@ const UserHouseDetails = () => {
         ageOfJoiner: '',
         maritalStatus: '',
         languages: '',
-        photo: '',
         hasPet:'',
         hasSpecialMedicalConditions: '',
         smoke: '',
         moreDescriptions: '',
         postDate: new Date().toLocaleDateString(),
-        refererEmail:''
     });
 
     const [houseData, setHouseData] = useState({
@@ -134,8 +132,78 @@ const UserHouseDetails = () => {
         setJoinRequirements({...joinRequirements, [input.name]: input.value});
     }
 
+    /** Posting joining requirements */
+    const postJoinRequirements = async (e) => {
+        e.preventDefault();
+
+        joinRequirements.names = userIdentity.firstname+''+userIdentity.lastname;
+
+        if (joinRequirements.names === '') {
+            setJoinRequirementsError('Your name is required')
+            return;
+        } else if (joinRequirements.tenantGender === '') {
+            setJoinRequirementsError('Your gender is required')
+            return;
+        } else if (joinRequirements.email === '') {
+            setJoinRequirementsError('Your email is required')
+            return;
+        } else if (joinRequirements.phoneNumber === '') {
+            setJoinRequirementsError('Your phone number is required')
+            return;
+        } else if (joinRequirements.phoneNumber.length !== 10) {
+            setJoinRequirementsError('Invalid phone number')
+            return;
+        } else if (joinRequirements.age === '') {
+            setJoinRequirementsError('Your age is required')
+            return;
+        } else if (joinRequirements.gender === '') {
+            setJoinRequirementsError('Required gender to join is required')
+            return;
+        } else if (joinRequirements.ageOfJoiner === '') {
+            setJoinRequirementsError('Prefered age range is required')
+            return;
+        } else if (joinRequirements.maritalStatus === '') {
+            setJoinRequirementsError('Marital status required to join is required')
+            return;
+        } else if (joinRequirements.languages === '') {
+            setJoinRequirementsError('Spoken Language(s) required to join is/are required')
+            return;
+        } else if (joinRequirements.hasPet === '') {
+            setJoinRequirementsError("Has pet can not be left empty")
+            return;
+        } else if (joinRequirements.hasSpecialMedicalConditions === '') {
+            setJoinRequirementsError("Has special medical conditions can't be left empty")
+            return;
+        } else if (joinRequirements.smoke === '') {
+            setJoinRequirementsError("Do you accept a smoker can't be left empty")
+            return;
+        } else if (joinRequirements.moreDescriptions === '') {
+            setJoinRequirementsError('More descriptions are required')
+            return;
+        } else {
+            setJoinRequirementsError('');
+            // Saving the post requirements
+            const postedJoinRequests = await axios.post(`http://localhost:5000/api/joinRequirements/save`, joinRequirements)
+            
+            // Updating a house information to add the join post
+            houseData.joinPost = postedJoinRequests.data._id;
+            houseData.phoneNumberOfFirstTenant = postedJoinRequests.data.phoneNumber;
+            axios.put(`http://localhost:5000/api/house/update?id=${houseData._id}`, houseData)
+            .then(response=> {
+                if(response) {
+                    userResponseMessageSetter({visible: true, message: 'House successfuly posted!'})
+                } else {
+                    setJoinRequirementsError('Failed post a house')
+                }
+            })
+            .catch(error => {
+                setJoinRequirementsError(error);
+            }) 
+        }
+    }
+
     /** Updating joining requirements */
-    const updateRequirementsData = async (e) => {
+    const updateJoinRequirements = async (e) => {
         e.preventDefault();
 
         if (joinRequirements.names === '') {
@@ -181,17 +249,14 @@ const UserHouseDetails = () => {
             setJoinRequirementsError('More descriptions are required')
             return;
         } else {
-            setHouseFormError('');
-            // Saving a house
-            const postedJoinRequests = await axios.post(`http://localhost:5000/api/joinRequirements/save`, joinRequirements)
-            // Updating a house information to add the join post
-            houseData.joinPost = postedJoinRequests._id;
-            axios.put(`http://localhost:5000/api/house/update?id=${houseData._id}`, houseData)
+            setJoinRequirementsError('');
+            // Updating the post requirements
+            axios.put(`http://localhost:5000/api/joinRequirements/update?id=${joinRequirements._id}`, joinRequirements)
             .then(response=> {
                 if(response) {
-                    userResponseMessageSetter({visible: true, message: 'House successfuly posted!'})
+                    userResponseMessageSetter({visible: true, message: 'Join post updated!'})
                 } else {
-                    setJoinRequirementsError('Failed post a house')
+                    setJoinRequirementsError('Failed to update post')
                 }
             })
             .catch(error => {
@@ -208,10 +273,6 @@ const UserHouseDetails = () => {
             headers: {
                 "Content-Type":"multipart/form-data"
             }
-        }
-
-        if(file) {
-            houseData.photo = file;
         }
          
         if (houseData.number === '') {
@@ -267,7 +328,7 @@ const UserHouseDetails = () => {
     setTimeout(()=>{
         if (userResponseMessage.visible) {
             userResponseMessageSetter({visible: false, message: ''});
-            window.location.reload();
+            // window.location.reload();
         }        
     }, 5000);
 
@@ -283,6 +344,7 @@ const UserHouseDetails = () => {
                         style={{width: '100%',height: '400px'}}
                     />
                     {houseFormError && <ResponseMessage backgroundColor='#ffcccc' color='red' message={houseFormError}/>}
+                    {houseData.ownerId === userIdentity._id ? 
                     <form onSubmit={updateHouseData} className='other-house-info'>
                         <div className="left-side">
                             <div className='input-label-container'>
@@ -338,11 +400,11 @@ const UserHouseDetails = () => {
                             {houseData.tenantOne && 
                                 <>
                                     <div className='input-label-container'>
-                                        <label htmlFor="tenantOne">Your name: </label>
+                                        <label htmlFor="tenantOne">Name of the first tenant: </label>
                                         <input type="text" name="tenantOne" value={houseData.tenantOne} onChange={handleHouseInputs} placeholder='Your name' id="tenatOne" />
                                     </div>
                                     <div className='input-label-container'>
-                                        <label htmlFor="yourphone">Your Phone number: </label>
+                                        <label htmlFor="yourphone">Phone number of the first tenant: </label>
                                         <input type="text" name="phoneNumberOfFirstTenant" value={houseData.phoneNumberOfFirstTenant} onChange={handleHouseInputs} placeholder='Phone number' id="yourphone" />
                                     </div>
                                 </>}
@@ -351,8 +413,60 @@ const UserHouseDetails = () => {
                             </div>
                         </div>
                     </form>
+                    :
+                    <form onSubmit={updateHouseData} className='other-house-info'>
+                        <div className="left-side">
+                            <div className='input-label-container'>
+                                <label htmlFor="house-number">House number: </label>
+                                <strong>{houseData.number}</strong>
+                            </div>
+                            <div className='input-label-container'>
+                                <label htmlFor="type">House type: </label>
+                                <strong>{houseData.type}</strong>
+                            </div>
+                            <div className='input-label-container'>
+                                <label htmlFor="location">Location</label>
+                                <strong>{houseData.location}</strong>
+                            </div>
+                            <div className='input-label-container'>
+                                <label htmlFor="rent-price">Rent Cost</label>
+                                <strong>{houseData.rent}</strong>
+                            </div>
+                            <div className='input-label-container'>
+                                <label htmlFor="description">House description: </label>
+                                <strong>{houseData.description}</strong>
+                            </div>
+                        </div>
+                        <div className="right-side">
+                            <div className='input-label-container'>
+                                <label htmlFor="rooms">Number of Rooms</label>
+                                <strong>{houseData.rooms}</strong>
+                            </div>
+                            <div className='input-label-container'>
+                                <label htmlFor="bathroooms">Number of Bathrooms</label>
+                                <strong>{houseData.bathRooms}</strong>
+                            </div>
+                            <div className='input-label-container'>
+                                <label htmlFor="bathroooms">Furnished?</label>
+                                <strong>{houseData.hasFurniture}</strong>
+                            </div>
+                            {houseData.tenantOne && 
+                                <>
+                                    <div className='input-label-container'>
+                                        <label htmlFor="tenantOne">Name of the first tenant: </label>
+                                        <strong>{houseData.tenantOne}</strong>
+                                    </div>
+                                    <div className='input-label-container'>
+                                        <label htmlFor="yourphone">Phone number of the first tenant: </label>
+                                        <strong>{houseData.phoneNumberOfFirstTenant}</strong>
+                                    </div>
+                                </>}
+                        </div>
+                    </form>}
 
-                    {houseData.tenantOne && !houseData.ownerId && <div className="other-relevant-info">
+                    {houseData.tenantOne === userIdentity.firstname+""+userIdentity.lastname 
+                    // && !houseData.ownerId 
+                    && <div className="other-relevant-info">
                         <div className="input-label-container">
                             <p className='title'>Partner: </p>
                             <p className='data'>{houseData.tenantTwo}</p>
@@ -431,7 +545,9 @@ const UserHouseDetails = () => {
                 {/* Join requirements */}
                 {houseData.username === userIdentity.username && <div className='join-house-descriptions'>
                     <h3 style={{marginBottom: '20px'}}>POST HOUSE with Joining Requirements</h3>
-                    <form onSubmit={updateRequirementsData} className='form-data'>
+                    <form 
+                        onSubmit={houseData.joinPost ? updateJoinRequirements : postJoinRequirements} 
+                        className='form-data'>
                         <div className='input-label-container'>
                             <label htmlFor='email'>Your email: </label>
                             <input type="text" name="email" value={joinRequirements.email} onChange={handleJoinRequirementInfo} placeholder='Your email' id="email" />
@@ -518,9 +634,13 @@ const UserHouseDetails = () => {
                             </textarea>
                         </div>
                         <div className='input-label-container' style={{justifyContent: 'flex-end', alignItems: 'flex-end', marginTop: '20px'}}>
+                            {houseData.joinPost ? 
+                            <input id='submit-modifications' type="submit" value="UPDATE INFORMATION" />
+                            :
                             <input id='submit-modifications' type="submit" value="POST HOUSE" />
+                            }
                         </div>
-                        {joinRequirementsError && <ResponseMessage backgroundColor='#ffcccc' color='red' message='Age is required!'/>}
+                        {joinRequirementsError && <ResponseMessage backgroundColor='#ffcccc' color='red' message={joinRequirementsError} />}
                         </form>
                 </div>}
             </div>    

@@ -7,7 +7,8 @@ router.get('/list', list);
 router.get('/search', broadSearch);
 router.get('/findById', findById);
 router.get('/findByEmail', findByEmail);
-router.post('/save', save, updatingHouseData);
+// router.post('/save', save, updatingHouseData);
+router.post('/save', save);
 router.put('/update', update);
 router.delete('/delete', deleteRequest);
 

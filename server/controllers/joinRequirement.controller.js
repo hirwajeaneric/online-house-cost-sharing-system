@@ -80,8 +80,8 @@ exports.findByEmail = (req, res, next) => {
 exports.save = (req, res, next) => {
     joinRequirementModel.create(req.body)
     .then(response => {
-        next();
-        res.status(201).send({message: 'Join request saved', joinRequest: response});
+        // next();
+        res.status(201).send(response);
     })
     .catch(error=>res.status(500).send({message: error}));
 }

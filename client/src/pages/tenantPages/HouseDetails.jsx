@@ -329,7 +329,7 @@ const HouseDetails = () => {
           </div>
         </div>
 
-        {joinRequirements.email === localStorage.getItem('userEmail') ? 
+        {joinRequirements.names === userIdentity.firstname+""+userIdentity.lastname ? 
           '' 
         : 
         ((localStorage.getItem('tenantToken')) 
