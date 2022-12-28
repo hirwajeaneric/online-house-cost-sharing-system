@@ -436,12 +436,12 @@ const UserHouseDetails = () => {
                                 <label htmlFor="description">House description: </label>
                                 <strong>{houseData.description}</strong>
                             </div>
-                        </div>
-                        <div className="right-side">
                             <div className='input-label-container'>
                                 <label htmlFor="rooms">Number of Rooms</label>
                                 <strong>{houseData.rooms}</strong>
                             </div>
+                        </div>
+                        <div className="right-side">
                             <div className='input-label-container'>
                                 <label htmlFor="bathroooms">Number of Bathrooms</label>
                                 <strong>{houseData.bathRooms}</strong>
@@ -459,6 +459,13 @@ const UserHouseDetails = () => {
                                     <div className='input-label-container'>
                                         <label htmlFor="yourphone">Phone number of the first tenant: </label>
                                         <strong>{houseData.phoneNumberOfFirstTenant}</strong>
+                                    </div>
+                                </>}
+                            {houseData.tenantTwo && 
+                                <>
+                                    <div className='input-label-container'>
+                                        <label htmlFor="tenantOne">Name of the second tenant: </label>
+                                        <strong>{houseData.tenantTwo}</strong>
                                     </div>
                                 </>}
                         </div>

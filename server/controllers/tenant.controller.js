@@ -60,6 +60,16 @@ exports.list = (req, res, next) => {
     })
 }
 
+exports.findById = (req, res, next) => {
+    tenantModel.findById(req.query.id)
+    .then(response => {
+        res.status(200).send(response);
+    })
+    .catch(err=> {
+        res.status(500).send('Server error: '+err);
+    })
+}
+
 exports.findByUsername = (req, res, next) => {
     tenantModel.findOne({username: req.query.username})
     .then(response => {
