@@ -40,7 +40,13 @@ const ClientHomeMain = () => {
         </div>
       </div>
       <div className='main-content'>
-        <h1>Unoccupied Houses</h1>
+        {houses.length < 1 && <p style={{textAlign: 'center'}}>There are currently no availables houses to rent or join on this website.
+          <br/><br/>
+          Be the one to upload the first house. 
+          <br/><br/>
+          <Link to={'add-house'} style={{color: 'orangered'}}>Add house</Link>
+          </p>}
+        {houses.length < 1 ? '' : <h1 style={{textAlign: 'center'}}>Unoccupied Houses</h1>}
         <div className="posted-houses-container">
           {houses && houses.map((house, index) => (
             !house.tenantOne &&
@@ -52,9 +58,10 @@ const ClientHomeMain = () => {
                 <p className="rent">{house.rent} RWF</p>
               </div>
             </Link>
-          ))}
+            ))}
+          {/* {houses.length < 1 && <p style={{color: "gray"}}>No available houses for this section</p>} */}
         </div>
-        <h1 style={{marginTop: '40px'}}>Occupied Houses, make join request.</h1>
+        {houses.length < 1 ? '' : <h1 style={{marginTop: '40px'}}>Occupied Houses, make join request.</h1>}
         <div className="posted-houses-container">
           {houses && houses.map((house, index) => (
             !house.tenantTwo && house.joinPost &&
@@ -67,6 +74,7 @@ const ClientHomeMain = () => {
               </div>
             </Link>
           ))}
+          {/* {houses.length < 1 && <p style={{color: "gray"}}>No available houses for this section</p>} */}
         </div>
       </div>
     </div>

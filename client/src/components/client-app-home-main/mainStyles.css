@@ -61,13 +61,16 @@
 
 
 /*Content*/
-.main-content, .posted-houses-container {
+.posted-houses-container {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
 }
 
 .main-content {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     padding: 90px;

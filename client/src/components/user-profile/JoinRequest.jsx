@@ -200,7 +200,7 @@ const JoinRequest = () => {
     setTimeout(()=>{
         if (userResponseMessage.visible) {
             userResponseMessageSetter({visible: false, message: ''});
-            window.location.reload();
+            // window.location.reload();
         }        
     }, 5000);
 
@@ -264,7 +264,7 @@ const JoinRequest = () => {
             </RequestDetails>
             <Form onSubmit={acceptRequest}>
                 <AcceptBtn type='submit'>ACCEPT</AcceptBtn>
-                <Link style={LinkBack} to={`/profile/${urlparameters.username}/rented-house/${urlparameters.id}`}>BACK</Link>
+                {/* <Link style={LinkBack} to={`/profile/${urlparameters.username}/rented-house/${urlparameters.id}`}>BACK</Link> */}
                 <RejectBtn type='button' onClick={rejectRequest}>REJECT</RejectBtn>
             </Form>
         </Container>

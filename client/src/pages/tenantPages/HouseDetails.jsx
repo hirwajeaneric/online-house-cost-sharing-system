@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
 import '../../components/house-details/housedetails.css';
-import { FaBath, FaBed, FaChair, FaHome } from 'react-icons/fa';
+import { FaBath, FaBed, FaBible, FaChair, FaHome, FaUser } from 'react-icons/fa';
 import ResponseMessage from '../../components/responses/ResponseMessage';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { UserResponseMessageContext, UserResponseMessageSetterContext } from '../../App';
-import { MdFormatListNumbered } from 'react-icons/md';
+import { MdEmail, MdFormatListNumbered } from 'react-icons/md';
 
 const HouseDetails = () => {
   const responseMessage = useContext(UserResponseMessageContext);
@@ -17,6 +17,7 @@ const HouseDetails = () => {
     navigate('/auth/signin');
   }
 
+  const [houseOwner, setHouseOnwer] = useState({})
   const [rentRequest, setRentRequest] = useState({
     name: '', 
     username: '',
@@ -128,7 +129,10 @@ const HouseDetails = () => {
       return;
     } else {
       rentRequest.houseId = house._id;
+      rentRequest.rent = house.rent;
+      rentRequest.houseNumber = house.number;
       rentRequest.username = userIdentity.username;
+      rentRequest.houseOwner = houseOwner.firstname+" "+houseOwner.lastname;
 
       axios.post(`http://localhost:5000/api/rentRequest/save`, rentRequest)
       .then(response => {
@@ -176,6 +180,17 @@ const HouseDetails = () => {
         console.log(error);
     })
   },[house.joinPost]);
+
+  /**Fetch house owner's info */
+  useEffect(()=> {
+    axios.get(`http://localhost:5000/api/tenant/findById?id=${house.ownerId}`)
+    .then(response=>{
+        setHouseOnwer(response.data);
+    })
+    .catch(error => {
+        console.log(error);
+    })
+  },[house.ownerId]);
 
   /** Handle inputs */
   const handleInputs = ({currentTarget: input}) => {
@@ -281,6 +296,14 @@ const HouseDetails = () => {
               <span className='left'><FaChair className='icon'/> Furnished:</span> 
               <span className='right'>{house.hasFurniture}</span>
             </p>
+            <p className="furniture">
+              <span className='left'><FaUser className='icon'/> House owner:</span> 
+              <span className='right'>{houseOwner.firstname+" "+houseOwner.firstname}</span>
+            </p>
+            <p className="furniture">
+              <span className='left'><MdEmail className='icon'/> House owner email:</span> 
+              <span className='right'>{houseOwner.email}</span>
+            </p>
           </div>
           {house.tenantOne && 
             <>
@@ -329,7 +352,7 @@ const HouseDetails = () => {
           </div>
         </div>
 
-        {joinRequirements.email === localStorage.getItem('userEmail') ? 
+        {joinRequirements.names === userIdentity.firstname+""+userIdentity.lastname ? 
           '' 
         : 
         ((localStorage.getItem('tenantToken')) 
@@ -443,10 +466,7 @@ const HouseDetails = () => {
       {/*Rent functionality*/}
       {!house.tenantOne && house.ownerId !== userIdentity._id &&
       <div className='join-house-descriptions'>
-        {rentRequest.email === localStorage.getItem('userEmail') ? 
-          '' 
-        : 
-        ((localStorage.getItem('tenantToken')) 
+        {(localStorage.getItem('tenantToken')) 
           ? 
           <>
             <h3 style={{marginBottom: '10px'}}>WOULD LIKE TO RENT?</h3>
@@ -501,10 +521,8 @@ const HouseDetails = () => {
             </form>
           </>
           :
-            <button className='join-button' onClick={()=> joinFormManager()}>RENT HOUSE</button>)
-        }
+            <button className='join-button' onClick={()=> joinFormManager()}>RENT HOUSE</button>}
       </div>}
-
     </div>
   )
 }
