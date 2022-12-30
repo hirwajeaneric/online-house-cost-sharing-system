@@ -486,6 +486,10 @@ const UserHouseDetails = () => {
 
                     {/* Rented people */}
                     {houseData.ownerId === userIdentity._id && <div className="other-relevant-info">
+                        <div className="input-label-container" style={{marginBottom: '20px', fontWeight: '700'}}>
+                            <p className='title'>Contract: </p>
+                            <Link style={{textDecoration: 'underline'}} to={'../contract/12343434safdsf'} className='data'>124n343wnnew4n3443</Link>
+                        </div>
                         <div className="input-label-container">
                             <p className='title'>First occupier: </p>
                             <p className='data'>{houseData.tenantOne}</p>
@@ -494,10 +498,6 @@ const UserHouseDetails = () => {
                             <p className='title'>Second occupier: </p>
                             <p className='data'>{houseData.tenantTwo}</p>
                         </div>
-                        {/* <div className="input-label-container">
-                            <p className='title'>Number of Join Requests: </p>
-                            <p className='data'>{joinRequests.length}</p>
-                        </div> */}
                     </div>}
 
                     {/* Join requests space */}

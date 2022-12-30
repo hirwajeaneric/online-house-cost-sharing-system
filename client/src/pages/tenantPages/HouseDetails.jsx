@@ -298,7 +298,7 @@ const HouseDetails = () => {
             </p>
             <p className="furniture">
               <span className='left'><FaUser className='icon'/> House owner:</span> 
-              <span className='right'>{houseOwner.firstname+" "+houseOwner.firstname}</span>
+              <span className='right'>{houseOwner.firstname+" "+houseOwner.lastname}</span>
             </p>
             <p className="furniture">
               <span className='left'><MdEmail className='icon'/> House owner email:</span> 
@@ -352,7 +352,7 @@ const HouseDetails = () => {
           </div>
         </div>
 
-        {joinRequirements.names === userIdentity.firstname+""+userIdentity.lastname ? 
+        {joinRequirements.names === userIdentity.firstname+""+userIdentity.lastname || house.ownerId === userIdentity._id ? 
           '' 
         : 
         ((localStorage.getItem('tenantToken')) 
