@@ -10,6 +10,7 @@ const houseRoutes = require('./routes/house.routes');
 const joinRequestRoutes = require('./routes/joinRequest.routes');
 const joinRequirementsRoutes = require('./routes/joinRequirement.routes');
 const rentRequestRoutes = require('./routes/rentRequest.routes');
+const contractRoutes = require('./routes/contract.routes');
 
 connection();
 
@@ -24,6 +25,7 @@ app.use('/api/house/', houseRoutes);
 app.use('/api/joinRequest/', joinRequestRoutes);
 app.use('/api/joinRequirements/', joinRequirementsRoutes);
 app.use('/api/rentRequest/', rentRequestRoutes);
+app.use('/api/contract/', contractRoutes);
 
 const port = process.env.PORT || 5000;
 app.listen(port, ()=> console.log(`Listening on port ${port}...`));

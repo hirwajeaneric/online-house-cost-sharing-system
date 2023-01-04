@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react'
+import { FaFileContract } from 'react-icons/fa';
 import { Link } from 'react-router-dom'
 import { UserResponseMessageContext, UserResponseMessageSetterContext } from '../../App';
 import ResponseMessage from '../responses/ResponseMessage';
@@ -8,6 +9,7 @@ const UserHouse = () => {
     const [houses,setHouses] = useState([]);
     const [userJoinRequests, setUserJoinRequests] = useState([]);
     const [rentRequests, setRentRequests] = useState([]);
+    // const [rentedHouses, setRentedHouses] = useState([]);
 
     const userResponseMessageSetter = useContext(UserResponseMessageSetterContext);
     const userResponseMessage = useContext(UserResponseMessageContext);
@@ -84,8 +86,17 @@ const UserHouse = () => {
             {/* Where the response message displays */}
             {userResponseMessage.visible && <ResponseMessage backgroundColor='#e6ffee' color='green' message={userResponseMessage.message}/>}
             
-            <h1 style={{textAlign: 'left'}}>Your profile</h1>
-            
+            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                <h1 style={{textAlign: 'left'}}>Your profile</h1>
+                <div>
+                    <Link style={{color: 'gray', display:'flex', justifyContent: 'flex-end', alignItems: 'center'}} 
+                        to='./contracts'>
+                        <FaFileContract style={{color: 'gray',}}/>
+                        &nbsp;&nbsp;contracts
+                    </Link>
+                </div>
+            </div>
+
             <div className='rented-house-container'>
                 <h2 style={{fontSize: '20px', margin: '0px 0px 20px'}}>Your uploaded house{houses.length > 1 ? 's' : ''}</h2>
                 {/* If a person does not have a house in their account yet */}
@@ -130,9 +141,10 @@ const UserHouse = () => {
                 }
 
                 {/* Displaying rented houses */}
-                {houses.map((house, index) => (house.username === userIdentity.username || house.tenantTwoUsername === userIdentity.username) && 
+                <h2 style={{fontSize: '20px', margin: '20px 0px'}}>Rented houses</h2>
+                {/* {houses.map((house, index) => (house.username === userIdentity.username || house.tenantTwoUsername === userIdentity.username) && 
                     <h2 style={{fontSize: '20px', margin: '20px 0px'}}>Rented house</h2>)
-                }
+                } */}
 
                 {houses && 
                     houses.map((house, index) => (

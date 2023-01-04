@@ -93,13 +93,6 @@ const RequestStatus = styled.span`
     margin: 0 0 0 20px;
 `;
 
-const LinkBack ={
-    padding: '8px 12px',
-    background: 'gray',
-    color: 'white',
-    cursor: 'pointer'
-};
-
 const RentRequest = () => {
     const userResponseMessage = useContext(UserResponseMessageContext);
     const userResponseMessageSetter = useContext(UserResponseMessageSetterContext);
@@ -108,14 +101,37 @@ const RentRequest = () => {
     const [rentRequest, setRentRequest] = useState({});
     const [error, setError] = useState('');
     const [house, setHouse] = useState({});
+    const [houseOwner, setHouseOwner] = useState('');
+    const [contract, setContract] = useState({});
+    const [contracts, setContracts] = useState([]);
+
+    /** Fetching the house owner's name */    
+    useEffect(()=>{
+        axios.get(`http://localhost:5000/api/tenant/findByUsername?username=${urlparameters.username}`)
+        .then(response=>{
+            setHouseOwner(response.data);
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    },[urlparameters]);
+
+    /** Fetching all contracts */    
+    useEffect(()=>{
+        axios.get(`http://localhost:5000/api/contract/list`)
+        .then(response=>{
+            setContracts(response.data);
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    },[]);
 
     /** Fetching the actual rent request */    
     useEffect(()=>{
         axios.get(`http://localhost:5000/api/rentRequest/findById?id=${urlparameters.id}`)
         .then(response=>{
             setRentRequest(response.data);
-            console.log('The rent request:');
-            console.log(response.data);
         })
         .catch(error => {
             console.log(error);
@@ -127,8 +143,6 @@ const RentRequest = () => {
         axios.get(`http://localhost:5000/api/house/findById?id=${rentRequest.houseId}`)
         .then(response=>{
             setHouse(response.data);
-            console.log('The house to be joined:');
-            console.log(response.data[0]);
         })
         .catch(error => {
             console.log(error);
@@ -142,28 +156,60 @@ const RentRequest = () => {
         if (house.tenantOne && house.username) {
             setError('Unable to approve this user, you already have another approved user.')
         } else {
+            // Updating the rent request
             rentRequest.approved = 'Yes';
             await axios.put(`http://localhost:5000/api/rentRequest/update?id=${urlparameters.id}`, rentRequest)
             .then(response => {
                 if (response.data.rentRequest) {
-                    console.log(response.data);
+                    console.log(response.data.message);
                 }
             })
             .catch(error => {
                 setError(error);
             })
-    
+
+            // Updating the house
             house.tenantOne = rentRequest.name;
             house.username = rentRequest.username;
             await axios.put(`http://localhost:5000/api/house/update?id=${house._id}`, house)
             .then(response => {
                 if (response.data) {
-                    userResponseMessageSetter({visible: true, message: 'Rent Request approved!'});
+                    console.log(response.data.message);
                 }
             })
             .catch(error => {
                 setError(error);
-            })
+            });
+
+            // Creating a contract
+            setTimeout(()=>{
+                contract.houseOwner = houseOwner.firstname+" "+houseOwner.lastname;
+                contract.approvedOn = "";
+                contract.createdOn = new Date().toDateString();
+                contract.status = "incomplete";
+                contract.tenantOne = rentRequest.name;
+                contract.tenantOneSignDate = "";
+                contract.tenantTwo = "";
+                contract.tenantTwoSignDate = "";
+                contract.ownerUsername = houseOwner.username;
+                contract.tenantOneUsername = rentRequest.username;
+                contract.tenantTwoUsername = "";
+                contract.houseNumber = house.number;
+                contract.houseId = house._id;
+                contract.number = (contracts.length+1).toString();
+                contract.description = `I ${houseOwner.firstname+" "+houseOwner.lastname} the owner of house number ${house.number} accepts that tenant ${rentRequest.name} ${house.tenantTwo && "and "+house.tenantTwo} rent${!house.tenantTwo ? 's' : ''} my house where they will be paying me ${house.rent} Rwf per month. I also accept that I have received a payment of ${house.rent*2} Rwf for the payment of two months that will be counted from ${new Date().toDateString()}.`;
+
+                axios.post(`http://localhost:5000/api/contract/save`, contract)
+                .then(response => {
+                    if (response.data.contract) {
+                        console.log(response.data.message);
+                        userResponseMessageSetter({visible: true, message: 'Rent Request approved!'});
+                    }
+                })
+                .catch(error => {
+                    setError(error);
+                });
+            },3000)
         }
     };
 
@@ -183,8 +229,6 @@ const RentRequest = () => {
 
         house.tenantOne = '';
         house.username = '';
-        console.log('Updating the house:');
-        console.log(house);
         await axios.put(`http://localhost:5000/api/house/update?id=${house._id}`, house)
         .then(response => {
             if (response.data) {
@@ -200,7 +244,7 @@ const RentRequest = () => {
     setTimeout(()=>{
         if (userResponseMessage.visible) {
             userResponseMessageSetter({visible: false, message: ''});
-            window.location.reload();
+            // window.location.reload();
         }        
     }, 5000);
 

@@ -298,17 +298,17 @@ const HouseDetails = () => {
             </p>
             <p className="furniture">
               <span className='left'><FaUser className='icon'/> House owner:</span> 
-              <span className='right'>{houseOwner.firstname+" "+houseOwner.firstname}</span>
+              <span className='right'>{houseOwner.firstname+" "+houseOwner.lastname}</span>
             </p>
             <p className="furniture">
               <span className='left'><MdEmail className='icon'/> House owner email:</span> 
               <span className='right'>{houseOwner.email}</span>
             </p>
           </div>
-          {house.tenantOne && 
+          {joinRequirements.names && 
             <>
               <h4>CURRENT OCCUPIER</h4>
-              <p className='nameofoccupier'><span className='left'>Name of occupier:</span> <span className='right'>{house.tenantOne}</span></p>
+              <p className='nameofoccupier'><span className='left'>Name of occupier:</span> <span className='right'>{joinRequirements.names}</span></p>
               <p className='genderofoccupier'><span className='left'>Gender:</span> <span className='right'>{joinRequirements.tenantGender}</span></p>
               <p className='phone-number'><span className='left'>Phone number of occupier:</span> <span className='right'>{house.phoneNumberOfFirstTenant}</span></p>
             </>
@@ -352,7 +352,7 @@ const HouseDetails = () => {
           </div>
         </div>
 
-        {joinRequirements.names === userIdentity.firstname+""+userIdentity.lastname ? 
+        {joinRequirements.names === userIdentity.firstname+""+userIdentity.lastname || house.ownerId === userIdentity._id ? 
           '' 
         : 
         ((localStorage.getItem('tenantToken')) 
@@ -464,7 +464,7 @@ const HouseDetails = () => {
       </div>}
 
       {/*Rent functionality*/}
-      {!house.tenantOne && house.ownerId !== userIdentity._id &&
+      {!house.username && house.ownerId !== userIdentity._id &&
       <div className='join-house-descriptions'>
         {(localStorage.getItem('tenantToken')) 
           ? 

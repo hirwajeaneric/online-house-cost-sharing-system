@@ -18,6 +18,8 @@ import UserHouse from './components/user-profile/UserHouse';
 import UserHouseDetails from './components/user-profile/UserHouseDetails';
 import JoinRequest from './components/user-profile/JoinRequest';
 import RentRequest from './components/user-profile/RentRequest';
+import Contracts from './pages/tenantPages/Contracts';
+import ContractDetails from './pages/tenantPages/ContractDetails';
 
 export const UserResponseMessageContext = createContext();
 export const UserResponseMessageSetterContext = createContext();
@@ -44,6 +46,8 @@ function App() {
                   <Route path='rented-house/:id' element={<UserHouseDetails />} />
                   <Route path='request/:id' element={<JoinRequest />} />
                   <Route path='rent-request/:id' element={<RentRequest />} />
+                  <Route path='contracts' element={<Contracts/>} />
+                  <Route path='contract/:id' element={<ContractDetails/>} />
                 </Route>
                 :
                 <Route path='profile/:username' exact element={<Navigate replace to='/auth/signin' />} />   
@@ -62,9 +66,21 @@ function App() {
               }
 
               {localStorage.getItem('tenantToken') ? 
+                <Route path='contracts' element={<Contracts />} />
+                :
+                <Route path='contracts' exact element={<Navigate replace to='/auth/signin' />} /> 
+              }
+
+              {localStorage.getItem('tenantToken') ? 
                 <Route path='add-house' element={<AddHouse />} />
                 :
                 <Route path='add-house' exact element={<Navigate replace to='/auth/signin' />} /> 
+              } 
+
+              {localStorage.getItem('tenantToken') ? 
+                <Route path='contract/:id' element={<ContractDetails />} />
+                :
+                <Route path='contract/:id' exact element={<Navigate replace to='/auth/signin' />} /> 
               } 
 
               <Route path='auth' element={<SigninSignup />} >
