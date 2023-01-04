@@ -1,5 +1,5 @@
 const express = require('express');
-const { list, testing, save, update, deleteRequest, findById, findByJoinPost, findByUsername } = require('../controllers/joinRequest.controller');
+const { list, testing, save, update, deleteRequest, findById, findByJoinPost, findByUsername} = require('../controllers/joinRequest.controller');
 const router = express.Router();
 
 router.get('/test', testing);

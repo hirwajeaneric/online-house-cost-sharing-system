@@ -1,5 +1,20 @@
 const express = require('express');
-const { deleteByContractNumber, deleteContract, save, update, findByTenantId, findByOwnerId, findByNumber, findById, list, testing, findByUsername, findByOwnerUsername, findByTenantOneUsername, findByTenantTwoUsername, findByHouseNumber } = require('../controllers/contract.controller');
+const { 
+    deleteByContractNumber, 
+    deleteContract, 
+    save, 
+    update, 
+    findByTenantId, 
+    findByOwnerId, 
+    findByNumber, 
+    findById, 
+    list, 
+    testing, 
+    findByOwnerUsername, 
+    findByTenantOneUsername, 
+    findByTenantTwoUsername, 
+    findByHouseNumber
+} = require('../controllers/contract.controller');
 const router = express.Router();
 
 router.get('/test', testing);

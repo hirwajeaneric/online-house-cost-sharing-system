@@ -60,34 +60,6 @@ exports.findByJoinPost = (req, res, next) => {
     })
 }
 
-// exports.broadSearch = (req, res, next) => {
-//     joinRequestModel.find({ 
-//         age: req.query. age, 
-//         gender: req.query.gender,
-//         maritalStatus: req.query.maritalStatus,
-//         languages: req.query.languages,
-//         nationality: req.query.bathRooms,
-//         occupation: req.query.occupation,
-//         hasPet: req.query.hasPet,
-//         specialMedicalConditions: req.query.specialMedicalConditions,
-//         handicaped: req.query.handicaped,
-//         drink: req.query.drink,
-//         smoke: req.query.smoke,
-//         party: req.query.party,
-//         postDate: req.query.postDate,
-//         numberOfJoinRequests: req.query.numberOfJoinRequests     
-//     })
-//     .then(response=> {
-//         if (response) {
-//             res.status(200).send(response)
-//         } else {
-//             res.status(404).send("No post available for this filter.")
-//         }
-//     })
-//     .catch(err=>{
-//         res.status(500).send("Server error: "+err)
-//     })
-// }
 
 exports.save = (req, res, next) => {
     joinRequestModel.create(req.body)

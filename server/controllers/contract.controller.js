@@ -38,7 +38,6 @@ exports.findByHouseNumber = (req, res, next) => {
     })
 }
 
-
 exports.findById = (req, res, next) => {
     contractModel.findById(req.query.id)
     .then(response=> {

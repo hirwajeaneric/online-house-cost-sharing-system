@@ -11,7 +11,12 @@
     "type": "git",
     "url": "github.com/hirwajeaneric/online-house-cost-sharing-system"
   },
-  "keywords": ["Online house cost sharing system","express","mongodb","backend"],
+  "keywords": [
+    "Online house cost sharing system",
+    "express",
+    "mongodb",
+    "backend"
+  ],
   "author": "Hirwa Jean Eric",
   "license": "MIT",
   "dependencies": {
@@ -26,6 +31,7 @@
     "moment": "^2.29.4",
     "mongoose": "^6.7.0",
     "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.8.0",
     "nodemon": "^2.0.20"
   }
 }
