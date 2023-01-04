@@ -19,7 +19,7 @@ exports.list = (req, res, next) => {
 }
 
 exports.findByNumber = (req, res, next) => {
-    contractModel.find({number: req.query.number})
+    contractModel.findOne({number: req.query.number})
     .then(response=> {
         res.status(200).send(response);
     })
@@ -27,6 +27,17 @@ exports.findByNumber = (req, res, next) => {
         res.status(500).send("Server error: "+err)
     })
 }
+
+exports.findByHouseNumber = (req, res, next) => {
+    contractModel.find({houseNumber: req.query.houseNumber})
+    .then(response=> {
+        res.status(200).send(response);
+    })
+    .catch(err=>{
+        res.status(500).send("Server error: "+err)
+    })
+}
+
 
 exports.findById = (req, res, next) => {
     contractModel.findById(req.query.id)
@@ -128,7 +139,7 @@ exports.save = (req, res, next) => {
 exports.update = (req, res, next) => {
     contractModel.findByIdAndUpdate(req.query.id, req.body)
     .then(response=> {
-        res.status(200).send({ message: 'Contract updated!', contract: response })
+        res.status(200).send({ message: 'Contract Signed!', contract: response })
     })
     .catch(err=>{
         res.status(500).send("Server error: "+err)

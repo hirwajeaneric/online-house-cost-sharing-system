@@ -6,20 +6,37 @@ import ResponseMessage from '../responses/ResponseMessage';
 
 const UserHouseDetails = () => {
     const userResponseMessageSetter = useContext(UserResponseMessageSetterContext);
-
-    const houseId = useParams();
-    
     const userResponseMessage = useContext(UserResponseMessageContext);
+    const houseId = useParams();
 
     const [houseFormError, setHouseFormError] = useState('');
-    
     const [joinRequirementsError, setJoinRequirementsError] = useState('');
-    
     const [joinRequests, setJoinRequests] = useState([]);
     const [rentRequests, setRentRequests] = useState([]);
     
+    const [contract, setContract] = useState(
+        []
+        // {
+        //     _id: "",
+        //     number: "",
+        //     approvedOn: "",
+        //     createdOn: "",
+        //     status: "",
+        //     houseNumber: "",
+        //     ownerUsername: "",
+        //     houseOwner: "",
+        //     tenantOneUsername: "",
+        //     tenantOne: "",
+        //     tenantOneSignDate: "",
+        //     tenantTwoUsername: "",
+        //     tenantTwo: "",
+        //     tenantTwoSignDate: "",
+        //     description: ""
+        // }
+    );
+
     const [file, setFile] = useState('');
-    
+
     const [joinRequirements, setJoinRequirements] = useState({
         names: '',
         tenantGender: '',
@@ -81,7 +98,23 @@ const UserHouseDetails = () => {
         .catch(error => {
             console.log(error);
         })
-    },[]);
+    },[houseId]);
+
+    //Fetch contract information
+    // useEffect(()=> {
+    //     axios.get(`http://localhost:5000/api/contract/findByHouseNumber?houseNumber=${houseData.number}`)
+    //     .then(response=>{
+    //         response.data.forEach(element => {
+    //             let id = element._id;
+                 
+    //         });
+    //         setContract(response.data);
+    //         console.log(response.data);
+    //     })
+    //     .catch(error => {
+    //         console.log(error);
+    //     })
+    // },[houseData.number]);
 
     /**Fetch Join Requests */
     useEffect(()=>{
@@ -136,7 +169,7 @@ const UserHouseDetails = () => {
     const postJoinRequirements = async (e) => {
         e.preventDefault();
 
-        joinRequirements.names = userIdentity.firstname+''+userIdentity.lastname;
+        joinRequirements.names = userIdentity.firstname+' '+userIdentity.lastname;
 
         if (joinRequirements.names === '') {
             setJoinRequirementsError('Your name is required')
@@ -440,6 +473,16 @@ const UserHouseDetails = () => {
                                 <label htmlFor="rooms">Number of Rooms</label>
                                 <strong>{houseData.rooms}</strong>
                             </div>
+                            <div className="input-label-container" style={{marginBottom: '20px', fontWeight: '700'}}>
+                                <p className='title'>Contract: </p>
+                                {/* {contract && <Link style={{textDecoration: 'underline'}} to={`../contract/${contract._id}`} className='data'>my contract</Link>} */}
+                                {/* {userIdentity.username === contract.ownerUsername 
+                                    && contract.approvedOn && <p color='red'>Not signed on</p> 
+                                } */}
+                                {/* {contract && contract.map((element, index)=>(
+                                    <p key={index}>{element.number}</p>
+                                ))} */}
+                            </div>
                         </div>
                         <div className="right-side">
                             <div className='input-label-container'>
@@ -484,12 +527,12 @@ const UserHouseDetails = () => {
                         </div>
                     </div>}
 
-                    {/* Rented people */}
+                    {/* Renting people */}
                     {houseData.ownerId === userIdentity._id && <div className="other-relevant-info">
-                        <div className="input-label-container" style={{marginBottom: '20px', fontWeight: '700'}}>
+                        {/* <div className="input-label-container" style={{marginBottom: '20px', fontWeight: '700'}}>
                             <p className='title'>Contract: </p>
-                            <Link style={{textDecoration: 'underline'}} to={'../contract/12343434safdsf'} className='data'>124n343wnnew4n3443</Link>
-                        </div>
+                            <Link style={{textDecoration: 'underline'}} to={`../contract/${contract._id}`} className='data'>{contract._id}</Link>
+                        </div> */}
                         <div className="input-label-container">
                             <p className='title'>First occupier: </p>
                             <p className='data'>{houseData.tenantOne}</p>

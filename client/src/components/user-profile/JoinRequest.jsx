@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import ResponseMessage from '../responses/ResponseMessage';
 import { UserResponseMessageContext, UserResponseMessageSetterContext } from '../../App';
@@ -93,18 +93,13 @@ const RequestStatus = styled.span`
     margin: 0 0 0 20px;
 `;
 
-const LinkBack ={
-    padding: '8px 12px',
-    background: 'gray',
-    color: 'white',
-    cursor: 'pointer'
-};
 
 const JoinRequest = () => {
     const userResponseMessage = useContext(UserResponseMessageContext);
     const userResponseMessageSetter = useContext(UserResponseMessageSetterContext);
     const urlparameters = useParams();
 
+    const [contract, setContract] = useState({});
     const [joinRequest, setJoinRequest] = useState({});
     const [error, setError] = useState('');
     const [house, setHouse] = useState({});
@@ -114,8 +109,6 @@ const JoinRequest = () => {
         axios.get(`http://localhost:5000/api/joinRequest/findById?id=${urlparameters.id}`)
         .then(response=>{
             setJoinRequest(response.data);
-            console.log('The join request:');
-            console.log(response.data);
         })
         .catch(error => {
             console.log(error);
@@ -127,8 +120,17 @@ const JoinRequest = () => {
         axios.get(`http://localhost:5000/api/house/findByJoinPost?joinPost=${joinRequest.joinPost}`)
         .then(response=>{
             setHouse(response.data[0]);
-            console.log('The house to be joined:');
-            console.log(response.data[0]);
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    },[joinRequest]);
+
+    /** Fetching the contract related to this house */    
+    useEffect(()=>{
+        axios.get(`http://localhost:5000/api/contract/findByHouseNumber?houseNumber=${joinRequest.houseNumber}`)
+        .then(response=>{
+            setContract(response.data[0]);
         })
         .catch(error => {
             console.log(error);
@@ -142,34 +144,54 @@ const JoinRequest = () => {
         if (house.tenantTwo && house.tenantTwoUsername) {
             setError('Unable to approve this user, you already have another approved user.')
         } else {
+            //Updating the join request
             joinRequest.approved = 'Yes';
             await axios.put(`http://localhost:5000/api/joinRequest/update?id=${urlparameters.id}`, joinRequest)
             .then(response => {
                 if (response.data.joinRequest) {
-                    console.log(response.data);
+                    console.log(response.data.message);
                 }
             })
             .catch(error => {
                 setError(error);
             })
-    
+            
+            // Updating the house 
+            // house.tenantTwo = joinRequest.name;
             house.tenantTwo = joinRequest.name;
-            house.tenantTwoUsername = joinRequest.username;
             await axios.put(`http://localhost:5000/api/house/update?id=${house._id}`, house)
             .then(response => {
                 if (response.data) {
-                    userResponseMessageSetter({visible: true, message: 'Join Request approved!'});
+                    console.log(response.data.message);
                 }
             })
             .catch(error => {
                 setError(error);
             })
+
+            // Updating the contract
+            setTimeout(()=>{
+                contract.tenantTwo = joinRequest.name;
+                contract.tenantTwoUsername = joinRequest.username;
+                axios.put(`http://localhost:5000/api/contract/update?id=${contract._id}`, contract)
+                .then(response => {
+                    if (response.data.contract) {
+                        console.log(response.data.message);
+                        userResponseMessageSetter({visible: true, message: 'Join Request approved!'});
+                    }
+                })
+                .catch(error => {
+                    setError(error);
+                });
+            },3000);
         }
     };
 
     /** Rejecting the join request */
     const rejectRequest = async(e) => {
         e.preventDefault();
+
+        // Update join request
         joinRequest.approved = 'No';
         await axios.put(`http://localhost:5000/api/joinRequest/update?id=${urlparameters.id}`, joinRequest)
         .then(response => {
@@ -181,10 +203,9 @@ const JoinRequest = () => {
             setError(error);
         })
 
+        // Update the house
         house.tenantTwo = '';
         house.tenantTwoUsername = '';
-        console.log('Updating the house:');
-        console.log(house);
         await axios.put(`http://localhost:5000/api/house/update?id=${house._id}`, house)
         .then(response => {
             if (response.data) {
@@ -194,6 +215,23 @@ const JoinRequest = () => {
         .catch(error => {
             setError(error);
         })
+
+        // Updating the contract
+        setTimeout(()=>{
+            contract.tenantTwo = "";
+            contract.tenantTwoUsername = "";
+            
+            axios.put(`http://localhost:5000/api/contract/update?id=${contract._id}`, contract)
+            .then(response => {
+                if (response.data.contract) {
+                    console.log(response.data.message);
+                    userResponseMessageSetter({visible: true, message: 'Join Request approved!'});
+                }
+            })
+            .catch(error => {
+                setError(error);
+            });
+        },3000);
     }
 
     /** Removing the response message after 5 secs */

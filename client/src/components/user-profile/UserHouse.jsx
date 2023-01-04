@@ -9,6 +9,7 @@ const UserHouse = () => {
     const [houses,setHouses] = useState([]);
     const [userJoinRequests, setUserJoinRequests] = useState([]);
     const [rentRequests, setRentRequests] = useState([]);
+    // const [rentedHouses, setRentedHouses] = useState([]);
 
     const userResponseMessageSetter = useContext(UserResponseMessageSetterContext);
     const userResponseMessage = useContext(UserResponseMessageContext);
@@ -140,9 +141,10 @@ const UserHouse = () => {
                 }
 
                 {/* Displaying rented houses */}
-                {houses.map((house, index) => (house.username === userIdentity.username || house.tenantTwoUsername === userIdentity.username) && 
+                <h2 style={{fontSize: '20px', margin: '20px 0px'}}>Rented houses</h2>
+                {/* {houses.map((house, index) => (house.username === userIdentity.username || house.tenantTwoUsername === userIdentity.username) && 
                     <h2 style={{fontSize: '20px', margin: '20px 0px'}}>Rented house</h2>)
-                }
+                } */}
 
                 {houses && 
                     houses.map((house, index) => (

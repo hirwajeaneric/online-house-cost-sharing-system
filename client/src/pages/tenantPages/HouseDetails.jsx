@@ -305,10 +305,10 @@ const HouseDetails = () => {
               <span className='right'>{houseOwner.email}</span>
             </p>
           </div>
-          {house.tenantOne && 
+          {joinRequirements.names && 
             <>
               <h4>CURRENT OCCUPIER</h4>
-              <p className='nameofoccupier'><span className='left'>Name of occupier:</span> <span className='right'>{house.tenantOne}</span></p>
+              <p className='nameofoccupier'><span className='left'>Name of occupier:</span> <span className='right'>{joinRequirements.names}</span></p>
               <p className='genderofoccupier'><span className='left'>Gender:</span> <span className='right'>{joinRequirements.tenantGender}</span></p>
               <p className='phone-number'><span className='left'>Phone number of occupier:</span> <span className='right'>{house.phoneNumberOfFirstTenant}</span></p>
             </>
@@ -464,7 +464,7 @@ const HouseDetails = () => {
       </div>}
 
       {/*Rent functionality*/}
-      {!house.tenantOne && house.ownerId !== userIdentity._id &&
+      {!house.username && house.ownerId !== userIdentity._id &&
       <div className='join-house-descriptions'>
         {(localStorage.getItem('tenantToken')) 
           ? 

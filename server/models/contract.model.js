@@ -2,9 +2,10 @@ const mongoose = require('mongoose');
 
 const contractSchema = new mongoose.Schema({
     number: {type: String, require: true},
-    approvedOn: {type: String, required: true},
+    approvedOn: {type: String, required: false},
     createdOn: {type: String, required: false},
     status: {type: String, required: false},
+    houseId: {type: String, required: true},
     houseNumber: {type: String, required: true},
     ownerUsername: {type: String, required: true},
     houseOwner: {type: String, required: false},

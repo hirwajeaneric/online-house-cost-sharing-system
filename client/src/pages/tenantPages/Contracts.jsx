@@ -9,34 +9,21 @@ const Contracts = () => {
   const [contracts, setContracts] = useState([]);
 
   useEffect(()=> {
-    axios.get(`http://localhost:5000/api/contract/findByOwnerUsername?ownerUsername=${params.username}`)
+    axios.get(`http://localhost:5000/api/contract/list`)
     .then(response => {
-      if (response.data) {setContracts(response.data)}
+      if (response.data) {
+        response.data.forEach(contract => {
+          if(contract.tenantOneUsername === params.username || contract.tenantTwoUsername === params.username || contract.ownerUsername === params.username) {
+            console.log(contract);
+            setContracts(...contracts, response.data)
+          }
+        });
+      }
     })
     .catch(error => {
       console.log(error);
     }) 
-  },[params.username]);
-
-  useEffect(()=> {
-    axios.get(`http://localhost:5000/api/contract/findByTenantOneUsername?tenantOneUsername=${params.username}`)
-    .then(response => {
-      if (response.data) {setContracts(response.data)}
-    })
-    .catch(error => {
-      console.log(error);
-    }) 
-  },[params.username]);
-
-  useEffect(()=> {
-    axios.get(`http://localhost:5000/api/contract/findByTenantTwoUsername?tenantTwoUsername=${params.username}`)
-    .then(response => {
-      if (response.data) {setContracts(response.data)}
-    })
-    .catch(error => {
-      console.log(error);
-    }) 
-  },[params.username]);
+  },[params]);
 
   return (
     <div style={{minHeight: '60vh', width: '100%',}}>

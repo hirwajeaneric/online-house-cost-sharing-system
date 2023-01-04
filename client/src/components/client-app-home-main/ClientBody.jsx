@@ -45,11 +45,14 @@ const ClientHomeMain = () => {
           Be the one to upload the first house. 
           <br/><br/>
           <Link to={'add-house'} style={{color: 'orangered'}}>Add house</Link>
-          </p>}
+          </p>
+        }
+        
+        {/* Unoccupied houses */}
         {houses.length < 1 ? '' : <h1 style={{textAlign: 'center'}}>Unoccupied Houses</h1>}
         <div className="posted-houses-container">
           {houses && houses.map((house, index) => (
-            !house.tenantOne &&
+            !house.username &&
             <Link key={index} to={`housedetails/${house._id}`} className="a-house">
               <img src={`http://localhost:5000/api/uploads/${house.photo}`} alt="" />
               <div className="other-info">
@@ -61,6 +64,8 @@ const ClientHomeMain = () => {
             ))}
           {/* {houses.length < 1 && <p style={{color: "gray"}}>No available houses for this section</p>} */}
         </div>
+        
+        {/* Occupied houses */}
         {houses.length < 1 ? '' : <h1 style={{marginTop: '40px'}}>Occupied Houses, make join request.</h1>}
         <div className="posted-houses-container">
           {houses && houses.map((house, index) => (
