@@ -23,78 +23,85 @@ import ContractDetails from './pages/tenantPages/ContractDetails';
 
 export const UserResponseMessageContext = createContext();
 export const UserResponseMessageSetterContext = createContext();
+export const SearchResultContext = createContext();
+export const SearchResultSetterContext = createContext();
 
 function App() {
 
   const [userResponse, setUserResponse] = useState({visible: false, message: ''});
+  const [foundHouses, setFoundHouses] = useState([]);
 
   return (
-    <UserResponseMessageContext.Provider value={userResponse}>
-      <UserResponseMessageSetterContext.Provider value={setUserResponse}>
-        
-        <BrowserRouter>
-          <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path='/' element={<OtherPages />} >
-              <Route path='housedetails/:id' element={<HouseDetails />} />
-              <Route path='house/:id' element={<PostDetails />} />
-              <Route path='results' element={<SearchResults />} /> 
+    <SearchResultContext.Provider value={foundHouses}>
+      <SearchResultSetterContext.Provider value={setFoundHouses}>
+        <UserResponseMessageContext.Provider value={userResponse}>
+          <UserResponseMessageSetterContext.Provider value={setUserResponse}>
+            
+            <BrowserRouter>
+              <Routes>
+                <Route path='/' element={<Home />} />
+                <Route path='/' element={<OtherPages />} >
+                  <Route path='housedetails/:id' element={<HouseDetails />} />
+                  <Route path='house/:id' element={<PostDetails />} />
+                  <Route path='search' element={<SearchResults />} /> 
 
-              {localStorage.getItem('tenantToken') ?
-                <Route path='profile/:username' element={<UserProfile />} >
-                  <Route path='' element={<UserHouse />} />
-                  <Route path='rented-house/:id' element={<UserHouseDetails />} />
-                  <Route path='request/:id' element={<JoinRequest />} />
-                  <Route path='rent-request/:id' element={<RentRequest />} />
-                  <Route path='contracts' element={<Contracts/>} />
-                  <Route path='contract/:id' element={<ContractDetails/>} />
+                  {localStorage.getItem('tenantToken') ?
+                    <Route path='profile/:username' element={<UserProfile />} >
+                      <Route path='' element={<UserHouse />} />
+                      <Route path='rented-house/:id' element={<UserHouseDetails />} />
+                      <Route path='request/:id' element={<JoinRequest />} />
+                      <Route path='rent-request/:id' element={<RentRequest />} />
+                      <Route path='contracts' element={<Contracts/>} />
+                      <Route path='contract/:id' element={<ContractDetails/>} />
+                    </Route>
+                    :
+                    <Route path='profile/:username' exact element={<Navigate replace to='/auth/signin' />} />   
+                  }
+
+                  {localStorage.getItem('tenantToken') ?
+                    <Route path='join/:id' element={<RequestToJoin />} />
+                    :
+                    <Route path='join/:id' exact element={<Navigate replace to='/auth/signin' />} /> 
+                  }
+
+                  {localStorage.getItem('tenantToken') ? 
+                    <Route path='create-post' element={<PostHouse />} />
+                    :
+                    <Route path='create-post' exact element={<Navigate replace to='/auth/signin' />} /> 
+                  }
+
+                  {localStorage.getItem('tenantToken') ? 
+                    <Route path='contracts' element={<Contracts />} />
+                    :
+                    <Route path='contracts' exact element={<Navigate replace to='/auth/signin' />} /> 
+                  }
+
+                  {localStorage.getItem('tenantToken') ? 
+                    <Route path='add-house' element={<AddHouse />} />
+                    :
+                    <Route path='add-house' exact element={<Navigate replace to='/auth/signin' />} /> 
+                  } 
+
+                  {localStorage.getItem('tenantToken') ? 
+                    <Route path='contract/:id' element={<ContractDetails />} />
+                    :
+                    <Route path='contract/:id' exact element={<Navigate replace to='/auth/signin' />} /> 
+                  } 
+
+                  <Route path='auth' element={<SigninSignup />} >
+                    <Route path='' element={<Signin formType='signin'/>} />
+                    <Route path='signin' element={<Signin formType='signin'/>} />
+                    <Route path='signup' element={<Signup formType='signup'/>} />
+                  </Route>
+                  
                 </Route>
-                :
-                <Route path='profile/:username' exact element={<Navigate replace to='/auth/signin' />} />   
-              }
-
-              {localStorage.getItem('tenantToken') ?
-                <Route path='join/:id' element={<RequestToJoin />} />
-                :
-                <Route path='join/:id' exact element={<Navigate replace to='/auth/signin' />} /> 
-              }
-
-              {localStorage.getItem('tenantToken') ? 
-                <Route path='create-post' element={<PostHouse />} />
-                :
-                <Route path='create-post' exact element={<Navigate replace to='/auth/signin' />} /> 
-              }
-
-              {localStorage.getItem('tenantToken') ? 
-                <Route path='contracts' element={<Contracts />} />
-                :
-                <Route path='contracts' exact element={<Navigate replace to='/auth/signin' />} /> 
-              }
-
-              {localStorage.getItem('tenantToken') ? 
-                <Route path='add-house' element={<AddHouse />} />
-                :
-                <Route path='add-house' exact element={<Navigate replace to='/auth/signin' />} /> 
-              } 
-
-              {localStorage.getItem('tenantToken') ? 
-                <Route path='contract/:id' element={<ContractDetails />} />
-                :
-                <Route path='contract/:id' exact element={<Navigate replace to='/auth/signin' />} /> 
-              } 
-
-              <Route path='auth' element={<SigninSignup />} >
-                <Route path='' element={<Signin formType='signin'/>} />
-                <Route path='signin' element={<Signin formType='signin'/>} />
-                <Route path='signup' element={<Signup formType='signup'/>} />
-              </Route>
-              
-            </Route>
-          </Routes>
-        </BrowserRouter>
-        
-      </UserResponseMessageSetterContext.Provider>
-    </UserResponseMessageContext.Provider>
+              </Routes>
+            </BrowserRouter>
+            
+          </UserResponseMessageSetterContext.Provider>
+        </UserResponseMessageContext.Provider>
+      </SearchResultSetterContext.Provider>
+    </SearchResultContext.Provider>
   );
 }
 

@@ -12,6 +12,7 @@ const ContractDetails = () => {
     const params = useParams();
     const [ contract, setContract ] = useState({});
     const [ house, setHouse] = useState({});
+    const [houseOwner, setHousOwner] = useState({});
     const [error, setError] = useState('');
 
     useEffect(()=>{
@@ -32,7 +33,17 @@ const ContractDetails = () => {
         .catch(error=>{
             console.log(error);
         })
-    },[contract.houseId])
+    },[contract.houseId]);
+
+    useEffect(()=>{
+        axios.get(`http://localhost:5000/api/tenant/findById?id=${house.ownerId}`)
+        .then(response=>{
+            setHousOwner(response.data);
+        })
+        .catch(error=>{
+            console.log(error);
+        })
+    },[house.ownerId])
 
     const signContract = (e) => {
         e.preventDefault();
@@ -109,8 +120,21 @@ const ContractDetails = () => {
         }
     }
 
-    const deleteContract = () => {
+    const deleteContract = (e) => {
+        e.preventDefault();
 
+        axios.get(`http://localhost:5000/api/house/delete-house?id=${house._id}`)
+        .then(response => {
+            console.log(response.data.message);
+            setContract(response.data.contract);
+            userResponseMessageSetter({
+                visible: true,
+                message: response.data.message
+            })
+        })
+        .catch(error=> {
+            console.log(error);
+        })
     }
 
     /** Removing the response message after 5 secs */
@@ -140,7 +164,7 @@ const ContractDetails = () => {
             <hr/>
             <div style={{marginTop: '40px'}}>
                 <p>
-                    {"I Hirwa Jean Eric the owner of house number "+contract.houseNumber+
+                    {"I "+houseOwner.firstname+" "+houseOwner.lastname+" the owner of house number "+contract.houseNumber+
                     " accept that tenant "+contract.tenantOne+
                     " "+(contract.tenantTwo ? "and" : "")+" "+contract.tenantTwo+
                     " rent"+(contract.tenantTwo ? "" : "s")+ 
