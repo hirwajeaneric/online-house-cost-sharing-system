@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import '../client-app-home-main/mainStyles.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { SearchResultSetterContext } from '../../App';
 
 const ClientHomeMain = () => {
     const [houses, setHouses] = useState([]);
+    const setSearchResults = useContext(SearchResultSetterContext); 
+    const navigate = useNavigate();
 
     /**Fetch house */
     useEffect(()=> {
@@ -20,23 +23,75 @@ const ClientHomeMain = () => {
       .catch(error => {
           console.log(error);
       })
-  },[]);
+    },[]);
+
+  const handleSearchInput = ({currentTarget: input}) => {
+    setLocation(input.value);
+
+    if(input.value.length > 3){
+      setSearchError('');
+    }
+  }
+
+  const [location, setLocation] = useState('');
+
+  const [searchError, setSearchError] = useState('');
+
+  const searchHouse = (e) => {
+    e.preventDefault();
+
+    if (!location) {
+      setSearchError('You must type a location');
+      return;
+    } else {
+      setSearchError('');
+      axios.get(`http://localhost:5000/api/house/findByLocation?location=${location}`)
+      .then(response=>{
+        setSearchResults(response.data);
+        navigate('/search');
+      })
+      .catch(error=>{
+        setSearchError(error);
+      })
+    }
+
+  }
 
   return (
     <div className='client-home-main-container'>
       <div className='banner'>
         <div className="banner-overflow">
-        <h1>Post, Connect, Share, Discover, and more</h1>
-          {/* <form>
-            <input type="text" name='location' placeholder='Search locations'/>
-            <input type="submit" value='Search'/>
-          </form> */}
+          <h1>Post, Connect, Share, Discover, and more</h1>
           <p style={{width: '60%', textAlign: 'center'}}>
             Welcome to HOUSEONLINE, an Online House Cost Sharing System 
             where you can find perfect partners to share the cost of 
             your dream house and remove the burden of high rent price 
             all at one living luxury and comfort of your like.
           </p>
+          <form style={{ marginTop: '3rem'}} onSubmit={searchHouse}>
+            <input type="text" name='location' 
+              value={location}
+              onChange={handleSearchInput} 
+              placeholder= 'Search locations' 
+              style={{
+                outlineColor: searchError ? 'tomato' : 'black', 
+                outlineStyle: searchError ? 'solid' : 'none',
+                color: searchError ? 'tomato' : 'gray'
+              }}
+            />
+            <input type="submit" value='Search' />
+          </form>
+          {searchError && 
+            <p style={{
+                color: 'tomato', 
+                texAlign: 'left', 
+                fontSize: '80%',
+                marginTop: '5px',
+                marginRight: '500px'
+              }}
+              >{searchError}
+            </p>
+          }
         </div>
       </div>
       <div className='main-content'>

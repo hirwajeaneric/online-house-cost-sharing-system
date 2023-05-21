@@ -1,5 +1,5 @@
 const express = require('express');
-const { list, testing, save, update, removeHouse, findByUsername, findByTenant, broadSearch, findByVerified, findById, findByNumber, findByPhoneNumberOfFirstTenant, upload, findByJoinPost, deleteByHouseNumber } = require('../controllers/house.controller');
+const { list, testing, save, update, removeHouse, findByUsername, findByTenant, broadSearch, findByVerified, findById, findByNumber, findByPhoneNumberOfFirstTenant, upload, findByJoinPost, deleteByHouseNumber, findByLocation } = require('../controllers/house.controller');
 const router = express.Router();
 
 router.get('/test', testing);
@@ -11,6 +11,7 @@ router.get('/findByVerified', findByVerified);
 router.get('/findByPhoneNumberOfFirstTenant', findByPhoneNumberOfFirstTenant);
 router.get('/findByJoinPost', findByJoinPost);
 router.get('/findByTenant', findByTenant);
+router.get('/findByLocation', findByLocation);
 router.get('/search', broadSearch);
 router.post('/save', upload.single('photo'), save);
 router.put('/update', upload.single('photo'), update);

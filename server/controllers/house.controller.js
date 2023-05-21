@@ -101,6 +101,20 @@ exports.findByJoinPost = (req, res, next) => {
     })
 }
 
+exports.findByLocation = (req, res, next) => {
+    houseModel.find({ location: req.query.location})
+    .then(response=> {
+        if (response) {
+            res.status(200).send(response)
+        } else {
+            res.status(404).send("No house available from this location")
+        }
+    })
+    .catch(err=>{
+        res.status(500).send("Server error: "+err)
+    })
+}
+
 exports.findByTenant = (req, res, next) => {
     houseModel.find({ tenantOne: req.query.tenantOne, tenantTwo: req.query.tenantTwo})
     .then(response=> {

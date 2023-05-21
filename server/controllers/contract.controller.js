@@ -148,7 +148,7 @@ exports.update = (req, res, next) => {
 exports.deleteContract = (req, res, next) => {
     contractModel.findByIdAndDelete(req.query.id)
     .then(response=> {
-        res.status(201).send({ message: 'contract deleted!', contract: response })
+        res.status(201).send({ message: 'Contract deleted!', contract: response })
     })
     .catch(err=>{
         res.status(500).send("Server error: "+err)
